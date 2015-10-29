@@ -1,0 +1,19 @@
+body{
+	margin:0;
+}
+
+#grid{
+	width: 600px;
+	height: 600px;
+	font-size: 30px;
+}
+#grid > div{
+	width: 600px;
+	height: 30px;
+	overflow: hidden;
+}
+#grid > div > div{
+	float:left;
+	width: 30px;
+	height: 30px;
+}
