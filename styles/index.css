@@ -3,7 +3,7 @@ body{
 	overflow: hidden;
 
 	font-family: "FuturaHandwritten";
-	font-size: 18px;
+	font-size: 16px;
 }
 
 #grid_container{
@@ -75,7 +75,7 @@ body{
 	float: left;
 }
 #editor .editor_number{
-	font-size: 18px;
+	font-size: 16px;
     width: 50px;
 }
 #editor .editor_new_action{

@@ -16,7 +16,13 @@ function Agent(x,y){
 
 		// Get actions to perform
 		var state = _getStateFromID(self.stateID);
-		PerformActions(self, state.actions);
+		if(state){
+			PerformActions(self, state.actions);
+		}else{
+			// state has been deleted. become a zero.
+			self.stateID = self.nextStateID = 0;
+		}
+		
 
 	};
 	self.gotoNextState = function(){

@@ -7,26 +7,45 @@ exports.Editor = {};
 
 // DOM
 Editor.dom = document.getElementById("editor");
-
+Editor.statesDOM = document.createElement("div");
+Editor.dom.appendChild(Editor.statesDOM);
 
 // Create from model
 Editor.create = function(){
-
-	// Nodes
-	var nodes = [];
 
 	// For each state config...
 	var stateConfigs = MODEL.states;
 	for(var i=0;i<stateConfigs.length;i++){
 		var stateConfig = stateConfigs[i];
-		nodes.push(Editor.createStateUI(stateConfig));
+		var stateDOM = Editor.createStateUI(stateConfig);
+		Editor.statesDOM.appendChild(stateDOM);
 	}
 
-	// Put in the DOM
-	for(var i=0;i<nodes.length;i++){
-		var node = nodes[i];
-		Editor.dom.appendChild(node);
-	}
+	// Button -- Add a state!
+	var addState = document.createElement("button");
+	addState.innerHTML = "+ add new state";
+	addState.onclick = function(){
+
+		// New state config
+		var newStateConfig = {
+			id: _generateNewID(),
+			icon: "💩",
+			name: "chocolate",
+			actions:[]
+		};
+
+		// Add to MODEL
+		MODEL.states.push(newStateConfig);
+
+		// Create new DOM & append to states container
+		var stateDOM = Editor.createStateUI(newStateConfig);
+		Editor.statesDOM.appendChild(stateDOM);
+
+		// Hey y'all
+		publish("/ui/updateStateHeaders");
+
+	};
+	Editor.dom.appendChild(addState);
 
 };
 Editor.createStateUI = function(stateConfig){
@@ -71,7 +90,7 @@ Editor.createStateUI = function(stateConfig){
 			deleteDOM.onclick = function(){
 				_removeStateByID(stateConfig.id); // Splice away
 				publish("/ui/updateStateHeaders"); // update state headers
-				Editor.dom.removeChild(dom); // and, remove this DOM child
+				Editor.statesDOM.removeChild(dom); // and, remove this DOM child
 			};
 		})(stateConfig);
 		stateHeader.appendChild(deleteDOM);
@@ -182,8 +201,6 @@ Editor.createNewAction = function(actionConfigs, dom){
 
 		// default, nvm
 		if(select.value=="") return;
-
-		debugger;
 
 		// otherwise, add new action to this array
 		var key = select.value;

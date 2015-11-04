@@ -114,8 +114,7 @@ var _getStateFromID = function(id){
 		var state = MODEL.states[i];
 		if(state.id==id) return state;
 	}
-	return MODEL.states[0]; // return the blank one
-	console.error("NO STATE CORRESPONDS TO ID "+id);
+	return null;
 };
 
 var _removeStateByID = function(id){
@@ -126,6 +125,17 @@ var _removeStateByID = function(id){
 			return;
 		}
 	}
+};
+
+var _generateNewID = function(){
+	var highestID = -1;
+	for(var i=0;i<MODEL.states.length;i++){
+		var state = MODEL.states[i];
+		if(highestID < state.id){
+			highestID = state.id;
+		}
+	}
+	return highestID+1;
 };
 
 /////////////////
