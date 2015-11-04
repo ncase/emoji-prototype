@@ -80,6 +80,8 @@ body{
 }
 #editor .editor_new_action{
 	opacity: 0.5;
+	position: relative;
+	left: -20px;
 }
 #editor select{
 	font-size: 50px;
@@ -90,11 +92,17 @@ body{
 #editor ul{
 	padding-left: 30px;
 	list-style-type: none;
+	position: relative;
 }
 #editor li{
 	padding-left: 0px;
 	list-style-type: none;
+	position: relative;
 }
-#editor li:before{
-	content:'ahhh';
+#editor li > div.delete_action{
+	width: 20px;
+    height: 20px;
+    position: absolute;
+    left: -20px;
+    cursor: pointer;
 }

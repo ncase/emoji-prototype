@@ -1,3 +1,5 @@
+window.ADD_AND_DELETE = true;
+
 (function(exports){
 
 // Singleton Class
@@ -86,19 +88,44 @@ Editor.createActionsUI = function(actionConfigs, dom){
 
 	// All them actions
 	for(var i=0;i<actionConfigs.length;i++){
+
+		// Entry
 		var entry = document.createElement("li");
-		var actionConfig = actionConfigs[i];
-		var actionDOM = Editor.createActionUI(actionConfig);
-		entry.appendChild(actionDOM);
 		list.appendChild(entry);
+
+		// Delete button
+		if(window.ADD_AND_DELETE){
+			var deleteDOM = document.createElement("div");
+			deleteDOM.setAttribute("class","delete_action");
+			deleteDOM.innerHTML = "x";
+			(function(actionConfigs,index,dom){
+				deleteDOM.onclick = function(){
+
+					// Splice away
+					actionConfigs.splice(index,i);
+
+					// then, force my DOM to RESET
+					Editor.createActionsUI(actionConfigs, dom);
+
+				};
+			})(actionConfigs,i,dom);
+			entry.appendChild(deleteDOM);
+		}
+
+		// The actual action
+		var actionDOM = Editor.createActionUI(actionConfigs[i]);
+		entry.appendChild(actionDOM);
+		
 	}
 
 	// Add action?
 	// JUST TURN ON & OFF FOR DEMO...
-	var entry = document.createElement("li");
-	var addAction = Editor.createNewAction(actionConfigs, dom);
-	entry.appendChild(addAction);
-	list.appendChild(entry);
+	if(window.ADD_AND_DELETE){
+		var entry = document.createElement("li");
+		var addAction = Editor.createNewAction(actionConfigs, dom);
+		entry.appendChild(addAction);
+		list.appendChild(entry);
+	}
 	
 	// Return dom
 	return dom;
