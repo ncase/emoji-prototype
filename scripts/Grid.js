@@ -3,7 +3,7 @@
 // Singleton Class
 exports.Grid = {};
 
-// Create 25x25 array
+// Create 20x20 array
 Grid.SIZE = 20;
 
 // Initialize
@@ -48,7 +48,8 @@ Grid.render = function(){
 		html += "<div>";
 		for(var x=0;x<Grid.SIZE;x++){
 			var agent = Grid.array[y][x];
-			html += "<div>"+agent.icon+"</div>";
+			var icon = _getStateFromID(agent.stateID).icon;
+			html += "<div>"+icon+"</div>";
 		}
 		html += "</div>";
 	}
@@ -98,21 +99,14 @@ Grid.getNeighbors = function(agent){
 
 };
 
-Grid.countNeighbors = function(agent,state){
+Grid.countNeighbors = function(agent,stateID){
 	var count = 0;
 	var neighbors = Grid.getNeighbors(agent);
 	for(var i=0;i<neighbors.length;i++){
-		if(neighbors[i].state==state) count++;
+		if(neighbors[i].stateID==stateID) count++;
 	}
 	return count;
 };
 
-Grid.anyNeighbors = function(agent,state){
-	var neighbors = Grid.getNeighbors(agent);
-	for(var i=0;i<neighbors.length;i++){
-		if(neighbors[i].state==state) return true;
-	}
-	return false;
-};
 
 })(window);

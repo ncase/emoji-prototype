@@ -5,23 +5,22 @@ function Agent(x,y){
 	// Space & State
 	self.x = x;
 	self.y = y;
-	self.state = Math.random()<0.5 ? "empty" : "tree";
-	self.icon = Agent.states[self.state].icon;
+	self.stateID = Math.random()<0.5 ? 0 : 1;
 
-	// State
-	self.goto = function(stateName){
-		self.nextState = stateName;
-	};
-
-	// For simultaneous updating
-	self.nextState = self.state;
+	// For updating
+	self.nextStateID = self.stateID;
 	self.calculateNextState = function(){
-		self.nextState = self.state; // stay the same by default
-		Agent.states[self.state].step(self);
+
+		// Stay the same by default
+		self.nextStateID = self.stateID;
+
+		// Get actions to perform
+		var state = _getStateFromID(self.stateID);
+		Actions.perform(self, state.actions);
+
 	};
 	self.gotoNextState = function(){
-		self.state = self.nextState;
-		self.icon = Agent.states[self.state].icon;
+		self.stateID = self.nextStateID;
 	};
 
 }

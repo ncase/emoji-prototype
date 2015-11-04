@@ -56,7 +56,7 @@ Actions.perform = function(agent, actionConfigs){
 // GO_TO_STATE: Simply go to that state
 Actions.go_to_state = {
 	step: function(agent,config){
-		agent.nextState = config.state;
+		agent.nextStateID = config.stateID;
 	}
 };
 
@@ -65,7 +65,7 @@ Actions.if_neighbor = {
 	step: function(agent,config){
 
 		// First, get num of actual neighbors that are STATE
-		var count = Grid.countNeighbors(agent, config.state);
+		var count = Grid.countNeighbors(agent, config.stateID);
 
 		// Did condition pass?
 		var pass;
