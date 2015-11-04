@@ -8,7 +8,7 @@ states: [
 	{
 		id: UID_0,
 		icon: " ",
-		name: "empty",
+		name: "blank",
 		actions: []
 	},
 	{
@@ -33,7 +33,7 @@ states: [
 ]
 
 This translates to a 💩 state, with the action that
-if exactly two of its neighbors are 💩's, it'll become empty.
+if exactly two of its neighbors are 💩's, it'll become blank.
 
 This should also make it easier to make a human-facing UI for.
 Probably.

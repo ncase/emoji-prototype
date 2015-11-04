@@ -20,7 +20,7 @@ var MODEL = {
 		{
 			id: 0,
 			icon: "",
-			name: "empty",
+			name: "blank",
 			actions:[
 				{
 					type: "if_random",
@@ -83,7 +83,7 @@ var MODEL = {
 		},
 
 		// Fire
-		// just become empty
+		// just become blank
 		{
 			id: 3,
 			icon: "🔥",

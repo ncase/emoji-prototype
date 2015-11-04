@@ -24,7 +24,12 @@ Editor.create = function(model){
 Editor.getStateUI = function(state){
 
 	var html = "";
-	html += state.icon + state.name.toUpperCase();
+	html += "<input class='editor_icon' type='text' value='"+state.icon+"' "+
+		"oninput='_getStateFromID("+state.id+").icon = event.target.value;'/>";
+
+	html += "<input class='editor_name' type='text' value='"+state.name+"' />";
+
+	html += "<div class='editor_clear'></div>";
 
 	var actions = state.actions;
 	html += Editor.getActionsUI(actions);

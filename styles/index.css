@@ -43,3 +43,29 @@ body{
 #editor{
 	margin: 30px;
 }
+#editor input[type=text]{
+	font-family: "FuturaHandwritten";
+	background: none;
+	border:1px solid #aaa;
+}
+#editor .editor_icon{
+	font-size:30px;
+	text-align: center;
+	width:40px;
+	height:40px;
+	background: none;
+	border:1px solid #aaa;
+	margin-right: 15px; 
+	display: block;
+	float: left;
+}
+#editor .editor_name{
+	font-size:20px;
+	height:40px;
+	padding: 5px 10px;
+	display: block;
+	float: left;
+}
+#editor .editor_clear{
+	clear:both;
+}
