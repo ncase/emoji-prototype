@@ -5,7 +5,7 @@ function Agent(x,y){
 	// Space & State
 	self.x = x;
 	self.y = y;
-	self.stateID = Math.random()<0.5 ? 0 : 1;
+	self.stateID = 0;
 
 	// For updating
 	self.nextStateID = self.stateID;

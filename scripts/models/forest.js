@@ -24,7 +24,7 @@ var MODEL = {
 			actions:[
 				{
 					type: "if_random",
-					probability: 0.02,
+					probability: 0.005,
 					actions:[
 						{
 							type: "go_to_state",
@@ -45,7 +45,7 @@ var MODEL = {
 			actions:[
 				{ 
 					type: "if_random",
-					probability: 0.0005,
+					probability: 0.001,
 					actions:[
 						{
 							type: "go_to_state",
@@ -114,7 +114,18 @@ var _getStateFromID = function(id){
 		var state = MODEL.states[i];
 		if(state.id==id) return state;
 	}
+	return MODEL.states[0]; // return the blank one
 	console.error("NO STATE CORRESPONDS TO ID "+id);
+};
+
+var _removeStateByID = function(id){
+	for(var i=0;i<MODEL.states.length;i++){
+		var state = MODEL.states[i];
+		if(state.id==id){
+			MODEL.states.splice(i,1);
+			return;
+		}
+	}
 };
 
 /////////////////

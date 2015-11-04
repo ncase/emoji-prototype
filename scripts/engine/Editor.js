@@ -62,6 +62,21 @@ Editor.createStateUI = function(stateConfig){
 	};
 	stateHeader.appendChild(name);
 
+	// Delete (except 0-blank, you CAN'T delete that)
+	if(window.ADD_AND_DELETE && stateConfig.id!=0){
+		var deleteDOM = document.createElement("div");
+		deleteDOM.setAttribute("class","delete_state");
+		deleteDOM.innerHTML = "X";
+		(function(stateConfig){
+			deleteDOM.onclick = function(){
+				_removeStateByID(stateConfig.id); // Splice away
+				publish("/ui/updateStateHeaders"); // update state headers
+				Editor.dom.removeChild(dom); // and, remove this DOM child
+			};
+		})(stateConfig);
+		stateHeader.appendChild(deleteDOM);
+	}
+
 	// Actions
 	var actionConfigs = stateConfig.actions;
 	var actionsDOM = Editor.createActionsUI(actionConfigs);
@@ -98,17 +113,12 @@ Editor.createActionsUI = function(actionConfigs, dom){
 			var deleteDOM = document.createElement("div");
 			deleteDOM.setAttribute("class","delete_action");
 			deleteDOM.innerHTML = "x";
-			(function(actionConfigs,index,dom){
+			(function(actionConfigs,index,list,entry){
 				deleteDOM.onclick = function(){
-
-					// Splice away
-					actionConfigs.splice(index,i);
-
-					// then, force my DOM to RESET
-					Editor.createActionsUI(actionConfigs, dom);
-
+					actionConfigs.splice(index,i); // Splice away
+					list.removeChild(entry); // remove entry
 				};
-			})(actionConfigs,i,dom);
+			})(actionConfigs,i,list,entry);
 			entry.appendChild(deleteDOM);
 		}
 
@@ -173,6 +183,8 @@ Editor.createNewAction = function(actionConfigs, dom){
 		// default, nvm
 		if(select.value=="") return;
 
+		debugger;
+
 		// otherwise, add new action to this array
 		var key = select.value;
 		var defaultProps = Actions[key].props;
@@ -234,6 +246,7 @@ Editor.createStateSelector = function(actionConfig, propName){
 	var _populateList = function(){
 		select.innerHTML = "";
 		var stateConfigs = MODEL.states;
+		var selectedAnOption = false;
 		for(var i=0;i<stateConfigs.length;i++){
 			
 			var stateConfig = stateConfigs[i];
@@ -248,16 +261,26 @@ Editor.createStateSelector = function(actionConfig, propName){
 			var selectedID = actionConfig[propName];
 			if(stateConfig.id==selectedID){
 				option.selected = true;
+				selectedAnOption = true
 			}
 
 		}
+
+		// If none was selected, then make blank selected.
+		if(!selectedAnOption){
+			select.value = 0; // blank
+			select.oninput();
+		}
+
 	};
-	_populateList();
 
 	// Update the state on change
 	select.oninput = function(){
 		actionConfig[propName] = select.value;
 	};
+
+	// Call func
+	_populateList();
 
 	// Update to OTHERS' changes
 	subscribe("/ui/updateStateHeaders",_populateList);

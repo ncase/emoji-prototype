@@ -106,3 +106,13 @@ body{
     left: -20px;
     cursor: pointer;
 }
+#editor div.delete_state{
+	width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    float: left;
+    text-align: center;
+    font-size: 30px;
+}
