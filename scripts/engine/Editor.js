@@ -45,6 +45,7 @@ Editor.createStateUI = function(stateConfig){
 	icon.value = stateConfig.icon;
 	icon.oninput = function(){
 		stateConfig.icon = icon.value;
+		publish("/ui/updateStateHeaders");
 	};
 	stateHeader.appendChild(icon);
 
@@ -55,6 +56,7 @@ Editor.createStateUI = function(stateConfig){
 	name.value = stateConfig.name;
 	name.oninput = function(){
 		stateConfig.name = name.value;
+		publish("/ui/updateStateHeaders");
 	};
 	stateHeader.appendChild(name);
 
@@ -145,24 +147,28 @@ Editor.createStateSelector = function(actionConfig, propName){
 	select.type = "select";
 
 	// Populate options: icon + name for each state, value is the ID.
-	var stateConfigs = MODEL.states;
-	for(var i=0;i<stateConfigs.length;i++){
-		
-		var stateConfig = stateConfigs[i];
+	var _populateList = function(){
+		select.innerHTML = "";
+		var stateConfigs = MODEL.states;
+		for(var i=0;i<stateConfigs.length;i++){
+			
+			var stateConfig = stateConfigs[i];
 
-		// Create option
-		var option = document.createElement("option");
-		option.innerHTML = stateConfig.icon + stateConfig.name;
-		option.value = stateConfig.id;
-		select.appendChild(option);
+			// Create option
+			var option = document.createElement("option");
+			option.innerHTML = stateConfig.icon + ": " + stateConfig.name;
+			option.value = stateConfig.id;
+			select.appendChild(option);
 
-		// Is it selected?
-		var selectedID = actionConfig[propName];
-		if(stateConfig.id==selectedID){
-			option.selected = true;
+			// Is it selected?
+			var selectedID = actionConfig[propName];
+			if(stateConfig.id==selectedID){
+				option.selected = true;
+			}
+
 		}
-
-	}
+	};
+	_populateList();
 
 	// Update the state on change
 	select.oninput = function(){
@@ -170,8 +176,7 @@ Editor.createStateSelector = function(actionConfig, propName){
 	};
 
 	// Update to OTHERS' changes
-	/*subscribe("/ui/updateStateHeaders",function(){
-	});*/
+	subscribe("/ui/updateStateHeaders",_populateList);
 	
 	// Return
 	return select;
