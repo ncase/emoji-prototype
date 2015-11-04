@@ -1,3 +1,12 @@
+/**********************
+
+All agents, objects and such should be shallow shells.
+That is, this ONE JSON file should control ALL the behavior.
+This way, it's really easy to change it at runtime,
+as well as serialize & deserialize.
+
+***********************/
+
 var MODEL = {
 
 	//////////////////
@@ -13,7 +22,7 @@ var MODEL = {
 			icon: "",
 			name: "empty",
 			actions:[
-				{ 
+				{
 					type: "if_random",
 					probability: 0.02,
 					actions:[
@@ -105,7 +114,7 @@ var _getStateFromID = function(id){
 		var state = MODEL.states[i];
 		if(state.id==id) return state;
 	}
-	console.alert("NO STATE CORRESPONDS TO ID "+id);
+	console.error("NO STATE CORRESPONDS TO ID "+id);
 };
 
 /////////////////
@@ -113,6 +122,7 @@ var _getStateFromID = function(id){
 /////////////////
 
 Grid.initialize();
+Editor.create(MODEL);
 
 setInterval(function(){
 	Grid.step();

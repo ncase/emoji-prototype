@@ -1,11 +1,27 @@
 body{
 	margin:0;
+	overflow: hidden;
+
+	font-family: "FuturaHandwritten";
+	font-size: 18px;
+}
+
+#grid_container{
+	width: 60%;
+	height: 100%;
+	float: left;
+	position: relative;
 }
 
 #grid{
 	width: 600px;
 	height: 600px;
 	font-size: 30px;
+
+	position: absolute;
+	margin: auto;
+	top:0; left:0; right:0; bottom:0;
+	overflow: hidden;
 }
 #grid > div{
 	width: 600px;
@@ -16,4 +32,14 @@ body{
 	float:left;
 	width: 30px;
 	height: 30px;
+}
+
+#editor_container{
+	width: 40%;
+	height:100%;
+	float: right;
+	background: #ddd;
+}
+#editor{
+	margin: 30px;
 }
