@@ -95,10 +95,13 @@ Actions.if_neighbor = {
 			],config,"sign")
 		);
 
-		// Label
+		// Number
 		span.appendChild(
-			Editor.createLabel(" "+config.num+" neighbors are ")
+			Editor.createNumber(config, "num", {integer:true})
 		);
+
+		// Label
+		span.appendChild(Editor.createLabel(" neighbors are "));
 
 		// State selector
 		var select = Editor.createStateSelector(config, "stateID");
@@ -129,10 +132,16 @@ Actions.if_random = {
 		// Create DOM
 		var span = document.createElement("span");
 
-		// Fill in DOM
-		var html = "With a ";
-		html += (config.probability*100)+"% chance,";
-		span.innerHTML = html;
+		// Label
+		span.appendChild(Editor.createLabel("With a "));
+
+		// Number
+		span.appendChild(
+			Editor.createNumber(config, "probability", {multiplier:100})
+		);
+
+		// Label
+		span.appendChild(Editor.createLabel("% chance,"));
 
 		// And then, add actions
 		var actionsDOM = Editor.createActionsUI(config.actions);

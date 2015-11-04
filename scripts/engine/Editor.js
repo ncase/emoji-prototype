@@ -183,4 +183,46 @@ Editor.createStateSelector = function(actionConfig, propName){
 
 };
 
+Editor.createNumber = function(actionConfig, propName, options){
+
+	// Options?
+	options = options || {};
+	options.multiplier = options.multiplier || 1;
+	// future options - constraints
+
+	// Input
+	var input = document.createElement("input");
+	input.type = "text";
+	input.value = actionConfig[propName]*options.multiplier;
+	input.setAttribute("class","editor_number");
+
+	// Decode value
+	var _decodeValue = function(){
+		var number;
+		if(options.integer){
+			number = parseInt(input.value);
+		}else{
+			number = parseFloat(input.value);
+		}
+		if(isNaN(number)) number=0; // you messed up
+		return number;
+	};
+
+	// Update on change
+	input.oninput = function(){
+		var number = _decodeValue();
+		number /= options.multiplier;
+		actionConfig[propName] = number;
+	};
+
+	// When move away, fix it.
+	input.onchange = function(){
+		input.value = _decodeValue();
+	};
+
+	// Return
+	return input;
+
+};
+
 })(window);

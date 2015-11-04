@@ -39,9 +39,10 @@ body{
 	height:100%;
 	float: right;
 	background: #ddd;
+	overflow-y: scroll;
 }
 #editor{
-	margin: 30px;
+	margin: 20px;
 }
 #editor .editor_state{
 	margin-bottom: 30px;
@@ -73,8 +74,9 @@ body{
 	display: block;
 	float: left;
 }
-#editor .editor_clear{
-	clear:both;
+#editor .editor_number{
+	font-size: 18px;
+    width: 50px;
 }
 #editor select{
 	font-size: 50px;
