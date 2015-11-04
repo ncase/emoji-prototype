@@ -16,7 +16,7 @@ function Agent(x,y){
 
 		// Get actions to perform
 		var state = _getStateFromID(self.stateID);
-		Actions.perform(self, state.actions);
+		PerformActions(self, state.actions);
 
 	};
 	self.gotoNextState = function(){

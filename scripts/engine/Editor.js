@@ -70,24 +70,35 @@ Editor.createStateUI = function(stateConfig){
 
 };
 
-Editor.createActionsUI = function(actionConfigs){
+Editor.createActionsUI = function(actionConfigs, dom){
 
-	// Create DOM
-	var dom = document.createElement("div");
-	dom.setAttribute("class", "editor_actions");
-
-	// Well. Does it even have anything
-	if(actionConfigs.length>0){
-		var list = document.createElement("ul");
-		for(var i=0;i<actionConfigs.length;i++){
-			var actionConfig = actionConfigs[i];
-			var actionDOM = Editor.createActionUI(actionConfig);
-			var entry = document.createElement("li");
-			entry.appendChild(actionDOM);
-			list.appendChild(entry);
-		}
-		dom.appendChild(list);
+	// Reset/Create DOM
+	if(dom){
+		dom.innerHTML = "";
+	}else{
+		dom = document.createElement("div");
+		dom.setAttribute("class", "editor_actions");
 	}
+
+	// List
+	var list = document.createElement("ul");
+	dom.appendChild(list);
+
+	// All them actions
+	for(var i=0;i<actionConfigs.length;i++){
+		var entry = document.createElement("li");
+		var actionConfig = actionConfigs[i];
+		var actionDOM = Editor.createActionUI(actionConfig);
+		entry.appendChild(actionDOM);
+		list.appendChild(entry);
+	}
+
+	// Add action?
+	// JUST TURN ON & OFF FOR DEMO...
+	var entry = document.createElement("li");
+	var addAction = Editor.createNewAction(actionConfigs, dom);
+	entry.appendChild(addAction);
+	list.appendChild(entry);
 	
 	// Return dom
 	return dom;
@@ -103,6 +114,52 @@ Editor.createLabel = function(words){
 	var label = document.createElement("span");
 	label.innerHTML = words;
 	return label;
+};
+
+Editor.createNewAction = function(actionConfigs, dom){
+
+	var keyValues = [];
+
+	// Default: nothing. just a label.
+	keyValues.push({
+		name: "[new action?]",
+		value:""
+	});
+
+	// Populate with Actions
+	for(var key in Actions){
+		var action = Actions[key];
+		var name = action.name;
+		var value = key;
+		keyValues.push({name:name, value:value});
+	}
+
+	// Create select (placeholder options)
+	var actionConfig = {action:""};
+	var propName = "action";
+	var select = Editor.createSelector(keyValues,actionConfig,propName);
+
+	// Select has new oninput
+	select.setAttribute("class","editor_new_action");
+	select.oninput = function(){
+
+		// default, nvm
+		if(select.value=="") return;
+
+		// otherwise, add new action to this array
+		var key = select.value;
+		var defaultProps = Actions[key].props;
+		var actionConfig = JSON.parse(JSON.stringify(defaultProps)); // clone
+		actionConfig.type = key;
+		actionConfigs.push(actionConfig);
+
+		// then, force that DOM to RESET
+		Editor.createActionsUI(actionConfigs, dom);
+
+	};
+
+	return select;
+
 };
 
 Editor.createSelector = function(keyValues, actionConfig, propName){

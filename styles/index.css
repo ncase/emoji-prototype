@@ -78,6 +78,23 @@ body{
 	font-size: 18px;
     width: 50px;
 }
+#editor .editor_new_action{
+	opacity: 0.5;
+}
 #editor select{
 	font-size: 50px;
+}
+#editor .editor_state > .editor_actions > ul > li{
+	margin-bottom: 10px;
+}
+#editor ul{
+	padding-left: 30px;
+	list-style-type: none;
+}
+#editor li{
+	padding-left: 0px;
+	list-style-type: none;
+}
+#editor li:before{
+	content:'ahhh';
 }

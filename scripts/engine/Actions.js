@@ -12,7 +12,7 @@ a realtime for-human-consumption UI.
 exports.Actions = {};
 
 // Perform Actions. Recursive.
-Actions.perform = function(agent, actionConfigs){
+exports.PerformActions = function(agent, actionConfigs){
 	for(var i=0;i<actionConfigs.length;i++){
 		var config = actionConfigs[i];
 		var action = Actions[config.type];
@@ -22,9 +22,15 @@ Actions.perform = function(agent, actionConfigs){
 
 // GO_TO_STATE: Simply go to that state
 Actions.go_to_state = {
+	
+	name: "Turn into...",
+
+	props: {stateID:0},
+	
 	step: function(agent,config){
 		agent.nextStateID = config.stateID;
 	},
+
 	ui: function(config){
 
 		// Create DOM
@@ -41,10 +47,21 @@ Actions.go_to_state = {
 		return span;
 
 	}
+
 };
 
 // IF_NEIGHBOR: If more/less/equal X neighbors are a certain state, do a thing
 Actions.if_neighbor = {
+	
+	name: "If certain number of certain neighbors...",
+
+	props: {
+		sign: ">=",
+		num: 3,
+		stateID: 0,
+		actions:[]
+	},
+
 	step: function(agent,config){
 
 		// First, get num of actual neighbors that are STATE
@@ -72,10 +89,11 @@ Actions.if_neighbor = {
 
 		// If so, perform the following actions.
 		if(pass){
-			Actions.perform(agent, config.actions);
+			PerformActions(agent, config.actions);
 		}
 
 	},
+
 	ui: function(config){
 
 		// Create DOM
@@ -115,18 +133,28 @@ Actions.if_neighbor = {
 		return span;
 
 	}
+
 };
 
 // IF_RANDOM: With a X% chance, do a thing
 Actions.if_random = {
+	
+	name: "With a X% chance...",
+
+	props: {
+		probability: 0.0005,
+		actions:[]
+	},
+
 	step: function(agent,config){
 
 		// If dice roll wins, perform the following actions.
 		if(Math.random()<config.probability){
-			Actions.perform(agent, config.actions);
+			PerformActions(agent, config.actions);
 		}
 
 	},
+
 	ui: function(config){
 
 		// Create DOM
@@ -151,6 +179,7 @@ Actions.if_random = {
 		return span;
 
 	}
+
 };
 
 })(window);
