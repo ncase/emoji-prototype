@@ -43,6 +43,13 @@ body{
 #editor{
 	margin: 30px;
 }
+#editor .editor_state{
+	margin-bottom: 30px;
+}
+#editor .editor_state_header{
+	height: 40px;
+	overflow: hidden;
+}
 #editor input[type=text]{
 	font-family: "FuturaHandwritten";
 	background: none;

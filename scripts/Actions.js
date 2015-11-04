@@ -59,8 +59,17 @@ Actions.go_to_state = {
 		agent.nextStateID = config.stateID;
 	},
 	ui: function(config){
+
+		// Create DOM
+		var span = document.createElement("span");
+
+		// Fill in DOM
 		var state = _getStateFromID(config.stateID);
-		return "Become "+state.icon+" "+state.name;
+		span.innerHTML = "Become "+state.icon+" "+state.name;
+
+		// Return DOM
+		return span;
+
 	}
 };
 
@@ -93,22 +102,27 @@ Actions.if_neighbor = {
 	},
 	ui: function(config){
 
-		var html = "If ";
+		// Create DOM
+		var span = document.createElement("span");
 
+		// Fill in DOM
+		var html = "If ";
 		switch(config.sign){
 			case "less": html+="up to"; break;
 			case "more": html+="at least"; break;
 			case "equal": html+="exactly"; break;
 		}
-
 		html+=" "+config.num+" neighbors are ";
-
 		var state = _getStateFromID(config.stateID);
 		html += state.icon+" "+state.name+"...";
+		span.innerHTML = html;
 
-		html += Editor.getActionsUI(config.actions);
+		// And then, add actions
+		var actionsDOM = Editor.createActionsUI(config.actions);
+		span.appendChild(actionsDOM);
 
-		return html;
+		// Return DOM
+		return span;
 
 	}
 };
@@ -125,13 +139,20 @@ Actions.if_random = {
 	},
 	ui: function(config){
 
+		// Create DOM
+		var span = document.createElement("span");
+
+		// Fill in DOM
 		var html = "With a ";
-
 		html += (config.probability*100)+"% chance,";
-		
-		html += Editor.getActionsUI(config.actions);
+		span.innerHTML = html;
 
-		return html;
+		// And then, add actions
+		var actionsDOM = Editor.createActionsUI(config.actions);
+		span.appendChild(actionsDOM);
+		
+		// Return DOM
+		return span;
 
 	}
 };

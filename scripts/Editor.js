@@ -9,46 +9,89 @@ Editor.dom = document.getElementById("editor");
 // Create from model
 Editor.create = function(model){
 
-	var html = "";
+	// Nodes
+	var nodes = [];
 
-	// For each state...
-	var states = model.states;
-	for(var i=0;i<states.length;i++){
-		html += Editor.getStateUI(states[i]);
+	// For each state config...
+	var stateConfigs = model.states;
+	for(var i=0;i<stateConfigs.length;i++){
+		var stateConfig = stateConfigs[i];
+		nodes.push(Editor.createStateUI(stateConfig));
 	}
 
-	// Put in the html
-	Editor.dom.innerHTML = html;
+	// Put in the DOM
+	for(var i=0;i<nodes.length;i++){
+		var node = nodes[i];
+		Editor.dom.appendChild(node);
+	}
 
 };
-Editor.getStateUI = function(state){
+Editor.createStateUI = function(stateConfig){
 
-	var html = "";
-	html += "<input class='editor_icon' type='text' value='"+state.icon+"' "+
-		"oninput='_getStateFromID("+state.id+").icon = event.target.value;'/>";
+	// Create DOM
+	var dom = document.createElement("div");
+	dom.setAttribute("class", "editor_state");
 
-	html += "<input class='editor_name' type='text' value='"+state.name+"' />";
+	// Header: Icon & Title
+	var stateHeader = document.createElement("div");
+	stateHeader.setAttribute("class", "editor_state_header");
+	dom.appendChild(stateHeader);
 
-	html += "<div class='editor_clear'></div>";
+	// Icon
+	var icon = document.createElement("input");
+	icon.setAttribute("class", "editor_icon");
+	icon.type = "text";
+	icon.value = stateConfig.icon;
+	icon.oninput = function(){
+		stateConfig.icon = icon.value;
+	};
+	stateHeader.appendChild(icon);
 
-	var actions = state.actions;
-	html += Editor.getActionsUI(actions);
+	// Name
+	var name = document.createElement("input");
+	name.setAttribute("class", "editor_name");
+	name.type = "text";
+	name.value = stateConfig.name;
+	name.oninput = function(){
+		stateConfig.name = name.value;
+	};
+	stateHeader.appendChild(name);
 
-	return html;
+	// Actions
+	var actionConfigs = stateConfig.actions;
+	var actionsDOM = Editor.createActionsUI(actionConfigs);
+	dom.appendChild(actionsDOM);
+
+	// Return dom
+	return dom;
 
 };
-Editor.getActionsUI = function(actions){
-	var html = "";
-	if(actions.length>0){
-		html += "<ul>";
-		for(var i=0;i<actions.length;i++){
-			html += "<li>"+Editor.getActionUI(actions[i])+"</li>";
+
+Editor.createActionsUI = function(actionConfigs){
+
+	// Create DOM
+	var dom = document.createElement("div");
+	dom.setAttribute("class", "editor_actions");
+
+	// Well. Does it even have anything
+	if(actionConfigs.length>0){
+		var list = document.createElement("ul");
+		for(var i=0;i<actionConfigs.length;i++){
+			var actionConfig = actionConfigs[i];
+			var actionDOM = Editor.createActionUI(actionConfig);
+			var entry = document.createElement("li");
+			entry.appendChild(actionDOM);
+			list.appendChild(entry);
 		}
-		html += "</ul>";
+		dom.appendChild(list);
 	}
-	return html;
+	
+	// Return dom
+	return dom;
+
 };
-Editor.getActionUI = function(actionConfig){
+
+Editor.createActionUI = function(actionConfig){
 	var action = Actions[actionConfig.type];
 	return action.ui(actionConfig);
 };
