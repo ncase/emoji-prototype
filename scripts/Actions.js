@@ -2,41 +2,8 @@
 
 Agent actions! They're basically short code statements.
 Actions can include other actions, like “if condition then [Other Action]”
-They're also meant to be easily serializeable into JSON, like so:
-
-states: [
-	{
-		id: UID_0,
-		icon: " ",
-		name: "blank",
-		actions: []
-	},
-	{
-		id: UID_1
-		icon: "💩",
-		name: "poo",
-		actions:[
-			{
-				type: "if_neighbor",
-				sign: "equal"
-				num: 2,
-				state: UID_1
-				actions:[
-					{
-						type:"go_to_state",
-						state: UID_0
-					}
-				]
-			}
-		]
-	}
-]
-
-This translates to a 💩 state, with the action that
-if exactly two of its neighbors are 💩's, it'll become blank.
-
-This should also make it easier to make a human-facing UI for.
-Probably.
+Also it uses an external JSON object, so it's easier to make
+a realtime for-human-consumption UI.
 
 ***/
 
@@ -63,9 +30,12 @@ Actions.go_to_state = {
 		// Create DOM
 		var span = document.createElement("span");
 
-		// Fill in DOM
-		var state = _getStateFromID(config.stateID);
-		span.innerHTML = "Become "+state.icon+" "+state.name;
+		// Label
+		span.appendChild(Editor.createLabel("Turn into "));
+
+		// State selector
+		var select = Editor.createStateSelector(config, "stateID");
+		span.appendChild(select);
 
 		// Return DOM
 		return span;
@@ -83,13 +53,19 @@ Actions.if_neighbor = {
 		// Did condition pass?
 		var pass;
 		switch(config.sign){
-			case "less":
+			case "<":
+				pass = (count<config.num);
+				break;
+			case "<=":
 				pass = (count<=config.num);
 				break;
-			case "more":
+			case ">":
+				pass = (count>config.num);
+				break
+			case ">=":
 				pass = (count>=config.num);
 				break;
-			case "equal":
+			case "=":
 				pass = (count==config.num);
 				break;
 		}
@@ -105,17 +81,28 @@ Actions.if_neighbor = {
 		// Create DOM
 		var span = document.createElement("span");
 
-		// Fill in DOM
-		var html = "If ";
-		switch(config.sign){
-			case "less": html+="up to"; break;
-			case "more": html+="at least"; break;
-			case "equal": html+="exactly"; break;
-		}
-		html+=" "+config.num+" neighbors are ";
-		var state = _getStateFromID(config.stateID);
-		html += state.icon+" "+state.name+"...";
-		span.innerHTML = html;
+		// Label
+		span.appendChild(Editor.createLabel("If "));
+
+		// Sign Selector
+		span.appendChild(
+			Editor.createSelector([
+				{ name:"less than (<)", value:"<" },
+				{ name:"up to (<=)", value:"<=" },
+				{ name:"more than (>)", value:">" },
+				{ name:"at least (>=)", value:">=" },
+				{ name:"exactly (=)", value:"=" }
+			],config,"sign")
+		);
+
+		// Label
+		span.appendChild(
+			Editor.createLabel(" "+config.num+" neighbors are ")
+		);
+
+		// State selector
+		var select = Editor.createStateSelector(config, "stateID");
+		span.appendChild(select);
 
 		// And then, add actions
 		var actionsDOM = Editor.createActionsUI(config.actions);

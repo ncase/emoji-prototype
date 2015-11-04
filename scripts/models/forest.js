@@ -55,7 +55,7 @@ var MODEL = {
 				},
 				{
 					type: "if_neighbor",
-					sign: "more",
+					sign: ">=",
 					num: 1,
 					stateID: 3,
 					actions:[

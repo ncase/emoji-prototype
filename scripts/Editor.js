@@ -6,14 +6,15 @@ exports.Editor = {};
 // DOM
 Editor.dom = document.getElementById("editor");
 
+
 // Create from model
-Editor.create = function(model){
+Editor.create = function(){
 
 	// Nodes
 	var nodes = [];
 
 	// For each state config...
-	var stateConfigs = model.states;
+	var stateConfigs = MODEL.states;
 	for(var i=0;i<stateConfigs.length;i++){
 		var stateConfig = stateConfigs[i];
 		nodes.push(Editor.createStateUI(stateConfig));
@@ -94,6 +95,87 @@ Editor.createActionsUI = function(actionConfigs){
 Editor.createActionUI = function(actionConfig){
 	var action = Actions[actionConfig.type];
 	return action.ui(actionConfig);
+};
+
+Editor.createLabel = function(words){
+	var label = document.createElement("span");
+	label.innerHTML = words;
+	return label;
+};
+
+Editor.createSelector = function(keyValues, actionConfig, propName){
+
+	// Select.
+	var select = document.createElement("select");
+	select.type = "select";
+
+	// Populate options: icon + name for each state, value is the ID.
+	for(var i=0;i<keyValues.length;i++){
+		
+		var keyValue = keyValues[i];
+
+		// Create option
+		var option = document.createElement("option");
+		option.innerHTML = keyValue.name;
+		option.value = keyValue.value;
+		select.appendChild(option);
+
+		// Is it selected?
+		var selectedValue = actionConfig[propName];
+		if(keyValue.value==selectedValue){
+			option.selected = true;
+		}
+
+	}
+
+	// Update the state on change
+	select.oninput = function(){
+		actionConfig[propName] = select.value;
+	};
+	
+	// Return
+	return select;
+
+};
+
+Editor.createStateSelector = function(actionConfig, propName){
+
+	// Select.
+	var select = document.createElement("select");
+	select.type = "select";
+
+	// Populate options: icon + name for each state, value is the ID.
+	var stateConfigs = MODEL.states;
+	for(var i=0;i<stateConfigs.length;i++){
+		
+		var stateConfig = stateConfigs[i];
+
+		// Create option
+		var option = document.createElement("option");
+		option.innerHTML = stateConfig.icon + stateConfig.name;
+		option.value = stateConfig.id;
+		select.appendChild(option);
+
+		// Is it selected?
+		var selectedID = actionConfig[propName];
+		if(stateConfig.id==selectedID){
+			option.selected = true;
+		}
+
+	}
+
+	// Update the state on change
+	select.oninput = function(){
+		actionConfig[propName] = select.value;
+	};
+
+	// Update to OTHERS' changes
+	/*subscribe("/ui/updateStateHeaders",function(){
+	});*/
+	
+	// Return
+	return select;
+
 };
 
 })(window);

@@ -76,3 +76,6 @@ body{
 #editor .editor_clear{
 	clear:both;
 }
+#editor select{
+	font-size: 50px;
+}
