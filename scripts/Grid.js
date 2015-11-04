@@ -98,6 +98,15 @@ Grid.getNeighbors = function(agent){
 
 };
 
+Grid.countNeighbors = function(agent,state){
+	var count = 0;
+	var neighbors = Grid.getNeighbors(agent);
+	for(var i=0;i<neighbors.length;i++){
+		if(neighbors[i].state==state) count++;
+	}
+	return count;
+};
+
 Grid.anyNeighbors = function(agent,state){
 	var neighbors = Grid.getNeighbors(agent);
 	for(var i=0;i<neighbors.length;i++){

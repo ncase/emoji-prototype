@@ -1,10 +1,20 @@
-var Model = {};
+
 
 ////////////////////////
 // FOREST FIRE STATES //
 ////////////////////////
 
 Agent.states = {
+
+	// Empty
+	empty: {
+		icon: "",
+		step: function(agent){
+			if(Math.random()<Model.GROWTH_RATE){
+				agent.goto("tree");
+			}
+		}
+	},
 
 	// Tree
 	tree: {
@@ -18,26 +28,6 @@ Agent.states = {
 		}
 	},
 
-	// Fire
-	fire: {
-		icon: "🔥",
-		step: function(agent){
-			agent.goto("empty");
-		}
-	},
-
-
-
-	// Empty
-	empty: {
-		icon: "",
-		step: function(agent){
-			if(Math.random()<Model.GROWTH_RATE){
-				agent.goto("tree");
-			}
-		}
-	},
-
 	// Lightning
 	lightning: {
 		icon: "⚡️",
@@ -45,6 +35,14 @@ Agent.states = {
 			agent.goto("fire");
 		}
 	},
+
+	// Fire
+	fire: {
+		icon: "🔥",
+		step: function(agent){
+			agent.goto("empty");
+		}
+	}
 
 };
 
