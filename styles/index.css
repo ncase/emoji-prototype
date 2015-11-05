@@ -2,9 +2,9 @@ body{
 	margin:0;
 	overflow: hidden;
 
-	font-family: "FuturaHandwritten";
-	/*font-family: Helvetica, Arial, sans-serif;
-	font-weight: 100;*/
+	/*font-family: "FuturaHandwritten";*/
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: 100;
 	font-size: 16px;
 }
 
@@ -54,10 +54,15 @@ body{
 	overflow: hidden;
 }
 #editor input{
-	font-family: "FuturaHandwritten";
+	
+	/*font-family: "FuturaHandwritten";*/
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: 100;
+
 	background: none;
 	border:1px solid #aaa;
 	border-radius: 3px;
+
 }
 #editor input.editor_icon{
 	font-size:30px;
@@ -143,6 +148,7 @@ body{
 }
 #editor select{
 	font-size: 50px;
+	width:120px;
 }
 #editor ul{
 	padding-left: 30px;

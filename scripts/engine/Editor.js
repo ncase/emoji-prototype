@@ -1,5 +1,3 @@
-window.ADD_AND_DELETE = true;
-
 (function(exports){
 
 // Singleton Class
@@ -83,7 +81,7 @@ Editor.createStateUI = function(stateConfig){
 	stateHeader.appendChild(name);
 
 	// Delete (except 0-blank, you CAN'T delete that)
-	if(window.ADD_AND_DELETE && stateConfig.id!=0){
+	if(stateConfig.id!=0){
 		var deleteDOM = document.createElement("div");
 		deleteDOM.className ="delete_state";
 		deleteDOM.innerHTML = "⊗";
@@ -129,18 +127,16 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		list.appendChild(entry);
 
 		// Delete button
-		if(window.ADD_AND_DELETE){
-			var deleteDOM = document.createElement("div");
-			deleteDOM.className ="delete_action";
-			deleteDOM.innerHTML = "⊗";
-			(function(actionConfigs,index,list,entry){
-				deleteDOM.onclick = function(){
-					actionConfigs.splice(index,i); // Splice away
-					list.removeChild(entry); // remove entry
-				};
-			})(actionConfigs,i,list,entry);
-			entry.appendChild(deleteDOM);
-		}
+		var deleteDOM = document.createElement("div");
+		deleteDOM.className ="delete_action";
+		deleteDOM.innerHTML = "⊗";
+		(function(actionConfigs,index,list,entry){
+			deleteDOM.onclick = function(){
+				actionConfigs.splice(index,1); // Splice away
+				list.removeChild(entry); // remove entry
+			};
+		})(actionConfigs,i,list,entry);
+		entry.appendChild(deleteDOM);
 
 		// The actual action
 		var actionDOM = Editor.createActionUI(actionConfigs[i]);
@@ -149,13 +145,10 @@ Editor.createActionsUI = function(actionConfigs, dom){
 	}
 
 	// Add action?
-	// JUST TURN ON & OFF FOR DEMO...
-	if(window.ADD_AND_DELETE){
-		var entry = document.createElement("li");
-		var addAction = Editor.createNewAction(actionConfigs, dom);
-		entry.appendChild(addAction);
-		list.appendChild(entry);
-	}
+	var entry = document.createElement("li");
+	var addAction = Editor.createNewAction(actionConfigs, dom);
+	entry.appendChild(addAction);
+	list.appendChild(entry);
 	
 	// Return dom
 	return dom;
