@@ -12,7 +12,7 @@ Editor.dom.appendChild(Editor.statesDOM);
 Editor.create = function(){
 
 	// For each state config...
-	var stateConfigs = MODEL.states;
+	var stateConfigs = Model.data.states;
 	for(var i=0;i<stateConfigs.length;i++){
 		var stateConfig = stateConfigs[i];
 		var stateDOM = Editor.createStateUI(stateConfig);
@@ -27,14 +27,14 @@ Editor.create = function(){
 
 		// New state config
 		var newStateConfig = {
-			id: _generateNewID(),
+			id: Model.generateNewID(),
 			icon: "💩",
 			name: "chocolate",
 			actions:[]
 		};
 
-		// Add to MODEL
-		MODEL.states.push(newStateConfig);
+		// Add to Model.data
+		Model.data.states.push(newStateConfig);
 
 		// Create new DOM & append to states container
 		var stateDOM = Editor.createStateUI(newStateConfig);
@@ -87,7 +87,7 @@ Editor.createStateUI = function(stateConfig){
 		deleteDOM.innerHTML = "⊗";
 		(function(stateConfig){
 			deleteDOM.onclick = function(){
-				_removeStateByID(stateConfig.id); // Splice away
+				Model.removeStateByID(stateConfig.id); // Splice away
 				publish("/ui/updateStateHeaders"); // update state headers
 				Editor.statesDOM.removeChild(dom); // and, remove this DOM child
 			};
@@ -263,7 +263,7 @@ Editor.createStateSelector = function(actionConfig, propName){
 	// Populate options: icon + name for each state, value is the ID.
 	var _populateList = function(){
 		select.innerHTML = "";
-		var stateConfigs = MODEL.states;
+		var stateConfigs = Model.data.states;
 		var selectedAnOption = false;
 		for(var i=0;i<stateConfigs.length;i++){
 			

@@ -48,7 +48,7 @@ Grid.render = function(){
 		html += "<div>";
 		for(var x=0;x<Grid.SIZE;x++){
 			var agent = Grid.array[y][x];
-			var icon = _getStateFromID(agent.stateID).icon;
+			var icon = Model.getStateFromID(agent.stateID).icon;
 			html += "<div>"+icon+"</div>";
 		}
 		html += "</div>";

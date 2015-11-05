@@ -15,7 +15,7 @@ function Agent(x,y){
 		self.nextStateID = self.stateID;
 
 		// Get actions to perform
-		var state = _getStateFromID(self.stateID);
+		var state = Model.getStateFromID(self.stateID);
 		if(state){
 			PerformActions(self, state.actions);
 		}else{

@@ -1,13 +1,4 @@
-/**********************
-
-All agents, objects and such should be shallow shells.
-That is, this ONE JSON file should control ALL the behavior.
-This way, it's really easy to change it at runtime,
-as well as serialize & deserialize.
-
-***********************/
-
-var MODEL = {
+Model.init({
 
 	//////////////////
 	// AGENT STATES //
@@ -107,44 +98,4 @@ var MODEL = {
 		size: {width:20, height:20}
 	}
 
-};
-
-var _getStateFromID = function(id){
-	for(var i=0;i<MODEL.states.length;i++){
-		var state = MODEL.states[i];
-		if(state.id==id) return state;
-	}
-	return null;
-};
-
-var _removeStateByID = function(id){
-	for(var i=0;i<MODEL.states.length;i++){
-		var state = MODEL.states[i];
-		if(state.id==id){
-			MODEL.states.splice(i,1);
-			return;
-		}
-	}
-};
-
-var _generateNewID = function(){
-	var highestID = -1;
-	for(var i=0;i<MODEL.states.length;i++){
-		var state = MODEL.states[i];
-		if(highestID < state.id){
-			highestID = state.id;
-		}
-	}
-	return highestID+1;
-};
-
-/////////////////
-// CREATE GRID //
-/////////////////
-
-Grid.initialize();
-Editor.create(MODEL);
-
-setInterval(function(){
-	Grid.step();
-},100);
+});
