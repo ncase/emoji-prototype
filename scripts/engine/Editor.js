@@ -22,8 +22,9 @@ Editor.create = function(){
 	}
 
 	// Button -- Add a state!
-	var addState = document.createElement("button");
-	addState.innerHTML = "+ add new state";
+	var addState = document.createElement("div");
+	addState.className = "editor_new_state";
+	addState.innerHTML = "<span>+</span>new";
 	addState.onclick = function(){
 
 		// New state config
@@ -52,16 +53,16 @@ Editor.createStateUI = function(stateConfig){
 
 	// Create DOM
 	var dom = document.createElement("div");
-	dom.setAttribute("class", "editor_state");
+	dom.className = "editor_state";
 
 	// Header: Icon & Title
 	var stateHeader = document.createElement("div");
-	stateHeader.setAttribute("class", "editor_state_header");
+	stateHeader.className = "editor_state_header";
 	dom.appendChild(stateHeader);
 
 	// Icon
 	var icon = document.createElement("input");
-	icon.setAttribute("class", "editor_icon");
+	icon.className = "editor_icon";
 	icon.type = "text";
 	icon.value = stateConfig.icon;
 	icon.oninput = function(){
@@ -72,7 +73,7 @@ Editor.createStateUI = function(stateConfig){
 
 	// Name
 	var name = document.createElement("input");
-	name.setAttribute("class", "editor_name");
+	name.className = "editor_name";
 	name.type = "text";
 	name.value = stateConfig.name;
 	name.oninput = function(){
@@ -84,8 +85,8 @@ Editor.createStateUI = function(stateConfig){
 	// Delete (except 0-blank, you CAN'T delete that)
 	if(window.ADD_AND_DELETE && stateConfig.id!=0){
 		var deleteDOM = document.createElement("div");
-		deleteDOM.setAttribute("class","delete_state");
-		deleteDOM.innerHTML = "X";
+		deleteDOM.className ="delete_state";
+		deleteDOM.innerHTML = "⊗";
 		(function(stateConfig){
 			deleteDOM.onclick = function(){
 				_removeStateByID(stateConfig.id); // Splice away
@@ -113,7 +114,7 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		dom.innerHTML = "";
 	}else{
 		dom = document.createElement("div");
-		dom.setAttribute("class", "editor_actions");
+		dom.className = "editor_actions";
 	}
 
 	// List
@@ -130,8 +131,8 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		// Delete button
 		if(window.ADD_AND_DELETE){
 			var deleteDOM = document.createElement("div");
-			deleteDOM.setAttribute("class","delete_action");
-			deleteDOM.innerHTML = "x";
+			deleteDOM.className ="delete_action";
+			deleteDOM.innerHTML = "⊗";
 			(function(actionConfigs,index,list,entry){
 				deleteDOM.onclick = function(){
 					actionConfigs.splice(index,i); // Splice away
@@ -178,7 +179,7 @@ Editor.createNewAction = function(actionConfigs, dom){
 
 	// Default: nothing. just a label.
 	keyValues.push({
-		name: "[new action?]",
+		name: "+new",
 		value:""
 	});
 
@@ -196,7 +197,6 @@ Editor.createNewAction = function(actionConfigs, dom){
 	var select = Editor.createSelector(keyValues,actionConfig,propName);
 
 	// Select has new oninput
-	select.setAttribute("class","editor_new_action");
 	select.oninput = function(){
 
 		// default, nvm
@@ -214,7 +214,15 @@ Editor.createNewAction = function(actionConfigs, dom){
 
 	};
 
-	return select;
+	// Create a better DOM
+	var selectContainer = document.createElement("div");
+	selectContainer.className ="editor_new_action";
+	var button = document.createElement("div");
+	button.innerHTML = "+new";
+	selectContainer.appendChild(button);
+	selectContainer.appendChild(select);
+
+	return selectContainer;
 
 };
 
@@ -316,9 +324,9 @@ Editor.createNumber = function(actionConfig, propName, options){
 
 	// Input
 	var input = document.createElement("input");
-	input.type = "text";
+	input.type = "number";
 	input.value = actionConfig[propName]*options.multiplier;
-	input.setAttribute("class","editor_number");
+	input.className ="editor_number";
 
 	// Decode value
 	var _decodeValue = function(){

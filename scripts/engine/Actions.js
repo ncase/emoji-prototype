@@ -113,6 +113,9 @@ Actions.if_neighbor = {
 			],config,"sign")
 		);
 
+		// Label
+		span.appendChild(Editor.createLabel(" "));
+
 		// Number
 		span.appendChild(
 			Editor.createNumber(config, "num", {integer:true})
