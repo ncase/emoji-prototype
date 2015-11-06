@@ -4,14 +4,15 @@
 exports.Grid = {};
 
 // Create 20x20 array
-Grid.SIZE = 20;
+Grid.WIDTH = 20;
+Grid.HEIGHT = 20;
 
 // Initialize
 Grid.initialize = function(){
 	Grid.array = [];
-	for(var y=0;y<Grid.SIZE;y++){
+	for(var y=0;y<Grid.HEIGHT;y++){
 		Grid.array.push([]);
-		for(var x=0;x<Grid.SIZE;x++){
+		for(var x=0;x<Grid.WIDTH;x++){
 			Grid.array[y].push(new Agent(x,y));
 		}
 	}
@@ -21,15 +22,15 @@ Grid.initialize = function(){
 Grid.step = function(){
 
 	// Calculate next state
-	for(var y=0;y<Grid.SIZE;y++){
-		for(var x=0;x<Grid.SIZE;x++){
+	for(var y=0;y<Grid.array.length;y++){
+		for(var x=0;x<Grid.array[0].length;x++){
 			Grid.array[y][x].calculateNextState();
 		}
 	}
 
 	// Then go to it
-	for(var y=0;y<Grid.SIZE;y++){
-		for(var x=0;x<Grid.SIZE;x++){
+	for(var y=0;y<Grid.array.length;y++){
+		for(var x=0;x<Grid.array[0].length;x++){
 			Grid.array[y][x].gotoNextState();
 		}
 	}
@@ -40,20 +41,36 @@ Grid.step = function(){
 };
 
 // Render the Emoji
-Grid.dom = document.getElementById("grid")
+Grid.dom = document.getElementById("grid");
+Grid.domContainer = document.getElementById("grid_container");
+Grid.css = document.getElementById("grid_style");
 Grid.render = function(){
 
+	// DIMENSIONS
+	var maxWidth = Grid.domContainer.clientWidth-20;
+	var maxHeight = Grid.domContainer.clientHeight-20;
+	var w = Grid.array[0].length;
+	var h = Grid.array.length;
+	var t = Math.min(Math.floor(maxWidth/w), Math.floor(maxHeight/h));
+
+	// STYLE - TODO: Update only if resize.
+	var css = "";
+	css += "#grid{ width:"+(w*t)+"px; height:"+(h*t)+"px; font-size:"+t+"px; }\n";
+	css += "#grid>div{ width:"+(w*t)+"px; height:"+t+"px; }\n";
+	css += "#grid>div>div{ width:"+t+"px; height:"+t+"px; }\n";
+	Grid.css.innerHTML = css;
+
+	// HTML - TODO: Update only if update/edit cell
 	var html = "";
-	for(var y=0;y<Grid.SIZE;y++){
+	for(var y=0;y<Grid.array.length;y++){
 		html += "<div>";
-		for(var x=0;x<Grid.SIZE;x++){
+		for(var x=0;x<Grid.array[0].length;x++){
 			var agent = Grid.array[y][x];
 			var icon = Model.getStateFromID(agent.stateID).icon;
 			html += "<div>"+icon+"</div>";
 		}
 		html += "</div>";
 	}
-
 	Grid.dom.innerHTML = html;
 
 };
@@ -80,9 +97,9 @@ Grid.getNeighbors = function(agent){
 		var x = coord[0];
 		var y = coord[1];
 		if(x<0) return false;
-		if(x>=Grid.SIZE) return false;
+		if(x>=Grid.array[0].length) return false;
 		if(y<0) return false;
-		if(y>=Grid.SIZE) return false;
+		if(y>=Grid.array.length) return false;
 		return true;
 	});
 

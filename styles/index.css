@@ -12,12 +12,13 @@ body{
 	height: 100%;
 	float: left;
 	position: relative;
+	overflow: hidden;
 }
 
 #grid{
-	width: 600px;
+	/*width: 600px;
 	height: 600px;
-	font-size: 30px;
+	font-size: 30px;*/
 
 	position: absolute;
 	margin: auto;
@@ -25,20 +26,23 @@ body{
 	overflow: hidden;
 }
 #grid > div{
-	width: 600px;
-	height: 30px;
-	overflow: hidden;
+	/*width: 600px;
+	height: 30px;*/
 }
 #grid > div > div{
 	float:left;
-	width: 30px;
-	height: 30px;
+	/*width: 30px;
+	height: 30px;*/
 }
 
 #editor_container{
+	min-width: 310px;
 	width: 40%;
 	height:100%;
-	float: right;
+	
+	position: absolute;
+	right: 0;
+
 	background: #ddd;
 	overflow-y: scroll;
 }
@@ -76,6 +80,7 @@ body{
 }
 #editor .editor_name{
 	font-size:20px;
+	width: 200px;
 	height:40px;
 	padding: 5px 10px;
 	display: block;
@@ -116,7 +121,7 @@ body{
 }
 #editor .editor_new_state{
 	border-radius: 5px;
-	width: 290px;
+	width: 240px;
 	height: 40px;
 	background: #aaa;
 	
