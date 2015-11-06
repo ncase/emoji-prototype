@@ -94,8 +94,11 @@ Model.init({
 	////////////////
 
 	world: {
-		update: "SIMULTANEOUS",
-		size: {width:20, height:20}
+		update: "simultaneous",
+		size:{
+			width:50,
+			height:50
+		}
 	}
 
 });

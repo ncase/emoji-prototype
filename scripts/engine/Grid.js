@@ -3,19 +3,26 @@
 // Singleton Class
 exports.Grid = {};
 
-// Create 20x20 array
-Grid.WIDTH = 20;
-Grid.HEIGHT = 20;
-
 // Initialize
 Grid.initialize = function(){
+
+	// Grid size
+	var WIDTH = Model.data.world.size.width;
+	var HEIGHT = Model.data.world.size.height;
+
+	// Make the 2D array
 	Grid.array = [];
-	for(var y=0;y<Grid.HEIGHT;y++){
+	for(var y=0;y<HEIGHT;y++){
 		Grid.array.push([]);
-		for(var x=0;x<Grid.WIDTH;x++){
-			Grid.array[y].push(new Agent(x,y));
+		for(var x=0;x<WIDTH;x++){
+
+			// Proportions of starting agents
+			var state = 0;
+			Grid.array[y].push(new Agent(x,y,state));
+
 		}
 	}
+
 };
 
 // Simultaneous Step

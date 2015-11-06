@@ -1,11 +1,11 @@
-function Agent(x,y){
+function Agent(x,y,state){
 
 	var self = this;
 
 	// Space & State
 	self.x = x;
 	self.y = y;
-	self.stateID = 0;
+	self.stateID = state || 0;
 
 	// For updating
 	self.nextStateID = self.stateID;
