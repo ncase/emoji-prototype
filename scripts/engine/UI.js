@@ -1,5 +1,9 @@
 (function(){
 
+/////////////////////////
+///// PLAY CONTROLS /////
+/////////////////////////
+
 // RESET 
 var play_reset = document.getElementById("play_reset");
 play_reset.onclick = function(){
@@ -25,5 +29,35 @@ play_step.onclick = function(){
 	Grid.step();
 	publish("/grid/updateAgents");
 };
+
+/////////////////////////
+///// TOGGLE STATES /////
+/////////////////////////
+
+// Event Handling
+Grid.dom.addEventListener("mousedown",function(event){
+
+	// Grid X & Y
+	var rx = event.clientX - Grid.dom.offsetLeft;
+	var ry = event.clientY - Grid.dom.offsetTop;
+	var x = Math.floor(rx/Grid.tileSize);
+	var y = Math.floor(ry/Grid.tileSize);
+
+	// Get the agent there
+	var agent = Grid.array[y][x];
+
+	// Get what the next state should be
+	var state = Model.getStateFromID(agent.stateID);
+	var stateIndex = Model.data.states.indexOf(state);
+	var nextIndex = (stateIndex+1)%Model.data.states.length;
+	var nextState = Model.data.states[nextIndex];
+
+	// Swap agent to that state
+	agent.stateID = agent.nextStateID = nextState.id;
+
+	// Update the rendering
+	publish("/grid/updateAgents");
+
+},false);
 
 })();

@@ -69,6 +69,7 @@ subscribe("/ui/updateStateHeaders",function(){
 Grid.dom = document.getElementById("grid");
 Grid.domContainer = document.getElementById("grid_container");
 Grid.css = document.getElementById("grid_style");
+Grid.tileSize = 1;
 Grid.updateSize = function(){
 
 	// DIMENSIONS
@@ -77,6 +78,7 @@ Grid.updateSize = function(){
 	var w = Grid.array[0].length;
 	var h = Grid.array.length;
 	var t = Math.min(Math.floor(maxWidth/w), Math.floor(maxHeight/h));
+	Grid.tileSize = t;
 
 	// STYLE
 	var css = "";
