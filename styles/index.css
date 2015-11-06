@@ -38,8 +38,8 @@ body{
 #editor_container{
 	min-width: 310px;
 	width: 40%;
-	height:100%;
-	
+	height:70%;
+
 	position: absolute;
 	right: 0;
 
@@ -57,7 +57,7 @@ body{
 	overflow: hidden;
 }
 #editor input{
-	
+
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: 100;
 
@@ -72,7 +72,7 @@ body{
 	width:40px;
 	height:40px;
 	background: none;
-	border-right: none; 
+	border-right: none;
 	display: block;
 	float: left;
 
@@ -105,7 +105,7 @@ body{
 	border:1px solid #aaa;
 	border-radius: 5px;
 	position: absolute;
-	
+
 	font-family: sans-serif;
 	font-weight: 100;
 	font-size: 15px;
@@ -124,7 +124,7 @@ body{
 	width: 240px;
 	height: 40px;
 	background: #aaa;
-	
+
 	font-family: sans-serif;
 	font-weight: 100;
 	font-size: 20px;
@@ -184,4 +184,13 @@ body{
 }
 #editor li > div.delete_action:hover, #editor div.delete_state:hover{
 	opacity: 0.6;
+}
+
+#graph_container {
+  position: absolute;
+  width: 40%;
+  height: 30%;
+  top: 70%;
+  left: 60%;
+  background: #eee;
 }

@@ -21,6 +21,7 @@ as well as serialize & deserialize.
 
 		// Initialize crap
 		Grid.initialize();
+    Graph.initialize();
 		Editor.create(Model.data);
 		setInterval(function(){
 			Grid.step();

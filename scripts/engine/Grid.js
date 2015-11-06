@@ -38,6 +38,9 @@ Grid.step = function(){
 	// Then render, yo.
 	Grid.render();
 
+  // Tell the world!
+  publish("/grid/update");
+
 };
 
 // Render the Emoji
