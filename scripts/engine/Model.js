@@ -22,9 +22,14 @@ as well as serialize & deserialize.
 		// Initialize crap
 		Grid.initialize();
 		Editor.create(Model.data);
+
+		// Update the emoji
+		publish("/grid/updateSize");
 		setInterval(function(){
 			Grid.step();
+			publish("/grid/updateAgents");
 		},100);
+		
 	};
 
 	// Helper Functions

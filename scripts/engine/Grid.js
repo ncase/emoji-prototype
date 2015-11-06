@@ -26,24 +26,29 @@ Grid.initialize = function(){
 };
 
 // Simultaneous Step
+var STYLE_SIMULTANEOUS = "simultaneous";
 Grid.step = function(){
 
-	// Calculate next state
-	for(var y=0;y<Grid.array.length;y++){
-		for(var x=0;x<Grid.array[0].length;x++){
-			Grid.array[y][x].calculateNextState();
-		}
-	}
+	// Update style
+	var STYLE = Model.data.world.update;
 
-	// Then go to it
-	for(var y=0;y<Grid.array.length;y++){
-		for(var x=0;x<Grid.array[0].length;x++){
-			Grid.array[y][x].gotoNextState();
-		}
-	}
+	if(STYLE==STYLE_SIMULTANEOUS){
 
-	// Then render, yo.
-	Grid.render();
+		// Calculate next state
+		for(var y=0;y<Grid.array.length;y++){
+			for(var x=0;x<Grid.array[0].length;x++){
+				Grid.array[y][x].calculateNextState();
+			}
+		}
+
+		// Then go to it
+		for(var y=0;y<Grid.array.length;y++){
+			for(var x=0;x<Grid.array[0].length;x++){
+				Grid.array[y][x].gotoNextState();
+			}
+		}
+
+	}
 
 };
 
@@ -51,21 +56,26 @@ Grid.step = function(){
 Grid.dom = document.getElementById("grid");
 Grid.domContainer = document.getElementById("grid_container");
 Grid.css = document.getElementById("grid_style");
-Grid.render = function(){
+Grid.updateSize = function(){
 
 	// DIMENSIONS
-	var maxWidth = Grid.domContainer.clientWidth-20;
-	var maxHeight = Grid.domContainer.clientHeight-20;
+	var maxWidth = Grid.domContainer.clientWidth; //-20;
+	var maxHeight = Grid.domContainer.clientHeight; //-20;
 	var w = Grid.array[0].length;
 	var h = Grid.array.length;
 	var t = Math.min(Math.floor(maxWidth/w), Math.floor(maxHeight/h));
 
-	// STYLE - TODO: Update only if resize.
+	// STYLE
 	var css = "";
 	css += "#grid{ width:"+(w*t)+"px; height:"+(h*t)+"px; font-size:"+t+"px; }\n";
 	css += "#grid>div{ width:"+(w*t)+"px; height:"+t+"px; }\n";
 	css += "#grid>div>div{ width:"+t+"px; height:"+t+"px; }\n";
 	Grid.css.innerHTML = css;
+
+};
+window.addEventListener("resize",Grid.updateSize,false);
+subscribe("/grid/updateSize",Grid.updateSize,false);
+Grid.updateAgents = function(){
 
 	// HTML - TODO: Update only if update/edit cell
 	var html = "";
@@ -78,9 +88,11 @@ Grid.render = function(){
 		}
 		html += "</div>";
 	}
+
 	Grid.dom.innerHTML = html;
 
 };
+subscribe("/grid/updateAgents",Grid.updateAgents);
 
 /////////////////////////////
 // External Helper Methods //
