@@ -7,33 +7,40 @@ body{
 	font-size: 16px;
 }
 
+div{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/***************
+THE GRID 
+***************/
+
 #grid_container{
 	width: 60%;
-	height: 100%;
+	height: calc(100% - 70px);
 	float: left;
 	position: relative;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 #grid{
-	/*width: 600px;
-	height: 600px;
-	font-size: 30px;*/
-
 	position: absolute;
 	margin: auto;
 	top:0; left:0; right:0; bottom:0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 #grid > div{
-	/*width: 600px;
-	height: 30px;*/
 }
 #grid > div > div{
 	float:left;
-	/*width: 30px;
-	height: 30px;*/
 }
+
+/***************
+THE EDITOR 
+***************/
 
 #editor_container{
 	min-width: 310px;
@@ -150,7 +157,7 @@ body{
     margin-right: 10px;
 }
 #editor select{
-	font-size: 50px;
+	/*font-size: 50px;*/
 	width:120px;
 }
 #editor ul{
@@ -184,4 +191,48 @@ body{
 }
 #editor li > div.delete_action:hover, #editor div.delete_state:hover{
 	opacity: 0.6;
+}
+
+/***************
+THE PLAY CONTROLS 
+***************/
+
+#play_container{
+	width: 60%;
+	height: 50px;
+	position: absolute;
+	left: 0;
+	bottom: 10px;
+}
+#play_controls{
+	width: 240px;
+	height: 50px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+#play_controls > div{
+	background: #ccc;
+	border-radius: 5px;
+	height: 30px;
+	cursor: pointer;
+	float: left;
+	color: #888;
+	padding: 10px;
+	text-align: center;
+	line-height: 30px;
+	font-weight: normal;
+}
+#play_controls > div:hover{
+	background: #ddd;
+}
+#play_controls > #play_reset{
+	width:40px;
+	margin-right: 10px;
+}
+#play_controls > #play_pause{
+	width:80px;
+	margin-right: 10px;
+}
+#play_controls > #play_step{
+	width:40px;
 }

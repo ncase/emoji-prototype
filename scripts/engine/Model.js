@@ -25,12 +25,29 @@ as well as serialize & deserialize.
 
 		// Update the emoji
 		publish("/grid/updateSize");
-		setInterval(function(){
-			Grid.step();
-			publish("/grid/updateAgents");
-		},100);
+		Model.isPlaying = true;
 		
 	};
+
+	// Playing...
+	Model.isPlaying = false;
+	Model.play = function(){
+		Model.isPlaying = true;
+	};
+	Model.pause = function(){
+		Model.isPlaying = false;
+	};
+	Model.tick = function(){
+
+		// Paused
+		if(!Model.isPlaying) return;
+
+		// Step it
+		Grid.step();
+		publish("/grid/updateAgents");
+
+	};
+	setInterval(Model.tick,100);
 
 	// Helper Functions
 	Model.getStateFromID = function(id){
