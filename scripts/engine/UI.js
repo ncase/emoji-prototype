@@ -3,7 +3,8 @@
 // RESET 
 var play_reset = document.getElementById("play_reset");
 play_reset.onclick = function(){
-	Model.init(Model.data);
+	Grid.initialize();
+	publish("/grid/updateAgents");
 };
 
 // PLAY/PAUSE

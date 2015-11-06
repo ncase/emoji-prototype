@@ -52,6 +52,19 @@ Grid.step = function(){
 
 };
 
+// Remove agents?
+subscribe("/ui/updateStateHeaders",function(){
+	for(var y=0;y<Grid.array.length;y++){
+		for(var x=0;x<Grid.array[0].length;x++){
+			var agent = Grid.array[y][x];
+			if(!Model.getStateFromID(agent.stateID)){
+				agent.stateID = agent.nextStateID = 0;
+			}
+		}
+	}
+	publish("/grid/updateAgents");
+});
+
 // Render the Emoji
 Grid.dom = document.getElementById("grid");
 Grid.domContainer = document.getElementById("grid_container");
