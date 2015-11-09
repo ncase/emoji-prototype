@@ -13,7 +13,7 @@ Model.init({
             "actions": [
                 {
                     "sign": "<",
-                    "num": 1,
+                    "num": 3,
                     "stateID": "1",
                     "actions": [
                         {
@@ -34,7 +34,7 @@ Model.init({
             "actions": [
                 {
                     "sign": "<",
-                    "num": 1,
+                    "num": 3,
                     "stateID": "2",
                     "actions": [
                         {
@@ -52,8 +52,8 @@ Model.init({
     "world": {
 
         "size": {
-            "width": 50,
-            "height": 50
+            "width": 25,
+            "height": 25
         },
 
         "proportions":[
@@ -62,7 +62,6 @@ Model.init({
             {stateID:2, ratio:0.2}
         ],
 
-        "update": "sequential",
         "neighborhood": "moore"
 
     }

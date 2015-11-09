@@ -82,6 +82,9 @@ Model.init({
 	world: {
 		update: "simultaneous",
 		neighborhood: "moore",
+		proportions:[
+            {stateID:0, ratio:1}
+        ],
 		size:{
 			width:50,
 			height:50

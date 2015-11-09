@@ -13,11 +13,19 @@ exports.Actions = {};
 
 // Perform Actions. Recursive.
 exports.PerformActions = function(agent, actionConfigs){
+	
+	// To tell if the agent's switched states.
+	// As soon as it does that, STOP DOING ACTIONS
+	var initialNextState = agent.nextStateID;
+
+	// Go through all actions until it switches states.
 	for(var i=0;i<actionConfigs.length;i++){
 		var config = actionConfigs[i];
 		var action = Actions[config.type];
 		action.step(agent,config);
+		if(agent.nextStateID!=initialNextState) return;
 	}
+	
 };
 
 // GO_TO_STATE: Simply go to that state

@@ -5,10 +5,6 @@ exports.Editor = {};
 
 // DOM
 Editor.dom = document.getElementById("editor");
-Editor.statesDOM = document.createElement("div");
-Editor.dom.appendChild(Editor.statesDOM);
-Editor.worldDOM = document.createElement("div");
-Editor.dom.appendChild(Editor.worldDOM);
 
 // Create from model
 Editor.create = function(){
@@ -16,6 +12,9 @@ Editor.create = function(){
 	//////////////////////
 	///// STATES DOM /////
 	//////////////////////
+
+	Editor.statesDOM = document.createElement("div");
+	Editor.dom.appendChild(Editor.statesDOM);
 
 	// For each state config...
 	var stateConfigs = Model.data.states;
@@ -59,6 +58,9 @@ Editor.create = function(){
 	/////////////////////
 	///// WORLD DOM /////
 	/////////////////////
+
+	Editor.worldDOM = document.createElement("div");
+	Editor.dom.appendChild(Editor.worldDOM);
 
 	Editor.worldDOM.appendChild(Grid.createUI());
 

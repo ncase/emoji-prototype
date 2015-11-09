@@ -68,7 +68,6 @@ Model.init({
         }
     ],
     "world": {
-        "update": "sequential",
         "neighborhood": "moore",
         "proportions":[
             {stateID:0, ratio:1}

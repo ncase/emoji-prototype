@@ -53,40 +53,16 @@ var _getProportionalRandom = function(){
 }
 
 // Simultaneous Step
-Grid.UPDATE_SIMULTANEOUS = "simultaneous";
-Grid.UPDATE_SEQUENTIAL = "sequential";
 Grid.step = function(){
 
 	// Update style
 	var UPDATE = Model.data.world.update;
 
-	// SIMULTANEOUS
-	if(UPDATE==Grid.UPDATE_SIMULTANEOUS){
-
-		// Calculate next state
-		for(var y=0;y<Grid.array.length;y++){
-			for(var x=0;x<Grid.array[0].length;x++){
-				Grid.array[y][x].calculateNextState();
-			}
-		}
-
-		// Then go to it
-		for(var y=0;y<Grid.array.length;y++){
-			for(var x=0;x<Grid.array[0].length;x++){
-				Grid.array[y][x].gotoNextState();
-			}
-		}
-
-	}else if(UPDATE==Grid.UPDATE_SEQUENTIAL){
-
-		// TODO: SHUFFLE
-		var allAgents = Grid.getAllAgents();
-		for(var i=0;i<allAgents.length;i++){
-			allAgents[i].calculateNextState();
-			allAgents[i].gotoNextState();
-		}
-
-	}
+	// TODO: Shuffle the array
+	var all = Grid.getAllAgents();
+	for(var i=0;i<all.length;i++) all[i].markAsNotUpdated();
+	for(var i=0;i<all.length;i++) all[i].calculateNextState();
+	for(var i=0;i<all.length;i++) all[i].gotoNextState();
 
 };
 
@@ -246,37 +222,17 @@ Grid.createUI = function(){
 	var span = document.createElement("span");
 
 	// A X x Y world...
-	span.appendChild(Editor.createLabel("A "));
+	span.appendChild(Editor.createLabel("This world is a "));
 	span.appendChild(Editor.createNumber(config.size, "width", {integer:true, message:"/grid/reinitialize"}));
 	span.appendChild(Editor.createLabel(" by "));
 	span.appendChild(Editor.createNumber(config.size, "height", {integer:true, message:"/grid/reinitialize"}));
-	span.appendChild(Editor.createLabel(" world..."));
+	span.appendChild(Editor.createLabel(" grid."));
 	span.appendChild(Editor.createLabel("<br><br>"));
 
 	// Starting with this ratio of agents:
-	span.appendChild(Editor.createLabel("Starting with this ratio of agents:<br>"));
+	span.appendChild(Editor.createLabel("We start with this ratio of agents:<br>"));
 	// ???
 	span.appendChild(Editor.createLabel("<br><br>"));
-
-	// Also, each agent is updated (simultaneously|in shuffled order)
-	/*span.appendChild(Editor.createLabel("Also, each agent is updated "));
-	var wideSelector = Editor.createSelector([
-		{ name:"simultaneously", value:Grid.UPDATE_SIMULTANEOUS },
-		{ name:"in shuffled order", value:Grid.UPDATE_SEQUENTIAL }
-	],config,"update");
-	wideSelector.style.maxWidth = "none";
-	span.appendChild(wideSelector);
-
-	// and considers (the 4 agents to its sides|the 8 agents to its sides & diagonals)
-	// to be its neighbors
-	span.appendChild(Editor.createLabel(" and considers "));
-	var wideSelector = Editor.createSelector([
-		{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
-		{ name:"the 8 agents to its sides & diagonals", value:Grid.NEIGHBORHOOD_MOORE }
-	],config,"neighborhood");
-	wideSelector.style.maxWidth = "none";
-	span.appendChild(wideSelector);
-	span.appendChild(Editor.createLabel(" to be its neighbors."));*/
 
 	// And each agent considers
 	// (the 4 agents to its sides|the 8 agents to its sides & diagonals)
@@ -284,7 +240,7 @@ Grid.createUI = function(){
 	span.appendChild(Editor.createLabel("And each agent considers "));
 	var wideSelector = Editor.createSelector([
 		{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
-		{ name:"the 8 agents to its sides & diagonals", value:Grid.NEIGHBORHOOD_MOORE }
+		{ name:"the 8 agents to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
 	],config,"neighborhood");
 	wideSelector.style.maxWidth = "none";
 	span.appendChild(wideSelector);
