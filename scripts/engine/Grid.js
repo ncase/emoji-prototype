@@ -11,28 +11,57 @@ Grid.initialize = function(){
 	var HEIGHT = Model.data.world.size.height;
 
 	// Make the 2D array
+	var agents = [];
 	Grid.array = [];
 	for(var y=0;y<HEIGHT;y++){
 		Grid.array.push([]);
 		for(var x=0;x<WIDTH;x++){
-
-			// Proportions of starting agents
-			var state = 0;
-			Grid.array[y].push(new Agent(x,y,state));
-
+			var agent = new Agent(x,y);
+			agents.push(agent);
+			Grid.array[y].push(agent);
 		}
 	}
 
+	// Randomly set agent states based on proportion.
+	for(var i=0;i<agents.length;i++){
+		agents[i].forceState(_getProportionalRandom());
+	}
+
 };
+var _getProportionalRandom = function(){
+
+	var proportions = Model.data.world.proportions;
+	var random = Math.random();
+
+	var current = 0;
+	for(var i=0;i<proportions.length;i++){
+
+		// Add to current
+		var proportion = proportions[i];
+		current += proportion.ratio;
+
+		// If so, good! return this stateID
+		if(random<current){
+			return proportion.stateID;
+		}
+		
+	}
+
+	// Whoops
+	console.error("Proportions don't add up to 1");
+
+}
 
 // Simultaneous Step
-var STYLE_SIMULTANEOUS = "simultaneous";
+Grid.UPDATE_SIMULTANEOUS = "simultaneous";
+Grid.UPDATE_SEQUENTIAL = "sequential";
 Grid.step = function(){
 
 	// Update style
-	var STYLE = Model.data.world.update;
+	var UPDATE = Model.data.world.update;
 
-	if(STYLE==STYLE_SIMULTANEOUS){
+	// SIMULTANEOUS
+	if(UPDATE==Grid.UPDATE_SIMULTANEOUS){
 
 		// Calculate next state
 		for(var y=0;y<Grid.array.length;y++){
@@ -48,6 +77,15 @@ Grid.step = function(){
 			}
 		}
 
+	}else if(UPDATE==Grid.UPDATE_SEQUENTIAL){
+
+		// TODO: SHUFFLE
+		var allAgents = Grid.getAllAgents();
+		for(var i=0;i<allAgents.length;i++){
+			allAgents[i].calculateNextState();
+			allAgents[i].gotoNextState();
+		}
+
 	}
 
 };
@@ -58,7 +96,7 @@ subscribe("/ui/updateStateHeaders",function(){
 		for(var x=0;x<Grid.array[0].length;x++){
 			var agent = Grid.array[y][x];
 			if(!Model.getStateFromID(agent.stateID)){
-				agent.stateID = agent.nextStateID = 0;
+				agent.forceState(0); // state's gone, force delete it.
 			}
 		}
 	}
@@ -113,6 +151,8 @@ subscribe("/grid/updateAgents",Grid.updateAgents);
 // External Helper Methods //
 /////////////////////////////
 
+Grid.NEIGHBORHOOD_MOORE = "moore";
+Grid.NEIGHBORHOOD_NEUMANN = "neumann";
 Grid.getNeighbors = function(agent){
 
 	// Oh WOW Polygon's get-neighbor code was O(n^2) what the FU--
@@ -120,11 +160,21 @@ Grid.getNeighbors = function(agent){
 	// First, create all possible neighbor coords
 	var x = agent.x;
 	var y = agent.y;
-	var coords = [
-		[x-1,y-1], [x,  y-1], [x+1,y-1],
-		[x-1,y  ],            [x+1,y  ],
-		[x-1,y+1], [x,  y+1], [x+1,y+1],
-	];
+
+	// What kinda neighborhood
+	var coords;
+	var hood = Model.data.world.neighborhood;
+	if(hood==Grid.NEIGHBORHOOD_MOORE){
+		coords = [
+			[x-1,y-1], [x,  y-1], [x+1,y-1],
+			[x-1,y  ],            [x+1,y  ],
+			[x-1,y+1], [x,  y+1], [x+1,y+1],
+		];
+	}else if(hood==Grid.NEIGHBORHOOD_NEUMANN){
+		coords = [
+			[x,y-1], [x-1,y], [x+1,y], [x,y+1],
+		];
+	}
 
 	// Then, filter out ones that can't work
 	coords = coords.filter(function(coord){
@@ -150,6 +200,23 @@ Grid.getNeighbors = function(agent){
 
 };
 
+// Get ALL agents (just collapses to a single array)
+Grid.getAllAgents = function(){
+
+	// Then, get all neighbors at those coords
+	var agents = [];
+	for(var y=0;y<Grid.array.length;y++){
+		for(var x=0;x<Grid.array[0].length;x++){
+			agents.push(Grid.array[y][x]);
+		}
+	}
+
+	// Return!
+	return agents;
+
+};
+
+// Count neighbors of a certain state
 Grid.countNeighbors = function(agent,stateID){
 	var count = 0;
 	var neighbors = Grid.getNeighbors(agent);
@@ -159,5 +226,73 @@ Grid.countNeighbors = function(agent,stateID){
 	return count;
 };
 
+// Reset world, update the view, and resize to fit
+Grid.reinitialize = function(){
+	Grid.initialize();
+	publish("/grid/updateAgents");
+	publish("/grid/updateSize");
+};
+subscribe("/grid/reinitialize",Grid.reinitialize,false);
+
+///////////////////////////
+// Editor UI Shenanigans //
+///////////////////////////
+
+Grid.createUI = function(){
+
+	var config = Model.data.world;
+
+	// Create DOM
+	var span = document.createElement("span");
+
+	// A X x Y world...
+	span.appendChild(Editor.createLabel("A "));
+	span.appendChild(Editor.createNumber(config.size, "width", {integer:true, message:"/grid/reinitialize"}));
+	span.appendChild(Editor.createLabel(" by "));
+	span.appendChild(Editor.createNumber(config.size, "height", {integer:true, message:"/grid/reinitialize"}));
+	span.appendChild(Editor.createLabel(" world..."));
+	span.appendChild(Editor.createLabel("<br><br>"));
+
+	// Starting with this ratio of agents:
+	span.appendChild(Editor.createLabel("Starting with this ratio of agents:<br>"));
+	// ???
+	span.appendChild(Editor.createLabel("<br><br>"));
+
+	// Also, each agent is updated (simultaneously|in shuffled order)
+	/*span.appendChild(Editor.createLabel("Also, each agent is updated "));
+	var wideSelector = Editor.createSelector([
+		{ name:"simultaneously", value:Grid.UPDATE_SIMULTANEOUS },
+		{ name:"in shuffled order", value:Grid.UPDATE_SEQUENTIAL }
+	],config,"update");
+	wideSelector.style.maxWidth = "none";
+	span.appendChild(wideSelector);
+
+	// and considers (the 4 agents to its sides|the 8 agents to its sides & diagonals)
+	// to be its neighbors
+	span.appendChild(Editor.createLabel(" and considers "));
+	var wideSelector = Editor.createSelector([
+		{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
+		{ name:"the 8 agents to its sides & diagonals", value:Grid.NEIGHBORHOOD_MOORE }
+	],config,"neighborhood");
+	wideSelector.style.maxWidth = "none";
+	span.appendChild(wideSelector);
+	span.appendChild(Editor.createLabel(" to be its neighbors."));*/
+
+	// And each agent considers
+	// (the 4 agents to its sides|the 8 agents to its sides & diagonals)
+	// to be its neighbors
+	span.appendChild(Editor.createLabel("And each agent considers "));
+	var wideSelector = Editor.createSelector([
+		{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
+		{ name:"the 8 agents to its sides & diagonals", value:Grid.NEIGHBORHOOD_MOORE }
+	],config,"neighborhood");
+	wideSelector.style.maxWidth = "none";
+	span.appendChild(wideSelector);
+	span.appendChild(Editor.createLabel(" to be its neighbors."));
+
+	// Return DOM
+	return span;
+
+};
 
 })(window);

@@ -159,7 +159,7 @@ THE EDITOR
 }
 #editor select{
 	/*font-size: 50px;*/
-	width:120px;
+	max-width:120px;
 }
 #editor ul{
 	padding-left: 30px;

@@ -7,9 +7,15 @@ exports.Editor = {};
 Editor.dom = document.getElementById("editor");
 Editor.statesDOM = document.createElement("div");
 Editor.dom.appendChild(Editor.statesDOM);
+Editor.worldDOM = document.createElement("div");
+Editor.dom.appendChild(Editor.worldDOM);
 
 // Create from model
 Editor.create = function(){
+
+	//////////////////////
+	///// STATES DOM /////
+	//////////////////////
 
 	// For each state config...
 	var stateConfigs = Model.data.states;
@@ -45,6 +51,16 @@ Editor.create = function(){
 
 	};
 	Editor.dom.appendChild(addState);
+
+	// Divider
+	var hr = document.createElement("hr");
+	Editor.dom.appendChild(hr);
+
+	/////////////////////
+	///// WORLD DOM /////
+	/////////////////////
+
+	Editor.worldDOM.appendChild(Grid.createUI());
 
 };
 Editor.createStateUI = function(stateConfig){
@@ -338,6 +354,10 @@ Editor.createNumber = function(actionConfig, propName, options){
 		var number = _decodeValue();
 		number /= options.multiplier;
 		actionConfig[propName] = number;
+
+		// Message?
+		if(options.message) publish(options.message);
+		
 	};
 
 	// When move away, fix it.

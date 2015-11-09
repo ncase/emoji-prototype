@@ -47,7 +47,7 @@ as well as serialize & deserialize.
 		publish("/grid/updateAgents");
 
 	};
-	setInterval(Model.tick,100);
+	setInterval(Model.tick,30);
 
 	// Helper Functions
 	Model.getStateFromID = function(id){

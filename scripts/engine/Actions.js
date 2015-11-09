@@ -185,4 +185,82 @@ Actions.if_random = {
 
 };
 
+// MOVE_TO: Move to a (nearby|global) (state) spot in and leave behind (state) 
+Actions.move_to = {
+	
+	name: "Move to...",
+
+	props: {
+		space: 0,
+		spotStateID: 0,
+		leaveStateID: 0,
+	},
+
+	step: function(agent,config){
+
+		// Get possible spots
+		var spots;
+		if(config.space==0){ // local
+			spots = Grid.getNeighbors(agent);
+		}else if(config.space==1){ // global
+			spots = Grid.getAllAgents();
+		}
+
+		// Filter for only those whose states == spotStateID
+		var eligible = spots.filter(function(agent){
+			return(agent.stateID==config.spotStateID);
+		});
+
+		// If no eligible spots, WELP.
+		if(eligible.length==0){
+			return;
+		}
+
+		// Randomly pick one
+		var chosenSpot = eligible[Math.floor(Math.random()*eligible.length)];
+
+		// Force that agent to my state
+		chosenSpot.forceState(agent.stateID);
+
+		// Turn my state to leaveState
+		agent.nextStateID = config.leaveStateID;
+
+	},
+
+	ui: function(config){
+
+		// Create DOM
+		var span = document.createElement("span");
+
+		// Label
+		span.appendChild(Editor.createLabel("Move to a "));
+
+		// Sign Selector
+		span.appendChild(
+			Editor.createSelector([
+				{ name:"neighboring", value:0 },
+				{ name:"global", value:1 }
+			],config,"space")
+		);
+
+		// State selector
+		span.appendChild(
+			Editor.createStateSelector(config, "spotStateID")
+		);
+
+		// Label
+		span.appendChild(Editor.createLabel(" spot & leave behind "));
+
+		// State selector
+		span.appendChild(
+			Editor.createStateSelector(config, "leaveStateID")
+		);
+		
+		// Return DOM
+		return span;
+
+	}
+
+}; 
+
 })(window);
