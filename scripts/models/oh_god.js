@@ -70,7 +70,7 @@ Model.init({
     "world": {
         "neighborhood": "moore",
         "proportions":[
-            {stateID:0, ratio:1}
+            {stateID:0, parts:1}
         ],
         "size": {
             "width": 50,

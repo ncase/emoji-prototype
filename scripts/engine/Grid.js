@@ -67,13 +67,31 @@ Grid.step = function(){
 	// Update style
 	var UPDATE = Model.data.world.update;
 
-	// TODO: Shuffle the array
-	var all = Grid.getAllAgents();
+	// Shuffle update order, then do 'em all
+	var all = _shuffle(Grid.getAllAgents());
 	for(var i=0;i<all.length;i++) all[i].markAsNotUpdated();
 	for(var i=0;i<all.length;i++) all[i].calculateNextState();
 	for(var i=0;i<all.length;i++) all[i].gotoNextState();
 
 };
+
+var _shuffle = function(array){
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}
 
 // Remove agents?
 subscribe("/ui/updateStateHeaders",function(){

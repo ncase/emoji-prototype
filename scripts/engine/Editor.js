@@ -1,3 +1,7 @@
+////////////////////////////////////////
+// BECAUSE I DON'T WANNA USE REACT.JS //
+////////////////////////////////////////
+
 (function(exports){
 
 // Singleton Class
@@ -24,7 +28,7 @@ Editor.create = function(){
 		Editor.statesDOM.appendChild(stateDOM);
 	}
 
-	// Button -- Add a state!
+	// Button - Add a state!
 	var addState = document.createElement("div");
 	addState.className = "editor_new_state";
 	addState.innerHTML = "<span>+</span>new";
@@ -142,6 +146,9 @@ Editor.createActionsUI = function(actionConfigs, dom){
 	// All them actions
 	for(var i=0;i<actionConfigs.length;i++){
 
+		// Action
+		var actionConfig = actionConfigs[i];
+
 		// Entry
 		var entry = document.createElement("li");
 		list.appendChild(entry);
@@ -150,12 +157,20 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		var deleteDOM = document.createElement("div");
 		deleteDOM.className ="delete_action";
 		deleteDOM.innerHTML = "⊗";
-		(function(actionConfigs,index,list,entry){
+
+		(function(actionConfigs,actionConfig,list,entry){
+
+			// WELL HERE'S THE PROBLEM, WE'RE DOING IT BY INDEX,
+			// WHEN THE INDEX CAN FRIKKIN' CHANGE.
+
 			deleteDOM.onclick = function(){
+				var index = actionConfigs.indexOf(actionConfig);
 				actionConfigs.splice(index,1); // Splice away
 				list.removeChild(entry); // remove entry
 			};
-		})(actionConfigs,i,list,entry);
+
+		})(actionConfigs,actionConfig,list,entry);
+
 		entry.appendChild(deleteDOM);
 
 		// The actual action
@@ -409,7 +424,7 @@ Editor.createProportions = function(worldConfig, propName){
 			newProportions.push({stateID:stateID, parts:parts});
 		}
 
-		// So it's the SAME ARRAY, yo.
+		// Replace IN PLACE, so it's the SAME ARRAY, yo.
 		var args = [0, oldProportions.length].concat(newProportions); // as arguments
 		Array.prototype.splice.apply(proportions, args);
 
