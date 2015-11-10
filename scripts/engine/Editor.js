@@ -166,7 +166,7 @@ Editor.createActionsUI = function(actionConfigs, dom){
 
 	// Add action?
 	var entry = document.createElement("li");
-	var addAction = Editor.createNewAction(actionConfigs, dom);
+	var addAction = Editor.createActionAdder(actionConfigs, dom);
 	entry.appendChild(addAction);
 	list.appendChild(entry);
 	
@@ -186,7 +186,7 @@ Editor.createLabel = function(words){
 	return label;
 };
 
-Editor.createNewAction = function(actionConfigs, dom){
+Editor.createActionAdder = function(actionConfigs, dom){
 
 	var keyValues = [];
 
@@ -490,6 +490,16 @@ Editor.createProportions = function(worldConfig, propName){
 		var total = 0;
 		for(var i=0;i<snapshot.length;i++){
 			if(i!=selectedIndex) total+=snapshot[i];
+		}
+		
+		// EDGE CASE: If old total IS ZERO, bump everything else by one.
+		if(total==0){
+			for(var i=0;i<snapshot.length;i++){
+				if(i!=selectedIndex){
+					snapshot[i]=1;
+					total += 1;
+				}
+			}
 		}
 
 		// Calculate what the new total SHOULD be, from currently edited slider
