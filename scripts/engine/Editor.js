@@ -391,6 +391,28 @@ Editor.createProportions = function(worldConfig, propName){
 		dom.innerHTML = "";
 		sliders = [];
 
+		// Also - remake all proportions so it always fits state order, using old parts
+		var oldProportions = proportions;
+		var newProportions = [];
+		for(var i=0;i<Model.data.states.length;i++){
+
+			// State ID
+			var stateID = Model.data.states[i].id;
+
+			// Parts
+			var parts = 0;
+			for(var j=0;j<oldProportions.length;j++){
+				if(oldProportions[j].stateID == stateID) parts=oldProportions[j].parts;
+			}
+
+			// Do it.
+			newProportions.push({stateID:stateID, parts:parts});
+		}
+
+		// So it's the SAME ARRAY, yo.
+		var args = [0, oldProportions.length].concat(newProportions); // as arguments
+		Array.prototype.splice.apply(proportions, args);
+
 		// For each one...
 		for(var i=0;i<proportions.length;i++){
 			var proportion = proportions[i];
@@ -492,28 +514,6 @@ Editor.createProportions = function(worldConfig, propName){
 	_adjustAll();
 
 	// When states change...
-	subscribe("/ui/removeState",function(stateID){
-
-		var proportions = Model.data.world.proportions;
-		for(var i=0;i<proportions.length;i++){
-			var proportion = proportions[i];
-			var stateID = proportion.stateID;
-			if(!Model.getStateFromID(stateID)){
-				proportions.splice(i,1);
-				i--;
-			}
-		}
-
-	});
-	subscribe("/ui/addState",function(stateID){
-
-		var proportions = Model.data.world.proportions;
-		proportions.push({
-			stateID: stateID,
-			parts: 0
-		});
-		
-	});
 	subscribe("/ui/updateStateHeaders",function(){
 
 		// Repopulate

@@ -83,18 +83,6 @@ Model.init({
             {
                 "stateID": 0,
                 "parts": 100
-            },
-            {
-                "stateID": 3,
-                "parts": 0
-            },
-            {
-                "stateID": 1,
-                "parts": 0
-            },
-            {
-                "stateID": 2,
-                "parts": 0
             }
         ],
         "size": {
