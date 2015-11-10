@@ -448,6 +448,18 @@ Editor.createProportions = function(worldConfig, propName){
 	};
 	var _adjustAll = function(){
 
+		// SPECIAL CASE: If there's just ONE proportion, set to 100 & disable it.
+		// DON'T DO ANYTHING ELSE.
+		if(proportions.length==1){
+			var newValue = 100;
+			proportions[0].parts = newValue;
+			sliders[0].value = newValue;
+			sliders[0].disabled = true;
+			return;
+		}else{
+			sliders[0].disabled = false;
+		}
+
 		// Which one's selected, if any?
 		var selectedProportion = (selectedIndex<0) ? null : proportions[selectedIndex];
 		var selectedSlider = (selectedIndex<0) ? null : sliders[selectedIndex];
@@ -498,7 +510,7 @@ Editor.createProportions = function(worldConfig, propName){
 		var proportions = Model.data.world.proportions;
 		proportions.push({
 			stateID: stateID,
-			parts: Math.round(100/proportions.length)
+			parts: 0
 		});
 		
 	});

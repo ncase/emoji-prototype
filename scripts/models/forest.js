@@ -83,7 +83,9 @@ Model.init({
 		update: "simultaneous",
 		neighborhood: "moore",
 		proportions:[
-            {stateID:0, ratio:1}
+            {stateID:0, parts:1},
+            {stateID:1, parts:0},
+            {stateID:2, parts:0}
         ],
 		size:{
 			width:50,
