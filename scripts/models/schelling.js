@@ -57,9 +57,9 @@ Model.init({
         },
 
         "proportions":[
-            {stateID:0, ratio:0.8},
-            {stateID:1, ratio:0.1},
-            {stateID:2, ratio:0.2}
+            {stateID:0, parts:8},
+            {stateID:1, parts:1},
+            {stateID:2, parts:1}
         ],
 
         "neighborhood": "moore"

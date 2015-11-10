@@ -46,6 +46,7 @@ Editor.create = function(){
 		Editor.statesDOM.appendChild(stateDOM);
 
 		// Hey y'all
+		publish("/ui/addState",[newStateConfig.id]);
 		publish("/ui/updateStateHeaders");
 
 	};
@@ -106,6 +107,7 @@ Editor.createStateUI = function(stateConfig){
 		(function(stateConfig){
 			deleteDOM.onclick = function(){
 				Model.removeStateByID(stateConfig.id); // Splice away
+				publish("/ui/removeState",[stateConfig.id]); // remove state
 				publish("/ui/updateStateHeaders"); // update state headers
 				Editor.statesDOM.removeChild(dom); // and, remove this DOM child
 			};
@@ -369,6 +371,149 @@ Editor.createNumber = function(actionConfig, propName, options){
 
 	// Return
 	return input;
+
+};
+
+Editor.createProportions = function(worldConfig, propName){
+
+	// A div, please.
+	var dom = document.createElement("div");
+	dom.className = "proportions";
+
+	// Slider array!
+	var sliders = [];
+
+	// Populate...
+	var proportions = worldConfig[propName];
+	var _populate = function(){
+
+		// Reset
+		dom.innerHTML = "";
+		sliders = [];
+
+		// For each one...
+		for(var i=0;i<proportions.length;i++){
+			var proportion = proportions[i];
+			var stateID = proportion.stateID;
+
+			// Create Line
+			var lineDOM = document.createElement("div");
+			dom.appendChild(lineDOM);
+
+			// Create Icon
+			var iconDOM = document.createElement("span");
+			iconDOM.innerHTML = Model.getStateFromID(stateID).icon;
+			lineDOM.appendChild(iconDOM);
+
+			// Create Slider
+			var slider = document.createElement("input");
+			slider.type = "range";
+			slider.min = 0;
+			slider.max = 100;
+			slider.step = 1;
+			sliders.push(slider);
+			lineDOM.appendChild(slider);
+
+			// Slider value
+			slider.value = proportion.parts;
+
+			// Slider event
+			(function(proportion,slider,index){
+				slider.onmousedown = function(){
+					selectedIndex = index;
+					_createSnapshot();
+				};
+				slider.oninput = function(){
+					proportion.parts = parseFloat(slider.value);
+					_adjustAll();
+					Grid.reinitialize();
+				};
+				slider.onmouseup = function(){
+					selectedIndex = -1;
+				};
+			})(proportion,slider,i);
+
+		}
+	};
+	_populate();
+
+	// Adjust 'em all dang it
+	var selectedIndex = -1;
+	var snapshot = [];
+	var _createSnapshot = function(){
+		snapshot = [];
+		for(var i=0;i<proportions.length;i++){
+			snapshot.push(proportions[i].parts); 
+		}
+	};
+	var _adjustAll = function(){
+
+		// Which one's selected, if any?
+		var selectedProportion = (selectedIndex<0) ? null : proportions[selectedIndex];
+		var selectedSlider = (selectedIndex<0) ? null : sliders[selectedIndex];
+
+		// FROM SNAPSHOT: Get total parts except selected
+		var total = 0;
+		for(var i=0;i<snapshot.length;i++){
+			if(i!=selectedIndex) total+=snapshot[i];
+		}
+
+		// Calculate what the new total SHOULD be, from currently edited slider
+		var newTotal = selectedSlider ? 100-parseInt(selectedSlider.value) : 100;
+
+		// How much should each other slider be scaled?
+		var newScale = newTotal/total;
+
+		// Scale every non-selected proportion & slider to that, FROM SNAPSHOT
+		for(var i=0;i<proportions.length;i++){
+			if(i!=selectedIndex){
+				var newValue = Math.round(snapshot[i]*newScale);
+				proportions[i].parts = newValue;
+				sliders[i].value = newValue;
+			}
+		}
+
+	};
+
+	// in case the data's bonked in the beginning, and doesn't add to 100
+	_createSnapshot();
+	_adjustAll();
+
+	// When states change...
+	subscribe("/ui/removeState",function(stateID){
+
+		var proportions = Model.data.world.proportions;
+		for(var i=0;i<proportions.length;i++){
+			var proportion = proportions[i];
+			var stateID = proportion.stateID;
+			if(!Model.getStateFromID(stateID)){
+				proportions.splice(i,1);
+				i--;
+			}
+		}
+
+	});
+	subscribe("/ui/addState",function(stateID){
+
+		var proportions = Model.data.world.proportions;
+		proportions.push({
+			stateID: stateID,
+			parts: Math.round(100/proportions.length)
+		});
+		
+	});
+	subscribe("/ui/updateStateHeaders",function(){
+
+		// Repopulate
+		_populate();
+
+		// Adjust to a total of 100
+		_createSnapshot();
+		_adjustAll();
+
+	});
+
+	return dom;
 
 };
 

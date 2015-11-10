@@ -55,7 +55,7 @@ THE EDITOR
 	overflow-y: scroll;
 }
 #editor{
-	margin: 20px;
+	margin: 40px 20px;
 }
 #editor .editor_state{
 	margin-bottom: 50px;
@@ -64,7 +64,7 @@ THE EDITOR
 	height: 40px;
 	overflow: hidden;
 }
-#editor input{
+#editor input[type=text], #editor input[type=number]{
 	
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: 100;
@@ -192,6 +192,30 @@ THE EDITOR
 }
 #editor li > div.delete_action:hover, #editor div.delete_state:hover{
 	opacity: 0.6;
+}
+#editor div.proportions{
+	overflow: hidden;
+}
+#editor div.proportions > div{
+	overflow: hidden;
+}
+#editor div.proportions > div > span{
+	width:1em;
+	height: 1em;
+	display: inline-block;
+	border-right: 1px solid #aaa;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+#editor div.proportions > div > input[type=range]{
+	width: 240px;
+}
+#editor hr{
+	margin: 40px 0;
+    border: none;
+    height: 3px;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
 }
 
 /***************

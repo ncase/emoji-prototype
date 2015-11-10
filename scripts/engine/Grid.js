@@ -31,14 +31,23 @@ Grid.initialize = function(){
 var _getProportionalRandom = function(){
 
 	var proportions = Model.data.world.proportions;
-	var random = Math.random();
 
+	// Get total
+	var total = 0;
+	for(var i=0;i<proportions.length;i++){
+		total += proportions[i].parts;
+	}
+
+	// Get a random number from that, like a dart
+	var random = Math.random()*total;
+
+	// Return the state that dart hit
 	var current = 0;
 	for(var i=0;i<proportions.length;i++){
 
 		// Add to current
 		var proportion = proportions[i];
-		current += proportion.ratio;
+		current += proportion.parts;
 
 		// If so, good! return this stateID
 		if(random<current){
@@ -48,7 +57,7 @@ var _getProportionalRandom = function(){
 	}
 
 	// Whoops
-	console.error("Proportions don't add up to 1");
+	console.error("Something messed up in the random state selector");
 
 }
 
@@ -231,8 +240,8 @@ Grid.createUI = function(){
 
 	// Starting with this ratio of agents:
 	span.appendChild(Editor.createLabel("We start with this ratio of agents:<br>"));
-	// ???
-	span.appendChild(Editor.createLabel("<br><br>"));
+	span.appendChild(Editor.createProportions(config, "proportions"));
+	span.appendChild(Editor.createLabel("<br>"));
 
 	// And each agent considers
 	// (the 4 agents to its sides|the 8 agents to its sides & diagonals)
