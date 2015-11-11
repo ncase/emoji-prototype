@@ -114,9 +114,9 @@ Actions.if_neighbor = {
 		span.appendChild(
 			Editor.createSelector([
 				{ name:"less than (<)", value:"<" },
-				{ name:"up to (<=)", value:"<=" },
+				{ name:"up to (≤)", value:"<=" },
 				{ name:"more than (>)", value:">" },
-				{ name:"at least (>=)", value:">=" },
+				{ name:"at least (≥)", value:">=" },
 				{ name:"exactly (=)", value:"=" }
 			],config,"sign")
 		);
