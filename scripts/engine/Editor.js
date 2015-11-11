@@ -554,4 +554,46 @@ Editor.createProportions = function(worldConfig, propName){
 
 };
 
+////////////////////////////////////
+// SHORTCUTS BECAUSE TYPING SUCKS //
+////////////////////////////////////
+
+/*exports.E = {};
+
+E.focus = null;
+
+E.start = function(){
+	E.focus = document.createElement("span");
+	return E;
+};
+
+E.end = function(){
+	return E.focus;
+};
+
+var _converter = function(funcName){
+
+	// label -> createLabel
+	var nickname = funcName.charAt(0).toLowerCase() + funcName.slice(1);
+	var fullname = "create" + funcName;
+	
+	// Automatically appends to focused element & chains it.
+	E[nickname] = function(){
+		var dom = Editor[fullname].apply(null,arguments);
+		E.focus.appendChild(dom);
+		return E;
+	};
+
+}
+
+_converter("StateUI");
+_converter("ActionsUI");
+_converter("ActionUI");
+_converter("Label");
+_converter("ActionAdder");
+_converter("Selector");
+_converter("StateSelector");
+_converter("Number");
+_converter("Proportions");*/
+
 })(window);
