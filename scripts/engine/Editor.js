@@ -15,14 +15,7 @@ Editor.create = function(){
 
 	Editor.statesDOM = document.createElement("div");
 	Editor.dom.appendChild(Editor.statesDOM);
-
-	// For each state config...
-	var stateConfigs = Model.data.states;
-	for(var i=0;i<stateConfigs.length;i++){
-		var stateConfig = stateConfigs[i];
-		var stateDOM = Editor.createStateUI(stateConfig);
-		Editor.statesDOM.appendChild(stateDOM);
-	}
+	Editor.createStatesUI(Editor.statesDOM, Model.data.states);
 
 	// Button - Add a state!
 	var addState = document.createElement("div");
@@ -77,21 +70,54 @@ Editor.create = function(){
 	var undoChanges = document.createElement("div");
 	undoChanges.className = "editor_fancy_button";
 	undoChanges.style.marginBottom = "20px";
-	undoChanges.innerHTML = "<span style='font-size:30px; line-height:40px;'>★</span>undo all changes";
+	undoChanges.innerHTML = "<span style='font-size:25px; line-height:40px;'>⟳</span>undo all changes";
 	undoChanges.onclick = function(){
+		publish("/meta/reset");
+		Model.returnToBackup();
 	};
 	Editor.dom.appendChild(undoChanges);
 
 	// Save your changes
 	var saveChanges = document.createElement("div");
 	saveChanges.className = "editor_fancy_button";
+	saveChanges.id = "save_changes";
 	saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
 	saveChanges.onclick = function(){
+		Save.uploadModel();
 	};
 	Editor.dom.appendChild(saveChanges);
 
+	// Save your changes, label & link
+	var saveLabel = Editor.createLabel("when you save your model, a new link to it will appear here:")
+	saveLabel.style.display = "block";
+	saveLabel.style.margin = "10px 0";
+	Editor.dom.appendChild(saveLabel);
+	var saveLink = document.createElement("input");
+	saveLink.type = "text";
+	saveLink.className = "editor_save_link";
+	saveLink.onclick = function(){
+		saveLink.select();
+	};
+	subscribe("/save/success",function(link){
+		saveLabel.innerHTML = "here you go! <a href='"+link+"' target='_blank'>(open in new tab)</a>";
+		saveLink.value = link;
+	});
+	Editor.dom.appendChild(saveLink);
+
 
 };
+
+Editor.createStatesUI = function(dom, stateConfigs){
+
+	// For each state config...
+	for(var i=0;i<stateConfigs.length;i++){
+		var stateConfig = stateConfigs[i];
+		var stateDOM = Editor.createStateUI(stateConfig);
+		dom.appendChild(stateDOM);
+	}
+
+};
+
 Editor.createStateUI = function(stateConfig){
 
 	// Create DOM
@@ -358,7 +384,14 @@ Editor.createStateSelector = function(actionConfig, propName){
 	_populateList();
 
 	// Update to OTHERS' changes
-	subscribe("/ui/updateStateHeaders",_populateList);
+	var _listener1 = subscribe("/ui/updateStateHeaders",_populateList);
+
+	// KILL IT ALL
+	var _listener2 = subscribe("/meta/reset",function(){
+		unsubscribe(_listener1);
+		unsubscribe(_listener2);
+	});
+
 	
 	// Return
 	return select;

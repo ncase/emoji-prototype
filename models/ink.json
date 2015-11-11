@@ -15,7 +15,8 @@
                             "actions": [
                                 {
                                     "stateID": "1",
-                                    "type": "go_to_state"
+                                    "type": "go_to_state",
+                                    "actions": []
                                 }
                             ],
                             "type": "if_random"
@@ -33,7 +34,8 @@
                             "actions": [
                                 {
                                     "stateID": "2",
-                                    "type": "go_to_state"
+                                    "type": "go_to_state",
+                                    "actions": []
                                 }
                             ],
                             "type": "if_random"
@@ -51,8 +53,8 @@
         },
         {
             "id": 2,
-            "icon": ".",
-            "name": "poo",
+            "icon": "·",
+            "name": "dot",
             "actions": []
         }
     ],

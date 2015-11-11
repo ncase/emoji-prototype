@@ -11,8 +11,9 @@ Save.baseURL = firebaseURL;
 Save.uploadModel = function(){
 
     var saved = myDataRef.push(Model.data,function(){
-        publish("/save/success");
-        console.log(firebaseURL+saved.key()+".json?print=pretty");
+    	var currentURL = [location.protocol, '//', location.host, location.pathname].join('');
+    	var link = currentURL+"?remote="+saved.key();
+        publish("/save/success",[link]);
     });
 
 };

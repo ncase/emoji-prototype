@@ -8,14 +8,14 @@ function getParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-// Local or Remote?
-var path;
-var local = getParameterByName("local");
-if(local){
+// Local or Remote or URL?
+var path, local, remote, url;
+if(local = getParameterByName("local")){ // note: assignment
     path = "models/"+local+".json";
-}else{
-    var remote = getParameterByName("remote");
+}else if(remote = getParameterByName("remote")){ // also: assignment
     path = Save.baseURL+remote+".json?print=pretty";
+}else if(url = getParameterByName("url")){ // yup: assignment
+    path = url;
 }
 
 // Load it & make it the model

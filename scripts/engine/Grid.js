@@ -428,7 +428,7 @@ Grid.createProportions = function(){
 	_adjustAll();
 
 	// When states change...
-	subscribe("/ui/updateStateHeaders",function(){
+	var _listener1 = subscribe("/ui/updateStateHeaders",function(){
 
 		// Repopulate
 		_populate();
@@ -437,6 +437,12 @@ Grid.createProportions = function(){
 		_createSnapshot();
 		_adjustAll();
 
+	});
+
+	// KILL IT ALL
+	var _listener2 = subscribe("/meta/reset",function(){
+		unsubscribe(_listener1);
+		unsubscribe(_listener2);
 	});
 
 	return dom;

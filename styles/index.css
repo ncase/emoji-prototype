@@ -84,7 +84,7 @@ THE EDITOR
 
 	border-radius: 5px 0 0 5px;
 }
-#editor .editor_name{
+#editor input[type=text].editor_name{
 	font-size:20px;
 	width: 200px;
 	height:40px;
@@ -143,6 +143,12 @@ THE EDITOR
 #editor .editor_fancy_button:hover{
 	background: #b1b1b1;
 }
+#editor .editor_fancy_button#save_changes{
+	background: #333;
+}
+#editor .editor_fancy_button#save_changes:hover{
+	background: #555;
+}
 #editor .editor_fancy_button span{
 	font-size: 40px;
     width: 40px;
@@ -154,6 +160,10 @@ THE EDITOR
     line-height: 30px;
     height: 40px;
     margin-right: 10px;
+}
+#editor .editor_save_link{
+	width:100%;
+	font-size: 14px;
 }
 #editor select{
 	/*font-size: 50px;*/
@@ -255,6 +265,13 @@ THE PLAY CONTROLS
 #play_controls > #play_pause{
 	width:80px;
 	margin-right: 10px;
+}
+#play_controls > #play_pause[paused=true]{
+	background: #333;
+	color: #fff;
+}
+#play_controls > #play_pause[paused=true]:hover{
+	background: #444;
 }
 #play_controls > #play_step{
 	width:40px;

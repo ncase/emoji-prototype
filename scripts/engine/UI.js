@@ -19,8 +19,10 @@ play_pause.onclick = function(){
 var updatePauseUI = function(){
 	if(Model.isPlaying){
 		play_pause.innerHTML = "pause";
+		play_pause.setAttribute("paused",false);
 	}else{
 		play_pause.innerHTML = "play";
+		play_pause.setAttribute("paused",true);
 	}
 };
 
