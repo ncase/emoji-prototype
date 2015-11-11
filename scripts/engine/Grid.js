@@ -114,8 +114,8 @@ Grid.tileSize = 1;
 Grid.updateSize = function(){
 
 	// DIMENSIONS
-	var maxWidth = Grid.domContainer.clientWidth; //-20;
-	var maxHeight = Grid.domContainer.clientHeight; //-20;
+	var maxWidth = Grid.domContainer.clientWidth;
+	var maxHeight = Grid.domContainer.clientHeight;
 	var w = Grid.array[0].length;
 	var h = Grid.array.length;
 	var t = Math.min(Math.floor(maxWidth/w), Math.floor(maxHeight/h));

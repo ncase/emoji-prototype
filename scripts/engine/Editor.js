@@ -30,7 +30,7 @@ Editor.create = function(){
 
 	// Button - Add a state!
 	var addState = document.createElement("div");
-	addState.className = "editor_new_state";
+	addState.className = "editor_fancy_button";
 	addState.innerHTML = "<span>+</span>new";
 	addState.onclick = function(){
 
@@ -68,6 +68,32 @@ Editor.create = function(){
 	Editor.dom.appendChild(Editor.worldDOM);
 
 	Editor.worldDOM.appendChild(Grid.createUI());
+
+	// Divider
+	var hr = document.createElement("hr");
+	Editor.dom.appendChild(hr);
+
+	//////////////////////
+	///// META STUFF /////
+	//////////////////////
+
+	// Reset to original
+	var undoChanges = document.createElement("div");
+	undoChanges.className = "editor_fancy_button";
+	undoChanges.style.marginBottom = "20px";
+	undoChanges.innerHTML = "<span style='font-size:30px; line-height:40px;'>★</span>undo all changes";
+	undoChanges.onclick = function(){
+	};
+	Editor.dom.appendChild(undoChanges);
+
+	// Save your changes
+	var saveChanges = document.createElement("div");
+	saveChanges.className = "editor_fancy_button";
+	saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
+	saveChanges.onclick = function(){
+	};
+	Editor.dom.appendChild(saveChanges);
+
 
 };
 Editor.createStateUI = function(stateConfig){
@@ -352,7 +378,7 @@ Editor.createNumber = function(actionConfig, propName, options){
 
 	// Input
 	var input = document.createElement("input");
-	input.type = "number";
+	input.type = "text";
 	input.value = actionConfig[propName]*options.multiplier;
 	input.className ="editor_number";
 

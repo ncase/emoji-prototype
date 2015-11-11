@@ -241,13 +241,13 @@ Actions.move_to = {
 		var span = document.createElement("span");
 
 		// Label
-		span.appendChild(Editor.createLabel("Move to a "));
+		span.appendChild(Editor.createLabel("Move to "));
 
 		// Sign Selector
 		span.appendChild(
 			Editor.createSelector([
-				{ name:"neighboring", value:0 },
-				{ name:"global", value:1 }
+				{ name:"a neighboring", value:0 },
+				{ name:"any", value:1 }
 			],config,"space")
 		);
 

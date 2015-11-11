@@ -23,14 +23,12 @@ THE GRID
 	height: calc(100% - 70px);
 	float: left;
 	position: relative;
-	/*overflow: hidden;*/
 }
 
 #grid{
 	position: absolute;
 	margin: auto;
 	top:0; left:0; right:0; bottom:0;
-	/*overflow: hidden;*/
 	cursor: default;
 }
 #grid > div{
@@ -44,7 +42,7 @@ THE EDITOR
 ***************/
 
 #editor_container{
-	min-width: 320px;
+	min-width: 340px;
 	width: 40%;
 	height:100%;
 	
@@ -127,7 +125,7 @@ THE EDITOR
 	width: 50px;
 	cursor: pointer;
 }
-#editor .editor_new_state{
+#editor .editor_fancy_button{
 	border-radius: 5px;
 	width: 240px;
 	height: 40px;
@@ -142,10 +140,10 @@ THE EDITOR
 	cursor: pointer;
 
 }
-#editor .editor_new_state:hover{
+#editor .editor_fancy_button:hover{
 	background: #b1b1b1;
 }
-#editor .editor_new_state span{
+#editor .editor_fancy_button span{
 	font-size: 40px;
     width: 40px;
     display: block;
@@ -261,3 +259,31 @@ THE PLAY CONTROLS
 #play_controls > #play_step{
 	width:40px;
 }
+
+
+/***************
+HACK: SCROLLBARS
+***************/
+
+.frame::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+    width: 20px;
+}
+
+.frame::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.frame::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.frame::-webkit-scrollbar-track { 
+    background-color: #fff; 
+    border-radius: 0px; 
+} 
