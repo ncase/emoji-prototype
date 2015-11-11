@@ -245,207 +245,25 @@ Grid.createUI = function(){
 
 	var config = Model.data.world;
 
-	// Create DOM
-	var span = document.createElement("span");
-
-	// A X x Y world...
-	span.appendChild(Editor.createLabel("This world is a "));
-	span.appendChild(Editor.createNumber(config.size, "width", {integer:true, message:"/grid/reinitialize"}));
-	span.appendChild(Editor.createLabel(" by "));
-	span.appendChild(Editor.createNumber(config.size, "height", {integer:true, message:"/grid/reinitialize"}));
-	span.appendChild(Editor.createLabel(" grid."));
-	span.appendChild(Editor.createLabel("<br><br>"));
-
-	// Starting with this ratio of agents:
-	span.appendChild(Editor.createLabel("We start with this ratio of agents:<br>"));
-	span.appendChild(Grid.createProportions());
-	span.appendChild(Editor.createLabel("<br>"));
-
-	// And each agent considers
-	// (the 4 agents to its sides|the 8 agents to its sides & diagonals)
-	// to be its neighbors
-	span.appendChild(Editor.createLabel("And each agent considers "));
-	var wideSelector = Editor.createSelector([
-		{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
-		{ name:"the 8 agents to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
-	],config,"neighborhood");
-	wideSelector.style.maxWidth = "none";
-	span.appendChild(wideSelector);
-	span.appendChild(Editor.createLabel(" to be its neighbors."));
-
-	// Return DOM
-	return span;
-
-};
-
-Grid.createProportions = function(){
-
-	// A div, please.
-	var dom = document.createElement("div");
-	dom.className = "proportions";
-
-	// Slider array!
-	var sliders = [];
-
-	// Populate...
-	var proportions = Model.data.world.proportions;
-	var _populate = function(){
-
-		// Reset
-		dom.innerHTML = "";
-		sliders = [];
-
-		// Also - remake all proportions so it always fits state order, using old parts
-		var oldProportions = proportions;
-		var newProportions = [];
-		for(var i=0;i<Model.data.states.length;i++){
-
-			// State ID
-			var stateID = Model.data.states[i].id;
-
-			// Parts
-			var parts = 0;
-			for(var j=0;j<oldProportions.length;j++){
-				if(oldProportions[j].stateID == stateID) parts=oldProportions[j].parts;
-			}
-
-			// Do it.
-			newProportions.push({stateID:stateID, parts:parts});
-		}
-
-		// Replace IN PLACE, so it's the SAME ARRAY, yo.
-		var args = [0, oldProportions.length].concat(newProportions); // as arguments
-		Array.prototype.splice.apply(proportions, args);
-
-		// For each one...
-		for(var i=0;i<proportions.length;i++){
-			var proportion = proportions[i];
-			var stateID = proportion.stateID;
-
-			// Create Line
-			var lineDOM = document.createElement("div");
-			dom.appendChild(lineDOM);
-
-			// Create Icon
-			var iconDOM = document.createElement("span");
-			iconDOM.innerHTML = Model.getStateFromID(stateID).icon;
-			lineDOM.appendChild(iconDOM);
-
-			// Create Slider
-			var slider = document.createElement("input");
-			slider.type = "range";
-			slider.min = 0;
-			slider.max = 100;
-			slider.step = 1;
-			sliders.push(slider);
-			lineDOM.appendChild(slider);
-
-			// Slider value
-			slider.value = proportion.parts;
-
-			// Slider event
-			(function(proportion,slider,index){
-				slider.onmousedown = function(){
-					selectedIndex = index;
-					_createSnapshot();
-				};
-				slider.oninput = function(){
-					proportion.parts = parseFloat(slider.value);
-					_adjustAll();
-					Grid.reinitialize();
-				};
-				slider.onmouseup = function(){
-					selectedIndex = -1;
-				};
-			})(proportion,slider,i);
-
-		}
-	};
-	_populate();
-
-	// Adjust 'em all dang it
-	var selectedIndex = -1;
-	var snapshot = [];
-	var _createSnapshot = function(){
-		snapshot = [];
-		for(var i=0;i<proportions.length;i++){
-			snapshot.push(proportions[i].parts); 
-		}
-	};
-	var _adjustAll = function(){
-
-		// SPECIAL CASE: If there's just ONE proportion, set to 100 & disable it.
-		// DON'T DO ANYTHING ELSE.
-		if(proportions.length==1){
-			var newValue = 100;
-			proportions[0].parts = newValue;
-			sliders[0].value = newValue;
-			sliders[0].disabled = true;
-			return;
-		}else{
-			sliders[0].disabled = false;
-		}
-
-		// Which one's selected, if any?
-		var selectedProportion = (selectedIndex<0) ? null : proportions[selectedIndex];
-		var selectedSlider = (selectedIndex<0) ? null : sliders[selectedIndex];
-
-		// FROM SNAPSHOT: Get total parts except selected
-		var total = 0;
-		for(var i=0;i<snapshot.length;i++){
-			if(i!=selectedIndex) total+=snapshot[i];
-		}
-		
-		// EDGE CASE: If old total IS ZERO, bump everything else by one.
-		if(total==0){
-			for(var i=0;i<snapshot.length;i++){
-				if(i!=selectedIndex){
-					snapshot[i]=1;
-					total += 1;
-				}
-			}
-		}
-
-		// Calculate what the new total SHOULD be, from currently edited slider
-		var newTotal = selectedSlider ? 100-parseInt(selectedSlider.value) : 100;
-
-		// How much should each other slider be scaled?
-		var newScale = newTotal/total;
-
-		// Scale every non-selected proportion & slider to that, FROM SNAPSHOT
-		for(var i=0;i<proportions.length;i++){
-			if(i!=selectedIndex){
-				var newValue = Math.round(snapshot[i]*newScale);
-				proportions[i].parts = newValue;
-				sliders[i].value = newValue;
-			}
-		}
-
-	};
-
-	// in case the data's bonked in the beginning, and doesn't add to 100
-	_createSnapshot();
-	_adjustAll();
-
-	// When states change...
-	var _listener1 = subscribe("/ui/updateStateHeaders",function(){
-
-		// Repopulate
-		_populate();
-
-		// Adjust to a total of 100
-		_createSnapshot();
-		_adjustAll();
-
-	});
-
-	// KILL IT ALL
-	var _listener2 = subscribe("/meta/reset",function(){
-		unsubscribe(_listener1);
-		unsubscribe(_listener2);
-	});
-
-	return dom;
+	return EditorHelper()
+			.label("This world is a ")
+			.number(config.size, "width", {integer:true, message:"/grid/reinitialize"})
+			.label(" by ")
+			.number(config.size, "height", {integer:true, message:"/grid/reinitialize"})
+			.label(" grid.")
+			.label("<br><br>")
+			.label("We start with this ratio of agents:<br>")
+			.proportions()
+			.label("<br>")
+			.label("And each agent considers ")
+			.selector([
+				{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
+				{ name:"the 8 agents to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
+			],config,"neighborhood",{
+				maxWidth: "none"
+			})
+			.label(" to be its neighbors.")
+			.dom;
 
 };
 

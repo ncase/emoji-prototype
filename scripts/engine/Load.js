@@ -16,6 +16,8 @@ if(local = getParameterByName("local")){ // note: assignment
     path = Save.baseURL+remote+".json?print=pretty";
 }else if(url = getParameterByName("url")){ // yup: assignment
     path = url;
+}else{
+    path = "models/blank.json";
 }
 
 // Load it & make it the model

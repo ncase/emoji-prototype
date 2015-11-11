@@ -40,20 +40,10 @@ Actions.go_to_state = {
 	},
 
 	ui: function(config){
-
-		// Create DOM
-		var span = document.createElement("span");
-
-		// Label
-		span.appendChild(Editor.createLabel("Turn into "));
-
-		// State selector
-		var select = Editor.createStateSelector(config, "stateID");
-		span.appendChild(select);
-
-		// Return DOM
-		return span;
-
+		return EditorHelper()
+				.label("Turn into ")
+				.stateSelector(config, "stateID")
+				.dom;
 	}
 
 };
@@ -104,44 +94,21 @@ Actions.if_neighbor = {
 
 	ui: function(config){
 
-		// Create DOM
-		var span = document.createElement("span");
-
-		// Label
-		span.appendChild(Editor.createLabel("If "));
-
-		// Sign Selector
-		span.appendChild(
-			Editor.createSelector([
-				{ name:"less than (<)", value:"<" },
-				{ name:"up to (≤)", value:"<=" },
-				{ name:"more than (>)", value:">" },
-				{ name:"at least (≥)", value:">=" },
-				{ name:"exactly (=)", value:"=" }
-			],config,"sign")
-		);
-
-		// Label
-		span.appendChild(Editor.createLabel(" "));
-
-		// Number
-		span.appendChild(
-			Editor.createNumber(config, "num", {integer:true})
-		);
-
-		// Label
-		span.appendChild(Editor.createLabel(" neighbors are "));
-
-		// State selector
-		var select = Editor.createStateSelector(config, "stateID");
-		span.appendChild(select);
-
-		// And then, add actions
-		var actionsDOM = Editor.createActionsUI(config.actions);
-		span.appendChild(actionsDOM);
-
-		// Return DOM
-		return span;
+		return EditorHelper()
+				.label("If ")
+				.selector([
+					{ name:"less than (<)", value:"<" },
+					{ name:"up to (≤)", value:"<=" },
+					{ name:"more than (>)", value:">" },
+					{ name:"at least (≥)", value:">=" },
+					{ name:"exactly (=)", value:"=" }
+				],config,"sign")
+				.label(" ")
+				.number(config, "num", {integer:true})
+				.label(" neighbors are ")
+				.stateSelector(config, "stateID")
+				.actionsUI(config.actions)
+				.dom;
 
 	}
 
@@ -168,26 +135,12 @@ Actions.if_random = {
 
 	ui: function(config){
 
-		// Create DOM
-		var span = document.createElement("span");
-
-		// Label
-		span.appendChild(Editor.createLabel("With a "));
-
-		// Number
-		span.appendChild(
-			Editor.createNumber(config, "probability", {multiplier:100})
-		);
-
-		// Label
-		span.appendChild(Editor.createLabel("% chance,"));
-
-		// And then, add actions
-		var actionsDOM = Editor.createActionsUI(config.actions);
-		span.appendChild(actionsDOM);
-		
-		// Return DOM
-		return span;
+		return EditorHelper()
+				.label("With a ")
+				.number(config, "probability", {multiplier:100})
+				.label("% chance,")
+				.actionsUI(config.actions)
+				.dom;
 
 	}
 
@@ -237,35 +190,16 @@ Actions.move_to = {
 
 	ui: function(config){
 
-		// Create DOM
-		var span = document.createElement("span");
-
-		// Label
-		span.appendChild(Editor.createLabel("Move to "));
-
-		// Sign Selector
-		span.appendChild(
-			Editor.createSelector([
-				{ name:"a neighboring", value:0 },
-				{ name:"any", value:1 }
-			],config,"space")
-		);
-
-		// State selector
-		span.appendChild(
-			Editor.createStateSelector(config, "spotStateID")
-		);
-
-		// Label
-		span.appendChild(Editor.createLabel(" spot & leave behind "));
-
-		// State selector
-		span.appendChild(
-			Editor.createStateSelector(config, "leaveStateID")
-		);
-		
-		// Return DOM
-		return span;
+		return EditorHelper()
+				.label("Move to ")
+				.selector([
+					{ name:"a neighboring", value:0 },
+					{ name:"any", value:1 }
+				],config,"space")
+				.stateSelector(config, "spotStateID")
+				.label(" spot & leave behind ")
+				.stateSelector(config, "leaveStateID")
+				.dom;
 
 	}
 
