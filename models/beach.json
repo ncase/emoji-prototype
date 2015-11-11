@@ -48,7 +48,7 @@
         {
             "id": 1,
             "icon": "🍏",
-            "name": "ink",
+            "name": "land",
             "actions": [
                 {
                     "sign": ">=",
@@ -57,7 +57,8 @@
                     "actions": [
                         {
                             "stateID": "3",
-                            "type": "go_to_state"
+                            "type": "go_to_state",
+                            "actions": []
                         }
                     ],
                     "type": "if_neighbor"
@@ -67,7 +68,7 @@
         {
             "id": 2,
             "icon": "🔵",
-            "name": "dot",
+            "name": "water",
             "actions": []
         },
         {
