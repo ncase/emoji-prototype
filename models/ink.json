@@ -1,0 +1,83 @@
+{
+    "states": [
+        {
+            "id": 0,
+            "icon": "",
+            "name": "blank",
+            "actions": [
+                {
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": "1",
+                    "actions": [
+                        {
+                            "probability": 0.5,
+                            "actions": [
+                                {
+                                    "stateID": "1",
+                                    "type": "go_to_state",
+                                    "actions": []
+                                }
+                            ],
+                            "type": "if_random"
+                        }
+                    ],
+                    "type": "if_neighbor"
+                },
+                {
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": "2",
+                    "actions": [
+                        {
+                            "probability": 0.5,
+                            "actions": [
+                                {
+                                    "stateID": "2",
+                                    "type": "go_to_state",
+                                    "actions": []
+                                }
+                            ],
+                            "type": "if_random"
+                        }
+                    ],
+                    "type": "if_neighbor"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "icon": "❋",
+            "name": "ink",
+            "actions": []
+        },
+        {
+            "id": 2,
+            "icon": "·",
+            "name": "dot",
+            "actions": []
+        }
+    ],
+    "world": {
+        "update": "simultaneous",
+        "neighborhood": "moore",
+        "proportions": [
+            {
+                "stateID": 0,
+                "parts": 98
+            },
+            {
+                "stateID": 1,
+                "parts": 1
+            },
+            {
+                "stateID": 2,
+                "parts": 1
+            }
+        ],
+        "size": {
+            "width": 50,
+            "height": 50
+        }
+    }
+}

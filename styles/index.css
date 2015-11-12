@@ -7,36 +7,42 @@ body{
 	font-size: 16px;
 }
 
+div{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/***************
+THE GRID
+***************/
+
 #grid_container{
 	width: 60%;
-	height: 100%;
+	height: calc(100% - 70px);
 	float: left;
 	position: relative;
-	overflow: hidden;
 }
 
 #grid{
-	/*width: 600px;
-	height: 600px;
-	font-size: 30px;*/
-
 	position: absolute;
 	margin: auto;
 	top:0; left:0; right:0; bottom:0;
-	overflow: hidden;
+	cursor: default;
 }
 #grid > div{
-	/*width: 600px;
-	height: 30px;*/
 }
 #grid > div > div{
 	float:left;
-	/*width: 30px;
-	height: 30px;*/
 }
 
+/***************
+THE EDITOR
+***************/
+
 #editor_container{
-	min-width: 310px;
+	min-width: 340px;
 	width: 40%;
 	height:70%;
 
@@ -47,7 +53,7 @@ body{
 	overflow-y: scroll;
 }
 #editor{
-	margin: 20px;
+	margin: 40px 20px;
 }
 #editor .editor_state{
 	margin-bottom: 50px;
@@ -56,8 +62,7 @@ body{
 	height: 40px;
 	overflow: hidden;
 }
-#editor input{
-
+#editor input[type=text], #editor input[type=number]{
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: 100;
 
@@ -78,7 +83,7 @@ body{
 
 	border-radius: 5px 0 0 5px;
 }
-#editor .editor_name{
+#editor input[type=text].editor_name{
 	font-size:20px;
 	width: 200px;
 	height:40px;
@@ -119,7 +124,7 @@ body{
 	width: 50px;
 	cursor: pointer;
 }
-#editor .editor_new_state{
+#editor .editor_fancy_button{
 	border-radius: 5px;
 	width: 240px;
 	height: 40px;
@@ -134,10 +139,16 @@ body{
 	cursor: pointer;
 
 }
-#editor .editor_new_state:hover{
+#editor .editor_fancy_button:hover{
 	background: #b1b1b1;
 }
-#editor .editor_new_state span{
+#editor .editor_fancy_button#save_changes{
+	background: #333;
+}
+#editor .editor_fancy_button#save_changes:hover{
+	background: #555;
+}
+#editor .editor_fancy_button span{
 	font-size: 40px;
     width: 40px;
     display: block;
@@ -149,9 +160,13 @@ body{
     height: 40px;
     margin-right: 10px;
 }
+#editor .editor_save_link{
+	width:100%;
+	font-size: 14px;
+}
 #editor select{
-	font-size: 50px;
-	width:120px;
+	/*font-size: 50px;*/
+	max-width:120px;
 }
 #editor ul{
 	padding-left: 30px;
@@ -186,6 +201,34 @@ body{
 	opacity: 0.6;
 }
 
+#editor div.proportions{
+	overflow: hidden;
+}
+#editor div.proportions > div{
+	overflow: hidden;
+}
+#editor div.proportions > div > span{
+	width:1em;
+	height: 1em;
+	display: inline-block;
+	border-right: 1px solid #aaa;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+#editor div.proportions > div > input[type=range]{
+	width: 240px;
+}
+#editor hr{
+	margin: 40px 0;
+    border: none;
+    height: 3px;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
+}
+
+/***************
+THE GRAPH
+***************/
 #graph_container {
   position: absolute;
   width: 40%;
@@ -193,4 +236,83 @@ body{
   top: 70%;
   left: 60%;
   background: #eee;
+}
+
+/***************
+THE PLAY CONTROLS
+***************/
+
+#play_container{
+	width: 60%;
+	height: 50px;
+	position: absolute;
+	left: 0;
+	bottom: 10px;
+}
+#play_controls{
+	width: 240px;
+	height: 50px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+#play_controls > div{
+	background: #ccc;
+	border-radius: 5px;
+	height: 30px;
+	cursor: pointer;
+	float: left;
+	color: #888;
+	padding: 10px;
+	text-align: center;
+	line-height: 30px;
+	font-weight: normal;
+}
+#play_controls > div:hover{
+	background: #ddd;
+}
+#play_controls > #play_reset{
+	width:40px;
+	margin-right: 10px;
+}
+#play_controls > #play_pause{
+	width:80px;
+	margin-right: 10px;
+}
+#play_controls > #play_pause[paused=true]{
+	background: #333;
+	color: #fff;
+}
+#play_controls > #play_pause[paused=true]:hover{
+	background: #444;
+}
+#play_controls > #play_step{
+	width:40px;
+}
+
+
+/***************
+HACK: SCROLLBARS
+***************/
+
+.frame::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+    width: 20px;
+}
+
+.frame::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.frame::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.frame::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 0px;
 }

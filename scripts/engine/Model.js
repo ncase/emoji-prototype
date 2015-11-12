@@ -14,19 +14,65 @@ as well as serialize & deserialize.
 
 	// Data
 	Model.data = {};
+	Model.backup = null;
 
 	// Init
 	Model.init = function(data){
+
+		// Save data (and backup for a reset)
 		Model.data = data;
+		Model.backup = JSON.parse(JSON.stringify(Model.data));
 
 		// Initialize crap
 		Grid.initialize();
     Graph.initialize();
 		Editor.create(Model.data);
-		setInterval(function(){
-			Grid.step();
-		},100);
+
+		// Update the emoji
+		publish("/grid/updateSize");
+		Model.isPlaying = true;
+
 	};
+
+	// Return to backup.
+	Model.returnToBackup = function(){
+
+		// Copy to the main model.
+		Model.data = JSON.parse(JSON.stringify(Model.backup));
+
+		// Reinitialize Grid
+		Grid.reinitialize();
+
+		// Remove & recreate all the states
+		Editor.statesDOM.innerHTML = "";
+		Editor.createStatesUI(Editor.statesDOM, Model.data.states);
+		publish("/ui/updateStateHeaders");
+
+		// Also, recreate World UI
+		Editor.worldDOM.innerHTML = "";
+		Editor.worldDOM.appendChild(Grid.createUI());
+
+	};
+
+	// Playing...
+	Model.isPlaying = false;
+	Model.play = function(){
+		Model.isPlaying = true;
+	};
+	Model.pause = function(){
+		Model.isPlaying = false;
+	};
+	Model.tick = function(){
+
+		// Paused
+		if(!Model.isPlaying) return;
+
+		// Step it
+		Grid.step();
+		publish("/grid/updateAgents");
+
+	};
+	setInterval(Model.tick,60);
 
 	// Helper Functions
 	Model.getStateFromID = function(id){

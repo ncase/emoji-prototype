@@ -15,7 +15,7 @@ Model.init({
 			actions:[
 				{
 					type: "if_random",
-					probability: 0.005,
+					probability: 0.01,
 					actions:[
 						{
 							type: "go_to_state",
@@ -36,7 +36,7 @@ Model.init({
 			actions:[
 				{ 
 					type: "if_random",
-					probability: 0.001,
+					probability: 0.0001,
 					actions:[
 						{
 							type: "go_to_state",
@@ -48,27 +48,13 @@ Model.init({
 					type: "if_neighbor",
 					sign: ">=",
 					num: 1,
-					stateID: 3,
+					stateID: 2,
 					actions:[
 						{
 							type:"go_to_state",
-							stateID: 3
+							stateID: 2
 						}
 					]
-				}
-			]
-		},
-
-		// Lightning
-		// just become fire
-		{
-			id: 2,
-			icon: "⚡️",
-			name: "lightning",
-			actions:[
-				{
-					type:"go_to_state",
-					stateID: 3
 				}
 			]
 		},
@@ -76,7 +62,7 @@ Model.init({
 		// Fire
 		// just become blank
 		{
-			id: 3,
+			id: 2,
 			icon: "🔥",
 			name: "fire",
 			actions:[
@@ -94,8 +80,17 @@ Model.init({
 	////////////////
 
 	world: {
-		update: "SIMULTANEOUS",
-		size: {width:20, height:20}
+		update: "simultaneous",
+		neighborhood: "moore",
+		proportions:[
+            {stateID:0, parts:1},
+            {stateID:1, parts:0},
+            {stateID:2, parts:0}
+        ],
+		size:{
+			width:50,
+			height:50
+		}
 	}
 
 });

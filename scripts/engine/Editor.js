@@ -5,23 +5,21 @@ exports.Editor = {};
 
 // DOM
 Editor.dom = document.getElementById("editor");
-Editor.statesDOM = document.createElement("div");
-Editor.dom.appendChild(Editor.statesDOM);
 
 // Create from model
 Editor.create = function(){
 
-	// For each state config...
-	var stateConfigs = Model.data.states;
-	for(var i=0;i<stateConfigs.length;i++){
-		var stateConfig = stateConfigs[i];
-		var stateDOM = Editor.createStateUI(stateConfig);
-		Editor.statesDOM.appendChild(stateDOM);
-	}
+	//////////////////////
+	///// STATES DOM /////
+	//////////////////////
 
-	// Button -- Add a state!
+	Editor.statesDOM = document.createElement("div");
+	Editor.dom.appendChild(Editor.statesDOM);
+	Editor.createStatesUI(Editor.statesDOM, Model.data.states);
+
+	// Button - Add a state!
 	var addState = document.createElement("div");
-	addState.className = "editor_new_state";
+	addState.className = "editor_fancy_button";
 	addState.innerHTML = "<span>+</span>new";
 	addState.onclick = function(){
 
@@ -41,12 +39,85 @@ Editor.create = function(){
 		Editor.statesDOM.appendChild(stateDOM);
 
 		// Hey y'all
+		publish("/ui/addState",[newStateConfig.id]);
 		publish("/ui/updateStateHeaders");
 
 	};
 	Editor.dom.appendChild(addState);
 
+	// Divider
+	var hr = document.createElement("hr");
+	Editor.dom.appendChild(hr);
+
+	/////////////////////
+	///// WORLD DOM /////
+	/////////////////////
+
+	Editor.worldDOM = document.createElement("div");
+	Editor.dom.appendChild(Editor.worldDOM);
+
+	Editor.worldDOM.appendChild(Grid.createUI());
+
+	// Divider
+	var hr = document.createElement("hr");
+	Editor.dom.appendChild(hr);
+
+	//////////////////////
+	///// META STUFF /////
+	//////////////////////
+
+	// Reset to original
+	var undoChanges = document.createElement("div");
+	undoChanges.className = "editor_fancy_button";
+	undoChanges.style.marginBottom = "20px";
+	undoChanges.innerHTML = "<span style='font-size:25px; line-height:40px;'>⟳</span>undo all changes";
+	undoChanges.onclick = function(){
+		publish("/meta/reset");
+		Model.returnToBackup();
+	};
+	Editor.dom.appendChild(undoChanges);
+
+	// Save your changes
+	var saveChanges = document.createElement("div");
+	saveChanges.className = "editor_fancy_button";
+	saveChanges.id = "save_changes";
+	saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
+	saveChanges.onclick = function(){
+		Save.uploadModel();
+	};
+	Editor.dom.appendChild(saveChanges);
+
+	// Save your changes, label & link
+	var saveLabel = Editor.createLabel("when you save your model, a new link to it will appear here:")
+	saveLabel.style.display = "block";
+	saveLabel.style.margin = "10px 0";
+	Editor.dom.appendChild(saveLabel);
+	var saveLink = document.createElement("input");
+	saveLink.type = "text";
+	saveLink.className = "editor_save_link";
+	saveLink.onclick = function(){
+		saveLink.select();
+	};
+	subscribe("/save/success",function(link){
+		saveLabel.innerHTML = "here you go! <a href='"+link+"' target='_blank'>(open in new tab)</a>";
+		saveLink.value = link;
+	});
+	Editor.dom.appendChild(saveLink);
+
+
 };
+
+Editor.createStatesUI = function(dom, stateConfigs){
+
+	// For each state config...
+	for(var i=0;i<stateConfigs.length;i++){
+		var stateConfig = stateConfigs[i];
+		var stateDOM = Editor.createStateUI(stateConfig);
+		dom.appendChild(stateDOM);
+	}
+
+};
+
 Editor.createStateUI = function(stateConfig){
 
 	// Create DOM
@@ -88,6 +159,7 @@ Editor.createStateUI = function(stateConfig){
 		(function(stateConfig){
 			deleteDOM.onclick = function(){
 				Model.removeStateByID(stateConfig.id); // Splice away
+				publish("/ui/removeState",[stateConfig.id]); // remove state
 				publish("/ui/updateStateHeaders"); // update state headers
 				Editor.statesDOM.removeChild(dom); // and, remove this DOM child
 			};
@@ -122,6 +194,9 @@ Editor.createActionsUI = function(actionConfigs, dom){
 	// All them actions
 	for(var i=0;i<actionConfigs.length;i++){
 
+		// Action
+		var actionConfig = actionConfigs[i];
+
 		// Entry
 		var entry = document.createElement("li");
 		list.appendChild(entry);
@@ -130,12 +205,20 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		var deleteDOM = document.createElement("div");
 		deleteDOM.className ="delete_action";
 		deleteDOM.innerHTML = "⊗";
-		(function(actionConfigs,index,list,entry){
+
+		(function(actionConfigs,actionConfig,list,entry){
+
+			// WELL HERE'S THE PROBLEM, WE'RE DOING IT BY INDEX,
+			// WHEN THE INDEX CAN FRIKKIN' CHANGE.
+
 			deleteDOM.onclick = function(){
+				var index = actionConfigs.indexOf(actionConfig);
 				actionConfigs.splice(index,1); // Splice away
 				list.removeChild(entry); // remove entry
 			};
-		})(actionConfigs,i,list,entry);
+
+		})(actionConfigs,actionConfig,list,entry);
+
 		entry.appendChild(deleteDOM);
 
 		// The actual action
@@ -146,7 +229,7 @@ Editor.createActionsUI = function(actionConfigs, dom){
 
 	// Add action?
 	var entry = document.createElement("li");
-	var addAction = Editor.createNewAction(actionConfigs, dom);
+	var addAction = Editor.createActionAdder(actionConfigs, dom);
 	entry.appendChild(addAction);
 	list.appendChild(entry);
 	
@@ -166,7 +249,7 @@ Editor.createLabel = function(words){
 	return label;
 };
 
-Editor.createNewAction = function(actionConfigs, dom){
+Editor.createActionAdder = function(actionConfigs, dom){
 
 	var keyValues = [];
 
@@ -219,11 +302,15 @@ Editor.createNewAction = function(actionConfigs, dom){
 
 };
 
-Editor.createSelector = function(keyValues, actionConfig, propName){
+Editor.createSelector = function(keyValues, actionConfig, propName, options){
 
 	// Select.
 	var select = document.createElement("select");
 	select.type = "select";
+
+	// Options
+	options = options || {};
+	if(options.maxWidth) select.style.maxWidth = options.maxWidth;
 
 	// Populate options: icon + name for each state, value is the ID.
 	for(var i=0;i<keyValues.length;i++){
@@ -301,7 +388,14 @@ Editor.createStateSelector = function(actionConfig, propName){
 	_populateList();
 
 	// Update to OTHERS' changes
-	subscribe("/ui/updateStateHeaders",_populateList);
+	var _listener1 = subscribe("/ui/updateStateHeaders",_populateList);
+
+	// KILL IT ALL
+	var _listener2 = subscribe("/meta/reset",function(){
+		unsubscribe(_listener1);
+		unsubscribe(_listener2);
+	});
+
 	
 	// Return
 	return select;
@@ -317,7 +411,7 @@ Editor.createNumber = function(actionConfig, propName, options){
 
 	// Input
 	var input = document.createElement("input");
-	input.type = "number";
+	input.type = "text";
 	input.value = actionConfig[propName]*options.multiplier;
 	input.className ="editor_number";
 
@@ -338,6 +432,10 @@ Editor.createNumber = function(actionConfig, propName, options){
 		var number = _decodeValue();
 		number /= options.multiplier;
 		actionConfig[propName] = number;
+
+		// Message?
+		if(options.message) publish(options.message);
+		
 	};
 
 	// When move away, fix it.
@@ -348,6 +446,212 @@ Editor.createNumber = function(actionConfig, propName, options){
 	// Return
 	return input;
 
+};
+
+Editor.createProportions = function(){
+
+	// A div, please.
+	var dom = document.createElement("div");
+	dom.className = "proportions";
+
+	// Slider array!
+	var sliders = [];
+
+	// Populate...
+	var proportions = Model.data.world.proportions;
+	var _populate = function(){
+
+		// Reset
+		dom.innerHTML = "";
+		sliders = [];
+
+		// Also - remake all proportions so it always fits state order, using old parts
+		var oldProportions = proportions;
+		var newProportions = [];
+		for(var i=0;i<Model.data.states.length;i++){
+
+			// State ID
+			var stateID = Model.data.states[i].id;
+
+			// Parts
+			var parts = 0;
+			for(var j=0;j<oldProportions.length;j++){
+				if(oldProportions[j].stateID == stateID) parts=oldProportions[j].parts;
+			}
+
+			// Do it.
+			newProportions.push({stateID:stateID, parts:parts});
+		}
+
+		// Replace IN PLACE, so it's the SAME ARRAY, yo.
+		var args = [0, oldProportions.length].concat(newProportions); // as arguments
+		Array.prototype.splice.apply(proportions, args);
+
+		// For each one...
+		for(var i=0;i<proportions.length;i++){
+			var proportion = proportions[i];
+			var stateID = proportion.stateID;
+
+			// Create Line
+			var lineDOM = document.createElement("div");
+			dom.appendChild(lineDOM);
+
+			// Create Icon
+			var iconDOM = document.createElement("span");
+			iconDOM.innerHTML = Model.getStateFromID(stateID).icon;
+			lineDOM.appendChild(iconDOM);
+
+			// Create Slider
+			var slider = document.createElement("input");
+			slider.type = "range";
+			slider.min = 0;
+			slider.max = 100;
+			slider.step = 1;
+			sliders.push(slider);
+			lineDOM.appendChild(slider);
+
+			// Slider value
+			slider.value = proportion.parts;
+
+			// Slider event
+			(function(proportion,slider,index){
+				slider.onmousedown = function(){
+					selectedIndex = index;
+					_createSnapshot();
+				};
+				slider.oninput = function(){
+					proportion.parts = parseFloat(slider.value);
+					_adjustAll();
+					Grid.reinitialize();
+				};
+				slider.onmouseup = function(){
+					selectedIndex = -1;
+				};
+			})(proportion,slider,i);
+
+		}
+	};
+	_populate();
+
+	// Adjust 'em all dang it
+	var selectedIndex = -1;
+	var snapshot = [];
+	var _createSnapshot = function(){
+		snapshot = [];
+		for(var i=0;i<proportions.length;i++){
+			snapshot.push(proportions[i].parts); 
+		}
+	};
+	var _adjustAll = function(){
+
+		// SPECIAL CASE: If there's just ONE proportion, set to 100 & disable it.
+		// DON'T DO ANYTHING ELSE.
+		if(proportions.length==1){
+			var newValue = 100;
+			proportions[0].parts = newValue;
+			sliders[0].value = newValue;
+			sliders[0].disabled = true;
+			return;
+		}else{
+			sliders[0].disabled = false;
+		}
+
+		// Which one's selected, if any?
+		var selectedProportion = (selectedIndex<0) ? null : proportions[selectedIndex];
+		var selectedSlider = (selectedIndex<0) ? null : sliders[selectedIndex];
+
+		// FROM SNAPSHOT: Get total parts except selected
+		var total = 0;
+		for(var i=0;i<snapshot.length;i++){
+			if(i!=selectedIndex) total+=snapshot[i];
+		}
+		
+		// EDGE CASE: If old total IS ZERO, bump everything else by one.
+		if(total==0){
+			for(var i=0;i<snapshot.length;i++){
+				if(i!=selectedIndex){
+					snapshot[i]=1;
+					total += 1;
+				}
+			}
+		}
+
+		// Calculate what the new total SHOULD be, from currently edited slider
+		var newTotal = selectedSlider ? 100-parseInt(selectedSlider.value) : 100;
+
+		// How much should each other slider be scaled?
+		var newScale = newTotal/total;
+
+		// Scale every non-selected proportion & slider to that, FROM SNAPSHOT
+		for(var i=0;i<proportions.length;i++){
+			if(i!=selectedIndex){
+				var newValue = Math.round(snapshot[i]*newScale);
+				proportions[i].parts = newValue;
+				sliders[i].value = newValue;
+			}
+		}
+
+	};
+
+	// in case the data's bonked in the beginning, and doesn't add to 100
+	_createSnapshot();
+	_adjustAll();
+
+	// When states change...
+	var _listener1 = subscribe("/ui/updateStateHeaders",function(){
+
+		// Repopulate
+		_populate();
+
+		// Adjust to a total of 100
+		_createSnapshot();
+		_adjustAll();
+
+	});
+
+	// KILL IT ALL
+	var _listener2 = subscribe("/meta/reset",function(){
+		unsubscribe(_listener1);
+		unsubscribe(_listener2);
+	});
+
+	return dom;
+
+};
+
+/////////////////////////
+///// EDITOR HELPER /////
+/////////////////////////
+
+var EditorShortcuts = function(dom){
+	
+	var self = this;
+	self.dom = dom;
+
+	var _shortcut = function(funcName){
+		var nickname = funcName.charAt(0).toLowerCase() + funcName.substring(1);
+		var fullname = "create"+funcName;
+		self[nickname] = function(){
+			var insertDOM = Editor[fullname].apply(null,arguments);
+			self.dom.appendChild(insertDOM);
+			return self;
+		};
+	};
+
+	_shortcut("Label");
+	_shortcut("StateSelector");
+	_shortcut("Selector");
+	_shortcut("Number");
+	_shortcut("ActionsUI");
+	_shortcut("Proportions");
+
+};
+
+exports.EditorHelper = function(tag){
+	tag = tag || "span";
+	var dom = document.createElement(tag);
+	var shortcut = new EditorShortcuts(dom);
+	return shortcut;
 };
 
 })(window);

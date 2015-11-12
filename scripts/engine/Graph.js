@@ -16,7 +16,7 @@
     Graph.data = [];
     Graph.paths = [];
 
-    subscribe("/grid/update", Graph.update);
+    subscribe("/grid/updateAgents", Graph.update);
     subscribe("/ui/updateStateHeaders", Graph.updateDefs);
 
     Graph.updateDefs();
@@ -44,6 +44,8 @@
         path.style.stroke = '#888'
         return Graph.graph.appendChild(path);
       });
+
+    Graph.draw();
   };
 
   Graph.update = function update() {
@@ -60,8 +62,8 @@
   Graph.draw = function draw() {
     var width = Graph.container.clientWidth,
       height = Graph.container.clientHeight,
-      total = Grid.WIDTH * Grid.HEIGHT,
-      intervalSize = Math.min(width / Graph.data.length, Graph.MAX_INTERVAL);
+      total = Grid.array.length * Grid.array[0].length,
+      intervalSize = Math.min(width / (Graph.data.length - 1), Graph.MAX_INTERVAL);
 
     Graph.svg.setAttribute('width', width);
     Graph.svg.setAttribute('height', height);
