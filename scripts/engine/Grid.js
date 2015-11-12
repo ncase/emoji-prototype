@@ -104,9 +104,6 @@ subscribe("/ui/updateStateHeaders",function(){
 		}
 	}
 
-	// Then render, yo.
-	Grid.render();
-
 	publish("/grid/updateAgents");
 });
 
