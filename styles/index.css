@@ -63,6 +63,9 @@ THE EDITOR
 	height: 40px;
 	overflow: hidden;
 }
+#editor .editor_actions {
+  line-height: 2em;
+}
 #editor input[type=text], #editor input[type=number]{
 
 	font-family: Helvetica, Arial, sans-serif;
@@ -117,6 +120,7 @@ THE EDITOR
 	font-weight: 100;
 	font-size: 15px;
 
+  line-height: 1.2em;
 	text-align: center;
 	color: #aaa;
 }
@@ -169,6 +173,12 @@ THE EDITOR
 #editor select{
 	/*font-size: 50px;*/
 	max-width:120px;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  background: transparent;
+  border: 1px solid #aaa;
+  border-radius: 3px;
 }
 #editor ul{
 	padding-left: 30px;
