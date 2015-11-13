@@ -20,7 +20,7 @@ THE GRID
 
 #grid_container{
 	width: 60%;
-	height: calc(100% - 70px);
+	height: calc(100vh - 70px);
 	float: left;
 	position: relative;
 }
