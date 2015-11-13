@@ -224,7 +224,7 @@ Editor.createActionsUI = function(actionConfigs, dom){
 		// The actual action
 		var actionDOM = Editor.createActionUI(actionConfigs[i]);
 		entry.appendChild(actionDOM);
-		
+
 	}
 
 	// Add action?
@@ -232,7 +232,7 @@ Editor.createActionsUI = function(actionConfigs, dom){
 	var addAction = Editor.createActionAdder(actionConfigs, dom);
 	entry.appendChild(addAction);
 	list.appendChild(entry);
-	
+
 	// Return dom
 	return dom;
 
@@ -314,7 +314,7 @@ Editor.createSelector = function(keyValues, actionConfig, propName, options){
 
 	// Populate options: icon + name for each state, value is the ID.
 	for(var i=0;i<keyValues.length;i++){
-		
+
 		var keyValue = keyValues[i];
 
 		// Create option
@@ -335,7 +335,7 @@ Editor.createSelector = function(keyValues, actionConfig, propName, options){
 	select.oninput = function(){
 		actionConfig[propName] = select.value;
 	};
-	
+
 	// Return
 	return select;
 
@@ -353,7 +353,7 @@ Editor.createStateSelector = function(actionConfig, propName){
 		var stateConfigs = Model.data.states;
 		var selectedAnOption = false;
 		for(var i=0;i<stateConfigs.length;i++){
-			
+
 			var stateConfig = stateConfigs[i];
 
 			// Create option
@@ -396,7 +396,7 @@ Editor.createStateSelector = function(actionConfig, propName){
 		unsubscribe(_listener2);
 	});
 
-	
+
 	// Return
 	return select;
 
@@ -435,7 +435,7 @@ Editor.createNumber = function(actionConfig, propName, options){
 
 		// Message?
 		if(options.message) publish(options.message);
-		
+
 	};
 
 	// When move away, fix it.
@@ -516,16 +516,12 @@ Editor.createProportions = function(){
 			// Slider event
 			(function(proportion,slider,index){
 				slider.onmousedown = function(){
-					selectedIndex = index;
 					_createSnapshot();
 				};
 				slider.oninput = function(){
 					proportion.parts = parseFloat(slider.value);
-					_adjustAll();
+					_adjustAll(index);
 					Grid.reinitialize();
-				};
-				slider.onmouseup = function(){
-					selectedIndex = -1;
 				};
 			})(proportion,slider,i);
 
@@ -534,15 +530,14 @@ Editor.createProportions = function(){
 	_populate();
 
 	// Adjust 'em all dang it
-	var selectedIndex = -1;
 	var snapshot = [];
 	var _createSnapshot = function(){
 		snapshot = [];
 		for(var i=0;i<proportions.length;i++){
-			snapshot.push(proportions[i].parts); 
+			snapshot.push(proportions[i].parts);
 		}
 	};
-	var _adjustAll = function(){
+	var _adjustAll = function(selectedIndex){
 
 		// SPECIAL CASE: If there's just ONE proportion, set to 100 & disable it.
 		// DON'T DO ANYTHING ELSE.
@@ -565,7 +560,7 @@ Editor.createProportions = function(){
 		for(var i=0;i<snapshot.length;i++){
 			if(i!=selectedIndex) total+=snapshot[i];
 		}
-		
+
 		// EDGE CASE: If old total IS ZERO, bump everything else by one.
 		if(total==0){
 			for(var i=0;i<snapshot.length;i++){
@@ -624,7 +619,7 @@ Editor.createProportions = function(){
 /////////////////////////
 
 var EditorShortcuts = function(dom){
-	
+
 	var self = this;
 	self.dom = dom;
 

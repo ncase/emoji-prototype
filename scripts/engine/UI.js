@@ -4,7 +4,7 @@
 ///// PLAY CONTROLS /////
 /////////////////////////
 
-// RESET 
+// RESET
 var play_reset = document.getElementById("play_reset");
 play_reset.onclick = function(){
 	Grid.reinitialize();
@@ -66,7 +66,7 @@ Grid.dom.addEventListener("mousedown",function(event){
 Grid.dom.addEventListener("mousemove",function(event){
 
 	if(!Mouse.pressed) return;
-	
+
 	var pos = getMousePosition(event);
 
 	// New position
@@ -75,7 +75,7 @@ Grid.dom.addEventListener("mousemove",function(event){
 		Mouse.y = pos.y;
 		changeCell();
 	}
-	
+
 },false);
 window.addEventListener("mouseup",function(event){
 	Mouse.pressed = false;
@@ -103,5 +103,18 @@ var changeCell = function(){
 	publish("/grid/updateAgents");
 
 };
+
+// Edit mode toggle on mobile:
+function checkHash() {
+  if (window.location.hash === "#edit") {
+    document.body.className = "edit";
+  } else {
+    document.body.className = "";
+  }
+  if (Grid.array) publish("/grid/updateSize");
+}
+
+window.addEventListener("hashchange", checkHash, false);
+checkHash();
 
 })();

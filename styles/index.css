@@ -15,12 +15,12 @@ div{
 }
 
 /***************
-THE GRID 
+THE GRID
 ***************/
 
 #grid_container{
 	width: 60%;
-	height: calc(100% - 70px);
+	height: calc(100vh - 70px);
 	float: left;
 	position: relative;
 }
@@ -30,6 +30,7 @@ THE GRID
 	margin: auto;
 	top:0; left:0; right:0; bottom:0;
 	cursor: default;
+  z-index: 31;
 }
 #grid > div{
 }
@@ -38,14 +39,14 @@ THE GRID
 }
 
 /***************
-THE EDITOR 
+THE EDITOR
 ***************/
 
 #editor_container{
 	min-width: 340px;
 	width: 40%;
 	height:100%;
-	
+
 	position: absolute;
 	right: 0;
 
@@ -62,8 +63,11 @@ THE EDITOR
 	height: 40px;
 	overflow: hidden;
 }
+#editor .editor_actions {
+  line-height: 2em;
+}
 #editor input[type=text], #editor input[type=number]{
-	
+
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: 100;
 
@@ -78,7 +82,7 @@ THE EDITOR
 	width:40px;
 	height:40px;
 	background: none;
-	border-right: none; 
+	border-right: none;
 	display: block;
 	float: left;
 
@@ -111,11 +115,12 @@ THE EDITOR
 	border:1px solid #aaa;
 	border-radius: 5px;
 	position: absolute;
-	
+
 	font-family: sans-serif;
 	font-weight: 100;
 	font-size: 15px;
 
+  line-height: 1.2em;
 	text-align: center;
 	color: #aaa;
 }
@@ -130,7 +135,7 @@ THE EDITOR
 	width: 240px;
 	height: 40px;
 	background: #aaa;
-	
+
 	font-family: sans-serif;
 	font-weight: 100;
 	font-size: 20px;
@@ -168,6 +173,12 @@ THE EDITOR
 #editor select{
 	/*font-size: 50px;*/
 	max-width:120px;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  background: transparent;
+  border: 1px solid #aaa;
+  border-radius: 3px;
 }
 #editor ul{
 	padding-left: 30px;
@@ -227,7 +238,7 @@ THE EDITOR
 }
 
 /***************
-THE PLAY CONTROLS 
+THE PLAY CONTROLS
 ***************/
 
 #play_container{
@@ -236,21 +247,22 @@ THE PLAY CONTROLS
 	position: absolute;
 	left: 0;
 	bottom: 10px;
+  text-align: center;
 }
 #play_controls{
-	width: 240px;
 	height: 50px;
 	margin: 0 auto;
 	overflow: hidden;
 }
 #play_controls > div{
+  display: inline-block;
 	background: #ccc;
 	border-radius: 5px;
 	height: 30px;
 	cursor: pointer;
-	float: left;
 	color: #888;
 	padding: 10px;
+  margin-left: -0.3em;
 	text-align: center;
 	line-height: 30px;
 	font-weight: normal;
@@ -258,22 +270,22 @@ THE PLAY CONTROLS
 #play_controls > div:hover{
 	background: #ddd;
 }
-#play_controls > #play_reset{
+#play_reset{
 	width:40px;
 	margin-right: 10px;
 }
-#play_controls > #play_pause{
+#play_pause{
 	width:80px;
 	margin-right: 10px;
 }
-#play_controls > #play_pause[paused=true]{
+#play_pause[paused=true]{
 	background: #333;
 	color: #fff;
 }
-#play_controls > #play_pause[paused=true]:hover{
+#play_pause[paused=true]:hover{
 	background: #444;
 }
-#play_controls > #play_step{
+#play_step{
 	width:40px;
 }
 
@@ -300,7 +312,169 @@ HACK: SCROLLBARS
     background-color: rgba(0, 0, 0, .5);
 }
 
-.frame::-webkit-scrollbar-track { 
-    background-color: #fff; 
-    border-radius: 0px; 
-} 
+.frame::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 0px;
+}
+
+/***************
+MOBILE LAYOUT
+***************/
+
+#grid_mobile_overlay,
+.edit-button {
+  display: none;
+}
+
+@media screen and (max-width: 850px) {
+  #grid_container {
+    width: 100%;
+  }
+
+  .edit #grid_container {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    bottom: 0;
+    right: 30px;
+    z-index: 30;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .edit #grid_mobile_overlay {
+    display: block;
+    z-index: 32;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .edit-button {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-bottom-left-radius: 5px;
+    background: #ccc;
+    padding: 10px;
+    color: #888;
+    text-decoration: none;
+    font-weight: normal;
+    z-index: 40;
+  }
+
+  .edit .edit-button {
+    display: none;
+  }
+
+  #play_container {
+    width: 100%;
+  }
+
+  .edit #play_container {
+    z-index: 20;
+    background: white;
+    width: auto;
+    left: 0;
+    right: 260px;
+    bottom: 0;
+    padding: 15px 0;
+  }
+
+  #editor_container {
+    display: none;
+  }
+
+  .edit #editor_container {
+    display: block;
+    min-width: 0;
+    width: 100%;
+    height: -webkit-calc(100% - 80px);
+    height:    -moz-calc(100% - 80px);
+    height:         calc(100% - 80px);
+    left: 0;
+    z-index: 10;
+  }
+
+  .edit #editor {
+    margin-bottom: 165px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .edit #grid_container {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  #play_container,
+  #play_controls {
+    height: 40px;
+  }
+
+  .edit #play_container {
+    right: 200px;
+    padding: 10px 0;
+  }
+
+  #play_controls > div {
+    padding: 5px 10px;
+  }
+
+  #play_pause,
+  #play_reset,
+  #play_step {
+    width: auto;
+  }
+
+  .edit #editor_container {
+    height: -webkit-calc(100% - 60px);
+    height:    -moz-calc(100% - 60px);
+    height:         calc(100% - 60px);
+  }
+
+  .edit #editor {
+    margin-bottom: 125px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .edit #grid_container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .edit #play_container {
+    right: 150px;
+    height: auto;
+    padding-bottom: 0;
+  }
+
+  #play_controls {
+    height: auto;
+  }
+
+  #play_controls > div {
+    margin-bottom: 10px;
+  }
+
+  .edit #editor {
+    margin-bottom: 75px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .edit #play_pause {
+    margin-right: 0;
+  }
+
+  .edit #play_step {
+    display: none;
+  }
+}
