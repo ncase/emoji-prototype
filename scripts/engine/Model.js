@@ -25,12 +25,13 @@ as well as serialize & deserialize.
 
 		// Initialize crap
 		Grid.initialize();
+    Graph.initialize();
 		Editor.create(Model.data);
 
 		// Update the emoji
 		publish("/grid/updateSize");
 		Model.isPlaying = true;
-		
+
 	};
 
 	// Return to backup.

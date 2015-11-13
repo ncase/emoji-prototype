@@ -53,7 +53,7 @@ var _getProportionalRandom = function(){
 		if(random<current){
 			return proportion.stateID;
 		}
-		
+
 	}
 
 	// Whoops
@@ -103,6 +103,7 @@ subscribe("/ui/updateStateHeaders",function(){
 			}
 		}
 	}
+
 	publish("/grid/updateAgents");
 });
 
