@@ -25,7 +25,7 @@ as well as serialize & deserialize.
 
 		// Initialize crap
 		Grid.initialize();
-    Graph.initialize();
+		//Graph.initialize();
 		Editor.create(Model.data);
 
 		// Update the emoji
