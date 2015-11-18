@@ -30,7 +30,7 @@ as well as serialize & deserialize.
 
 		// Update the emoji
 		publish("/grid/updateSize");
-		Model.isPlaying = true;
+		Model.isPlaying = UI.options.auto;
 
 	};
 
@@ -64,15 +64,16 @@ as well as serialize & deserialize.
 	};
 	Model.tick = function(){
 
-		// Paused
+		// Paused, or not seen
 		if(!Model.isPlaying) return;
+		if(!window.isOnScreen) return;
 
 		// Step it
 		Grid.step();
 		publish("/grid/updateAgents");
 
 	};
-	setInterval(Model.tick,60);
+	setInterval(Model.tick,1000/30); // 30 FPS, watchu gonna do about it
 
 	// Helper Functions
 	Model.getStateFromID = function(id){

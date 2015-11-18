@@ -77,32 +77,37 @@ Editor.create = function(){
 	};
 	Editor.dom.appendChild(undoChanges);
 
-	// Save your changes
-	var saveChanges = document.createElement("div");
-	saveChanges.className = "editor_fancy_button";
-	saveChanges.id = "save_changes";
-	saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
-	saveChanges.onclick = function(){
-		Save.uploadModel();
-	};
-	Editor.dom.appendChild(saveChanges);
+	// If options allow saving changes
+	if(UI.options.save){
 
-	// Save your changes, label & link
-	var saveLabel = Editor.createLabel("when you save your model, a new link to it will appear here:")
-	saveLabel.style.display = "block";
-	saveLabel.style.margin = "10px 0";
-	Editor.dom.appendChild(saveLabel);
-	var saveLink = document.createElement("input");
-	saveLink.type = "text";
-	saveLink.className = "editor_save_link";
-	saveLink.onclick = function(){
-		saveLink.select();
-	};
-	subscribe("/save/success",function(link){
-		saveLabel.innerHTML = "here you go! <a href='"+link+"' target='_blank'>(open in new tab)</a>";
-		saveLink.value = link;
-	});
-	Editor.dom.appendChild(saveLink);
+		// Save your changes
+		var saveChanges = document.createElement("div");
+		saveChanges.className = "editor_fancy_button";
+		saveChanges.id = "save_changes";
+		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
+		saveChanges.onclick = function(){
+			Save.uploadModel();
+		};
+		Editor.dom.appendChild(saveChanges);
+
+		// Save your changes, label & link
+		var saveLabel = Editor.createLabel("when you save your model, a new link to it will appear here:")
+		saveLabel.style.display = "block";
+		saveLabel.style.margin = "10px 0";
+		Editor.dom.appendChild(saveLabel);
+		var saveLink = document.createElement("input");
+		saveLink.type = "text";
+		saveLink.className = "editor_save_link";
+		saveLink.onclick = function(){
+			saveLink.select();
+		};
+		subscribe("/save/success",function(link){
+			saveLabel.innerHTML = "here you go! <a href='"+link+"' target='_blank'>(open in new tab)</a>";
+			saveLink.value = link;
+		});
+		Editor.dom.appendChild(saveLink);
+
+	}
 
 
 };

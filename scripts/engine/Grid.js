@@ -107,12 +107,22 @@ subscribe("/ui/updateStateHeaders",function(){
 	publish("/grid/updateAgents");
 });
 
+// Resize all DOMs
+var grid_container = document.getElementById("grid_container");
+var play_container = document.getElementById("play_container");
+var editor_container = document.getElementById("editor_container");
+
 // Render the Emoji
 Grid.dom = document.getElementById("grid");
 Grid.domContainer = document.getElementById("grid_container");
 Grid.css = document.getElementById("grid_style");
 Grid.tileSize = 1;
 Grid.updateSize = function(){
+
+	// RESIZE OTHER DOMs
+	var calcWidth = ((document.body.clientWidth - editor_container.clientWidth) - 20)+"px";
+	grid_container.style.width = calcWidth;
+	play_container.style.width = calcWidth;
 
 	// DIMENSIONS
 	var maxWidth = Grid.domContainer.clientWidth;
@@ -130,8 +140,8 @@ Grid.updateSize = function(){
 	Grid.css.innerHTML = css;
 
 };
-window.addEventListener("resize",Grid.updateSize,false);
 subscribe("/grid/updateSize",Grid.updateSize,false);
+window.addEventListener("resize",Grid.updateSize,false);
 Grid.updateAgents = function(){
 
 	// HTML - TODO: Update only if update/edit cell

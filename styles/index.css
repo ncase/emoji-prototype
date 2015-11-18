@@ -229,14 +229,14 @@ THE EDITOR
 /***************
 THE GRAPH
 ***************/
-#graph_container {
+/*#graph_container {
   position: absolute;
   width: 40%;
   height: 30%;
   top: 70%;
   left: 60%;
   background: #eee;
-}
+}*/
 
 /***************
 THE PLAY CONTROLS

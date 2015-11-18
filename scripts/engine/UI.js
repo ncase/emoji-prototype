@@ -1,4 +1,35 @@
-(function(){
+(function(exports){
+
+/////////////////////////
+//// VARS AND STUFF /////
+/////////////////////////
+
+// Get the path to the JSON
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+// UI Vars, like options
+exports.UI = {
+	options:{}
+};
+var options = UI.options;
+
+// Save - by default, yes.
+var saveOption = getParameterByName("save");
+if(saveOption=="") options.save=true;
+if(saveOption=="true" || saveOption=="yes") options.save=true;
+if(saveOption=="false" || saveOption=="no") options.save=false;
+
+// Auto - by default, yes.
+var autoOption = getParameterByName("auto");
+if(autoOption=="") options.auto=true;
+if(autoOption=="true" || autoOption=="yes") options.auto=true;
+if(autoOption=="false" || autoOption=="no") options.auto=false;
+
 
 /////////////////////////
 ///// PLAY CONTROLS /////
@@ -104,4 +135,4 @@ var changeCell = function(){
 
 };
 
-})();
+})(window);
