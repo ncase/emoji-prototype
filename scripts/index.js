@@ -14,7 +14,7 @@ Pick the last one on screen to be the one being played
 window.onscroll = function(){
 	var scrollY = window.pageYOffset;
 	var innerHeight = window.innerHeight;
-	var playables = document.querySelectorAll("iframe.example");
+	var playables = document.querySelectorAll(".example > iframe");
 	var messages = [];
 
 	// Calculate parallax, and is it the last one on screen?
@@ -40,4 +40,4 @@ window.onscroll = function(){
 
 setTimeout(function(){
 	window.onscroll();
-},1000);
+},500);

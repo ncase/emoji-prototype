@@ -7,11 +7,12 @@
             "actions": [
                 {
                     "type": "if_random",
-                    "probability": 0.01,
+                    "probability": 0.005,
                     "actions": [
                         {
                             "type": "go_to_state",
-                            "stateID": 1
+                            "stateID": 1,
+                            "actions": []
                         }
                     ]
                 }
@@ -28,7 +29,8 @@
                     "actions": [
                         {
                             "type": "go_to_state",
-                            "stateID": 2
+                            "stateID": 2,
+                            "actions": []
                         }
                     ]
                 },
@@ -40,7 +42,8 @@
                     "actions": [
                         {
                             "type": "go_to_state",
-                            "stateID": 2
+                            "stateID": 2,
+                            "actions": []
                         }
                     ]
                 }
@@ -53,7 +56,8 @@
             "actions": [
                 {
                     "type": "go_to_state",
-                    "stateID": 0
+                    "stateID": 0,
+                    "actions": []
                 }
             ]
         }
@@ -76,8 +80,8 @@
             }
         ],
         "size": {
-            "width": 50,
-            "height": 50
+            "width": 40,
+            "height": 34
         }
     }
 }
