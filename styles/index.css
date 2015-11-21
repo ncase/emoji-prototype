@@ -7,18 +7,48 @@ body{
 	font-weight: 100;
 
 }
+/** THE TITLE **/
+#splash_title{
+	background: #000;
+	color: #fff;
+	text-align: center;
+	margin-top: 0;
+	padding: 40px 0 60px 0;
+	/*font-family: 'Knewave';*/
+	font-family: 'Sniglet';
+	margin-bottom: 50px;
+}
+#splash_title > div{
+	height: 1em;
+	display: block;
+}
+#splash_title > div > span{
+	/*font-family: 'Knewave Outline';*/
+}
 
+/** THE ESSAY **/
 .words{
 	width: 600px;
 	margin: 25px auto;
 	line-height: 1.3em;
 }
+
+/** EXAMPLES **/
 .example{
 	width: 800px;
 	margin: 50px auto;
 }
-.example span{
+.example div#title{
 	font-size: 30px;
+}
+.example div#description, .example div#afterword{
+	font-size: 17px;
+	color: #888;
+	margin: 15px 0;
+	line-height: 1.5em;
+}
+.example div#description > div{
+	height: 10px;
 }
 .example iframe{
 	width: 800px;
@@ -29,6 +59,7 @@ body{
 	margin-top: 10px;
 }
 
+/** THE HEADERS **/
 .fancy_header{
 	width:100%;
 	height: 70px;
@@ -38,4 +69,24 @@ body{
 	text-align:center;
 	font-size: 60px;
 	margin: 50px 0;
+}
+
+/** CREDITS **/
+#credits{
+	background:#222;
+	width:100%;
+	height:500px;
+}
+
+/** SOCIAL **/
+#social{
+	background: #eee;
+	width:100%;
+	height:100px;
+}
+
+
+/** JOKE **/
+#joke_divider{
+	margin-bottom:1000px;
 }

@@ -56,6 +56,11 @@ var updatePauseUI = function(){
 		play_pause.setAttribute("paused",true);
 	}
 };
+// Is it already paused???
+if(!options.auto){
+	Model.isPlaying = false;
+	updatePauseUI();
+}
 
 // STEP
 var play_step = document.getElementById("play_step");

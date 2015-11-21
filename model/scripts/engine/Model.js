@@ -32,6 +32,10 @@ as well as serialize & deserialize.
 		publish("/grid/updateSize");
 		Model.isPlaying = UI.options.auto;
 
+		// Step it ONCE
+		Grid.step();
+		publish("/grid/updateAgents");
+
 	};
 
 	// Return to backup.

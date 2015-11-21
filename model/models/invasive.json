@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "type": "if_random",
-                    "probability": 0.002,
+                    "probability": 0.005,
                     "actions": [
                         {
                             "type": "go_to_state",
@@ -15,6 +15,16 @@
                             "actions": []
                         }
                     ]
+                },
+                {
+                    "probability": 0.01,
+                    "actions": [
+                        {
+                            "stateID": "5",
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_random"
                 }
             ]
         },
@@ -26,39 +36,9 @@
         },
         {
             "id": 1,
-            "icon": "🌲",
+            "icon": "🌳",
             "name": "tree",
             "actions": [
-                {
-                    "type": "if_random",
-                    "probability": 0.0001,
-                    "actions": [
-                        {
-                            "type": "go_to_state",
-                            "stateID": 2,
-                            "actions": []
-                        }
-                    ]
-                },
-                {
-                    "type": "if_neighbor",
-                    "sign": ">=",
-                    "num": 1,
-                    "stateID": 2,
-                    "actions": [
-                        {
-                            "probability": 0.3,
-                            "actions": [
-                                {
-                                    "stateID": "2",
-                                    "type": "go_to_state",
-                                    "actions": []
-                                }
-                            ],
-                            "type": "if_random"
-                        }
-                    ]
-                },
                 {
                     "sign": ">=",
                     "num": 1,
@@ -73,61 +53,13 @@
                     "type": "if_neighbor"
                 },
                 {
-                    "probability": 0.001,
-                    "actions": [
-                        {
-                            "stateID": "3",
-                            "type": "go_to_state"
-                        }
-                    ],
-                    "type": "if_random"
-                }
-            ]
-        },
-        {
-            "id": 3,
-            "icon": "💀",
-            "name": "dead tree",
-            "actions": [
-                {
-                    "type": "if_random",
-                    "probability": 0.0001,
-                    "actions": [
-                        {
-                            "type": "go_to_state",
-                            "stateID": 2,
-                            "actions": []
-                        }
-                    ]
-                },
-                {
-                    "type": "if_neighbor",
                     "sign": ">=",
-                    "num": 1,
-                    "stateID": 2,
-                    "actions": [
-                        {
-                            "probability": 0.9,
-                            "actions": [
-                                {
-                                    "stateID": "2",
-                                    "type": "go_to_state",
-                                    "actions": []
-                                }
-                            ],
-                            "type": "if_random"
-                        }
-                    ]
-                },
-                {
-                    "sign": ">=",
-                    "num": 1,
-                    "stateID": "4",
+                    "num": 4,
+                    "stateID": "5",
                     "actions": [
                         {
                             "stateID": 0,
-                            "type": "go_to_state",
-                            "actions": []
+                            "type": "go_to_state"
                         }
                     ],
                     "type": "if_neighbor"
@@ -143,6 +75,47 @@
                     "type": "go_to_state",
                     "stateID": 0,
                     "actions": []
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "icon": "🌱",
+            "name": "invasive",
+            "actions": [
+                {
+                    "probability": 0.0001,
+                    "actions": [
+                        {
+                            "stateID": "2",
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_random"
+                },
+                {
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": "2",
+                    "actions": [
+                        {
+                            "stateID": "2",
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_neighbor"
+                },
+                {
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": "4",
+                    "actions": [
+                        {
+                            "stateID": 0,
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_neighbor"
                 }
             ]
         }
@@ -161,15 +134,15 @@
             },
             {
                 "stateID": 1,
-                "parts": 2
-            },
-            {
-                "stateID": 3,
-                "parts": 0
+                "parts": 1
             },
             {
                 "stateID": 2,
                 "parts": 0
+            },
+            {
+                "stateID": 5,
+                "parts": 1
             }
         ],
         "size": {

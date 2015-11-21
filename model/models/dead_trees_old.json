@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "type": "if_random",
-                    "probability": 0.002,
+                    "probability": 0.02,
                     "actions": [
                         {
                             "type": "go_to_state",
@@ -20,8 +20,8 @@
         },
         {
             "id": 4,
-            "icon": "🐻",
-            "name": "bear",
+            "icon": "💩",
+            "name": "firewall",
             "actions": []
         },
         {
@@ -47,12 +47,11 @@
                     "stateID": 2,
                     "actions": [
                         {
-                            "probability": 0.3,
+                            "probability": 0.33,
                             "actions": [
                                 {
                                     "stateID": "2",
-                                    "type": "go_to_state",
-                                    "actions": []
+                                    "type": "go_to_state"
                                 }
                             ],
                             "type": "if_random"
@@ -60,20 +59,7 @@
                     ]
                 },
                 {
-                    "sign": ">=",
-                    "num": 1,
-                    "stateID": "4",
-                    "actions": [
-                        {
-                            "stateID": 0,
-                            "type": "go_to_state",
-                            "actions": []
-                        }
-                    ],
-                    "type": "if_neighbor"
-                },
-                {
-                    "probability": 0.001,
+                    "probability": 0.005,
                     "actions": [
                         {
                             "stateID": "3",
@@ -81,43 +67,6 @@
                         }
                     ],
                     "type": "if_random"
-                }
-            ]
-        },
-        {
-            "id": 3,
-            "icon": "💀",
-            "name": "dead tree",
-            "actions": [
-                {
-                    "type": "if_random",
-                    "probability": 0.0001,
-                    "actions": [
-                        {
-                            "type": "go_to_state",
-                            "stateID": 2,
-                            "actions": []
-                        }
-                    ]
-                },
-                {
-                    "type": "if_neighbor",
-                    "sign": ">=",
-                    "num": 1,
-                    "stateID": 2,
-                    "actions": [
-                        {
-                            "probability": 0.9,
-                            "actions": [
-                                {
-                                    "stateID": "2",
-                                    "type": "go_to_state",
-                                    "actions": []
-                                }
-                            ],
-                            "type": "if_random"
-                        }
-                    ]
                 },
                 {
                     "sign": ">=",
@@ -126,8 +75,7 @@
                     "actions": [
                         {
                             "stateID": 0,
-                            "type": "go_to_state",
-                            "actions": []
+                            "type": "go_to_state"
                         }
                     ],
                     "type": "if_neighbor"
@@ -145,6 +93,35 @@
                     "actions": []
                 }
             ]
+        },
+        {
+            "id": 3,
+            "icon": "💀",
+            "name": "dead tree",
+            "actions": [
+                {
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": "2",
+                    "actions": [
+                        {
+                            "stateID": "2",
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_neighbor"
+                },
+                {
+                    "probability": 0.0001,
+                    "actions": [
+                        {
+                            "stateID": "2",
+                            "type": "go_to_state"
+                        }
+                    ],
+                    "type": "if_random"
+                }
+            ]
         }
     ],
     "world": {
@@ -153,28 +130,28 @@
         "proportions": [
             {
                 "stateID": 0,
-                "parts": 98
-            },
-            {
-                "stateID": 4,
-                "parts": 0
+                "parts": 100
             },
             {
                 "stateID": 1,
-                "parts": 2
+                "parts": 0
+            },
+            {
+                "stateID": 2,
+                "parts": 0
             },
             {
                 "stateID": 3,
                 "parts": 0
             },
             {
-                "stateID": 2,
+                "stateID": 4,
                 "parts": 0
             }
         ],
         "size": {
-            "width": 40,
-            "height": 34
+            "width": 50,
+            "height": 50
         }
     }
 }
