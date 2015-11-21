@@ -37,7 +37,7 @@
         {
             "id": 1,
             "icon": "🌳",
-            "name": "tree",
+            "name": "strong tree",
             "actions": [
                 {
                     "sign": ">=",
@@ -67,21 +67,9 @@
             ]
         },
         {
-            "id": 2,
-            "icon": "🔥",
-            "name": "fire",
-            "actions": [
-                {
-                    "type": "go_to_state",
-                    "stateID": 0,
-                    "actions": []
-                }
-            ]
-        },
-        {
             "id": 5,
             "icon": "🌱",
-            "name": "invasive",
+            "name": "jerk weed",
             "actions": [
                 {
                     "probability": 0.0001,
@@ -116,6 +104,18 @@
                         }
                     ],
                     "type": "if_neighbor"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "icon": "🔥",
+            "name": "fire",
+            "actions": [
+                {
+                    "type": "go_to_state",
+                    "stateID": 0,
+                    "actions": []
                 }
             ]
         }
