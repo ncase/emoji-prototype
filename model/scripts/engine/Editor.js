@@ -24,11 +24,12 @@ Editor.create = function(){
 	addState.onclick = function(){
 
 		// New state config
+		var emoji = Model.generateNewEmoji();
 		var newStateConfig = {
 			id: Model.generateNewID(),
-			icon: "💩",
-			name: "chocolate",
-			actions:[]
+			icon: emoji.icon,
+			name: emoji.name,
+			actions: []
 		};
 
 		// Add to Model.data
@@ -142,6 +143,9 @@ Editor.createStateUI = function(stateConfig){
 	icon.oninput = function(){
 		stateConfig.icon = icon.value;
 		publish("/ui/updateStateHeaders");
+	};
+	icon.onclick = function(){
+		icon.select();
 	};
 	stateHeader.appendChild(icon);
 
@@ -412,23 +416,40 @@ Editor.createNumber = function(actionConfig, propName, options){
 	// Options?
 	options = options || {};
 	options.multiplier = options.multiplier || 1;
-	// future options - constraints
+	options.min = options.min || 0;
+	options.max = options.max || 100;
+	options.step = options.step || 1;
 
 	// Input
 	var input = document.createElement("input");
 	input.type = "text";
 	input.value = actionConfig[propName]*options.multiplier;
 	input.className ="editor_number";
+	input.options = options;
 
 	// Decode value
 	var _decodeValue = function(){
+		
 		var number;
+
+		// Integer or not
 		if(options.integer){
 			number = parseInt(input.value);
 		}else{
 			number = parseFloat(input.value);
 		}
+
+		// Go to zero if it's just WRONG.
 		if(isNaN(number)) number=0; // you messed up
+
+		// Fix to constraints
+		if(number < options.min){
+			number = options.min;
+		}
+		if(number > options.max){
+			number = options.max;
+		}
+
 		return number;
 	};
 
@@ -447,6 +468,9 @@ Editor.createNumber = function(actionConfig, propName, options){
 	input.onchange = function(){
 		input.value = _decodeValue();
 	};
+
+	// MAKE IT SCRUBBABLE
+	_makeScrubbable(input);
 
 	// Return
 	return input;

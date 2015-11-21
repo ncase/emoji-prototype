@@ -54,7 +54,7 @@ THE EDITOR
 	overflow-y: scroll;
 }
 #editor{
-	margin: 40px 20px;
+	margin: 40px 40px 40px 20px;
 }
 #editor .editor_state{
 	margin-bottom: 50px;
@@ -94,9 +94,15 @@ THE EDITOR
 
 	border-radius: 0 5px 5px 0;
 }
-#editor .editor_number{
+#editor input[type=text].editor_number{
 	font-size: 16px;
-    width: 50px;
+    width: 40px;
+    cursor: col-resize;
+
+    border:none;
+    border-bottom: 2px dotted #aaa;
+    border-radius: 0;
+
 }
 #editor .editor_new_action{
 	position: relative;
@@ -217,7 +223,7 @@ THE EDITOR
 	margin-right: 5px;
 }
 #editor div.proportions > div > input[type=range]{
-	width: 240px;
+	width: 230px;
 }
 #editor hr{
 	margin: 40px 0;
@@ -309,7 +315,7 @@ HACK: SCROLLBARS
 
 .frame::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    border: 2px solid white; /* should match background, can't be transparent */
+    border: 2px solid white;
     background-color: rgba(0, 0, 0, .5);
 }
 

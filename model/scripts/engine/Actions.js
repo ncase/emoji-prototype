@@ -104,7 +104,11 @@ Actions.if_neighbor = {
 					{ name:"exactly (=)", value:"=" }
 				],config,"sign")
 				.label(" ")
-				.number(config, "num", {integer:true})
+				.number(config, "num", {
+					integer:true,
+					min:0, max:8,
+					step:1
+				})
 				.label(" neighbors are ")
 				.stateSelector(config, "stateID")
 				.actionsUI(config.actions)
@@ -137,7 +141,11 @@ Actions.if_random = {
 
 		return EditorHelper()
 				.label("With a ")
-				.number(config, "probability", {multiplier:100})
+				.number(config, "probability", {
+					multiplier:100,
+					min:0, max:100,
+					step:0.1
+				})
 				.label("% chance,")
 				.actionsUI(config.actions)
 				.dom;

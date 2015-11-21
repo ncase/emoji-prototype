@@ -36,6 +36,9 @@ as well as serialize & deserialize.
 		Grid.step();
 		publish("/grid/updateAgents");
 
+		// Publish
+		publish("/model/init");
+
 	};
 
 	// Return to backup.
@@ -105,6 +108,44 @@ as well as serialize & deserialize.
 			}
 		}
 		return highestID+1;
+	};
+
+	// Just cycle through emoji!
+	var emojiIndex = -1;
+	var emojis = [
+		{
+			icon: "😺",
+			name: "furry demon"
+		},
+		{
+			icon: "📕",
+			name: "page sandwich"
+		},
+		{
+			icon: "💀",
+			name: "bone head"
+		},
+		{
+			icon: "🍇",
+			name: "juice orbs"
+		},
+		{
+			icon: "🎱",
+			name: "infinity ball"
+		},
+		{
+			icon: "🍵",
+			name: "leaf soup"
+		},
+		{
+			icon: "🐚",
+			name: "snail house"
+		}
+
+	];
+	Model.generateNewEmoji = function(){
+		emojiIndex = (emojiIndex+1)%emojis.length;
+		return emojis[emojiIndex];
 	};
 
 })(window);

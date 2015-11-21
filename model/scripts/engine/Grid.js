@@ -120,7 +120,7 @@ Grid.tileSize = 1;
 Grid.updateSize = function(){
 
 	// RESIZE OTHER DOMs
-	var calcWidth = ((document.body.clientWidth - editor_container.clientWidth) - 20)+"px";
+	var calcWidth = (document.body.clientWidth - editor_container.clientWidth)+"px";
 	grid_container.style.width = calcWidth;
 	play_container.style.width = calcWidth;
 
@@ -258,9 +258,19 @@ Grid.createUI = function(){
 
 	return EditorHelper()
 			.label("This world is a ")
-			.number(config.size, "width", {integer:true, message:"/grid/reinitialize"})
+			.number(config.size, "width", {
+				integer:true,
+				min:5, max:50,
+				step:1,
+				message:"/grid/reinitialize"
+			})
 			.label(" by ")
-			.number(config.size, "height", {integer:true, message:"/grid/reinitialize"})
+			.number(config.size, "height", {
+				integer:true,
+				min:5, max:50,
+				step:1,
+				message:"/grid/reinitialize"
+			})
 			.label(" grid.")
 			.label("<br><br>")
 			.label("We start with this ratio of agents:<br>")

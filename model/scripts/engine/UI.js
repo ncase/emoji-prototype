@@ -140,4 +140,94 @@ var changeCell = function(){
 
 };
 
+////////////////////////////
+//// MAKE IT SCRUBBABLE ////
+////////////////////////////
+
+// Mouse, #2
+var Mouse2 = {
+	x: 0,
+	y: 0
+};
+
+var scrubInput = null;
+var scrubPosition = {x:0, y:0};
+var scrubStartValue = 0;
+exports._makeScrubbable = function(input){
+
+	input.addEventListener("mousedown",function(e){
+		scrubInput = e.target;
+		scrubPosition.x = e.clientX;
+		scrubPosition.y = e.clientY;
+		scrubStartValue = parseFloat(input.value);
+	},false);
+	input.addEventListener("click",function(e){
+		e.target.select();
+	},false);
+
+};
+window.addEventListener("mousemove",function(e){
+	
+	// Mouse2
+	Mouse2.x = e.clientX;
+	Mouse2.y = e.clientY;
+
+	// If browser allows it, try to find x/y relative to canvas rather than page
+	if(e.offsetX != undefined){
+		Mouse2.x = e.offsetX;
+		Mouse2.y = e.offsetY;
+	}
+	else if(e.layerX != undefined && e.originalTarget != undefined){
+		Mouse2.x = e.layerX-e.originalTarget.offsetLeft;
+		Mouse2.y = e.layerY-e.originalTarget.offsetTop;
+	}
+
+	// Scrubbing
+	if(!scrubInput) return;
+	scrubInput.blur();
+	var deltaX = e.clientX - scrubPosition.x;
+	deltaX = Math.round(deltaX/10)*scrubInput.options.step; // STEP for every 10px
+	var val = scrubStartValue + deltaX;
+
+	// Integer or not?
+	if(scrubInput.options.integer){
+		scrubInput.value = (Math.round(val*10)/10).toFixed(0);
+	}else{
+		scrubInput.value = (Math.round(val*10)/10).toFixed(1);
+	}
+
+	// Fix to constraints
+	if(scrubInput.value < scrubInput.options.min){
+		scrubInput.value = scrubInput.options.min;
+	}
+	if(scrubInput.value > scrubInput.options.max){
+		scrubInput.value = scrubInput.options.max;
+	}
+
+	// Change value
+	if(scrubInput.oninput){
+		scrubInput.oninput();
+	}
+
+},false);
+window.addEventListener("mouseup",function(event){
+	scrubInput = null;
+},false);
+
+
+/////////////////////////
+//// SCROLLING STUFF ////
+/////////////////////////
+
+var editor_container = document.getElementById('editor_container');
+window.onresize = function(){
+	Ps.update(editor_container);
+};
+Ps.initialize(editor_container,{
+	suppressScrollX: true
+});
+subscribe("/model/init",function(){
+	Ps.update(editor_container);
+});
+
 })(window);

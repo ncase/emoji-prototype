@@ -2,12 +2,17 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="styles/model.css">
+	<link rel="stylesheet" type="text/css" href="styles/perfect-scrollbar.min.css">
 </head>
 <body>
+
+	<!-- The grid. Inline CSS so grid can change, shuddup. -->
 	<style id="grid_style"></style>
 	<div id="grid_container">
 		<div id="grid"></div>
 	</div>
+
+	<!-- Play/Pause/Reset/Step controls -->
 	<div id="play_container">
 		<div id="play_controls">
 			<div id="play_reset">new</div>
@@ -15,12 +20,19 @@
 			<div id="play_step">step</div>
 		</div>
 	</div>
-	<div id="editor_container" class="frame">
+
+	<!-- The big honkin' editor -->
+	<div id="editor_container"><!-- class="frame"-->
 		<div id="editor"></div>
 	</div>
-	<!--div id="graph_container">
+	
+	<!--
+	There used to be a graph here.
+	<div id="graph_container">
 		<svg id="graph"></svg>
-	</div-->
+	</div>
+	-->
+
 </body>
 </html>
 
@@ -28,6 +40,8 @@
 <script src="scripts/libraries/minpubsub.js"></script>
 <script src="scripts/libraries/firebase.min.js"></script>
 <script src="scripts/libraries/reqwest.min.js"></script>
+<script src="scripts/libraries/perfect-scrollbar.min.js"></script>
+<!--script src="scripts/libraries/scrollbar.js"></script-->
 <!--script src="scripts/libraries/promise.js"></script-->
 <!--script src="scripts/libraries/stats.min.js"></script-->
 
