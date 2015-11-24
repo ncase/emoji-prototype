@@ -274,17 +274,17 @@ Grid.createUI = function(){
 			})
 			.label(" grid.")
 			.label("<br><br>")
-			.label("We start with this ratio of agents:<br>")
+			.label("We start with this ratio of things:<br>")
 			.proportions()
 			.label("<br>")
-			.label("And each agent considers ")
+			.label("And each thing considers ")
 			.selector([
-				{ name:"the 4 agents to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
-				{ name:"the 8 agents to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
+				{ name:"the 4 spots to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
+				{ name:"the 8 spots to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
 			],config,"neighborhood",{
 				maxWidth: "none"
 			})
-			.label(" to be its neighbors.")
+			.label(" to be its neighboring spots.")
 			.dom;
 
 };

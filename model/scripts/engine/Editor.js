@@ -44,6 +44,7 @@ Editor.create = function(){
 			id: Model.generateNewID(),
 			icon: emoji.icon,
 			name: emoji.name,
+			description: emoji.description,
 			actions: []
 		};
 
@@ -85,8 +86,8 @@ Editor.create = function(){
 	///// META STUFF /////
 	//////////////////////
 
-	var title = Editor.createTitle("<span>MISC</span> STUFF");
-	Editor.dom.appendChild(title);
+	/*var title = Editor.createTitle("<span>MISC</span> STUFF");
+	Editor.dom.appendChild(title);*/
 
 	// Reset to original
 	var undoChanges = document.createElement("div");
