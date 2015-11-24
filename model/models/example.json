@@ -1,0 +1,93 @@
+{
+    "meta": {
+        "description": "hello my baby hello my honey hello my ragtime gal"
+    },
+    "states": [
+        {
+            "id": 0,
+            "icon": "",
+            "name": "blank",
+            "description": "something about growth rate",
+            "actions": [
+                {
+                    "type": "if_random",
+                    "probability": 0.005,
+                    "actions": [
+                        {
+                            "type": "go_to_state",
+                            "stateID": 1,
+                            "actions": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "icon": "🌲",
+            "name": "tree",
+            "description": "something about lightning rate",
+            "actions": [
+                {
+                    "type": "if_random",
+                    "probability": 0.0001,
+                    "actions": [
+                        {
+                            "type": "go_to_state",
+                            "stateID": 2,
+                            "actions": []
+                        }
+                    ]
+                },
+                {
+                    "type": "if_neighbor",
+                    "sign": ">=",
+                    "num": 1,
+                    "stateID": 2,
+                    "actions": [
+                        {
+                            "type": "go_to_state",
+                            "stateID": 2,
+                            "actions": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "icon": "🔥",
+            "name": "fire",
+            "description": "just goes away after a step",
+            "actions": [
+                {
+                    "type": "go_to_state",
+                    "stateID": 0,
+                    "actions": []
+                }
+            ]
+        }
+    ],
+    "world": {
+        "update": "simultaneous",
+        "neighborhood": "moore",
+        "proportions": [
+            {
+                "stateID": 0,
+                "parts": 100
+            },
+            {
+                "stateID": 1,
+                "parts": 0
+            },
+            {
+                "stateID": 2,
+                "parts": 0
+            }
+        ],
+        "size": {
+            "width": 40,
+            "height": 34
+        }
+    }
+}

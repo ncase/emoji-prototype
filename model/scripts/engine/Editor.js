@@ -9,9 +9,24 @@ Editor.dom = document.getElementById("editor");
 // Create from model
 Editor.create = function(){
 
+	///////////////////////
+	///// DESCRIPTION /////
+	///////////////////////
+
+	// Description
+	var desc = Editor.createTextArea(Model.data.meta, "description", {fontSize:20});
+	Editor.dom.appendChild(desc);
+
+	// Divider
+	var hr = document.createElement("hr");
+	Editor.dom.appendChild(hr);
+
 	//////////////////////
 	///// STATES DOM /////
 	//////////////////////
+
+	var title = Editor.createTitle("THE <span>RULES</span>");
+	Editor.dom.appendChild(title);
 
 	Editor.statesDOM = document.createElement("div");
 	Editor.dom.appendChild(Editor.statesDOM);
@@ -54,6 +69,9 @@ Editor.create = function(){
 	///// WORLD DOM /////
 	/////////////////////
 
+	var title = Editor.createTitle("THE <span>WORLD</span>");
+	Editor.dom.appendChild(title);
+
 	Editor.worldDOM = document.createElement("div");
 	Editor.dom.appendChild(Editor.worldDOM);
 
@@ -66,6 +84,9 @@ Editor.create = function(){
 	//////////////////////
 	///// META STUFF /////
 	//////////////////////
+
+	var title = Editor.createTitle("<span>MISC</span> STUFF");
+	Editor.dom.appendChild(title);
 
 	// Reset to original
 	var undoChanges = document.createElement("div");
@@ -85,14 +106,14 @@ Editor.create = function(){
 		var saveChanges = document.createElement("div");
 		saveChanges.className = "editor_fancy_button";
 		saveChanges.id = "save_changes";
-		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save changes";
+		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save your model";
 		saveChanges.onclick = function(){
 			Save.uploadModel();
 		};
 		Editor.dom.appendChild(saveChanges);
 
 		// Save your changes, label & link
-		var saveLabel = Editor.createLabel("when you save your model, a new link to it will appear here:")
+		var saveLabel = Editor.createLabel("when you save your model, you'll get a link to it here:")
 		saveLabel.style.display = "block";
 		saveLabel.style.margin = "10px 0";
 		Editor.dom.appendChild(saveLabel);
@@ -110,6 +131,47 @@ Editor.create = function(){
 
 	}
 
+
+};
+
+Editor.createTitle = function(html){
+	var dom = document.createElement("div");
+	dom.className = "editor_title";
+	dom.innerHTML = html;
+	return dom;
+};
+
+Editor.createTextArea = function(config, propName, options){
+
+	options = options || {};
+
+	// Input
+	var input = document.createElement("textarea");
+	input.value = config[propName];
+	input.className ="editor_textarea";
+	input.style.fontSize = (options.fontSize || 16)+"px";
+
+	// Update on change
+	input.oninput = function(){
+		config[propName] = input.value;
+		_resize();
+	};
+
+	// Resize
+	var _resize = function(){
+		input.style.height = "1px";
+    	input.style.height = (input.scrollHeight)+"px";
+	};
+	var _listener1 = subscribe("ui/resize",_resize);
+	setTimeout(_resize,1);
+
+	// KILL IT ALL
+	var _listener2 = subscribe("/meta/reset",function(){
+		unsubscribe(_listener1);
+		unsubscribe(_listener2);
+	});
+
+	return input;
 
 };
 
@@ -175,6 +237,10 @@ Editor.createStateUI = function(stateConfig){
 		})(stateConfig);
 		stateHeader.appendChild(deleteDOM);
 	}
+
+	// Description
+	var description = Editor.createTextArea(stateConfig, "description");
+	dom.appendChild(description);
 
 	// Actions
 	var actionConfigs = stateConfig.actions;

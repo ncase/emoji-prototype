@@ -230,4 +230,12 @@ subscribe("/model/init",function(){
 	Ps.update(editor_container);
 });
 
+///////////////////////
+//// RESIZE SHTUFF ////
+///////////////////////
+
+window.addEventListener("resize",function(){
+	publish("ui/resize");
+},false);
+
 })(window);

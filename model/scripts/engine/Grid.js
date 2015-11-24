@@ -141,7 +141,8 @@ Grid.updateSize = function(){
 
 };
 subscribe("/grid/updateSize",Grid.updateSize,false);
-window.addEventListener("resize",Grid.updateSize,false);
+subscribe("ui/resize",Grid.updateSize,false);
+
 Grid.updateAgents = function(){
 
 	// HTML - TODO: Update only if update/edit cell

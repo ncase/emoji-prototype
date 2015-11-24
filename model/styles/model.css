@@ -57,11 +57,40 @@ THE EDITOR
 	margin: 40px 40px 40px 20px;
 }
 #editor .editor_state{
-	margin-bottom: 50px;
+	margin-bottom: 35px;
 }
 #editor .editor_state_header{
 	height: 40px;
 	overflow: hidden;
+}
+#editor .editor_title{
+	font-size: 27px;
+	margin-bottom: 25px;
+}
+#editor .editor_title span{
+	font-weight: bold;
+}
+#editor textarea{
+
+	font-family: Helvetica, Arial, sans-serif;
+    font-weight: 100;
+    font-size: 16px;
+
+    background: none;
+    margin: 0;
+	border: none;
+	
+	width: 100%;
+    resize: none;
+    overflow: hidden;
+    
+}
+#editor .editor_state > textarea{
+	background: #ccc;
+	color: #666;
+	padding: 10px;
+	width: 240px;
+	margin: 10px 0;
 }
 #editor input[type=text], #editor input[type=number]{
 	font-family: Helvetica, Arial, sans-serif;
@@ -176,6 +205,7 @@ THE EDITOR
 	max-width:120px;
 }
 #editor ul{
+	margin: 0;
 	padding-left: 30px;
 	list-style-type: none;
 	position: relative;
