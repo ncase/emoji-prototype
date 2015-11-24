@@ -1,0 +1,88 @@
+<!doctype>
+<html>
+<head>
+	
+	<!-- Meta -->
+	<title>A Simulation In Emoji</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<link rel="icon" type="image/png" href="favicon.png">
+
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="A Simulation In Emoji">
+	<meta itemprop="description" content="Simulate the world. In emoji.">
+	<meta itemprop="image" content="http://ncase.me/emoji-prototype/social/thumbnail.png">
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@ncasenmare">
+	<meta name="twitter:title" content="A Simulation In Emoji">
+	<meta name="twitter:description" content="Simulate the world. In emoji.">
+	<meta name="twitter:creator" content="@ncasenmare">
+	<meta name="twitter:image" content="http://ncase.me/emoji-prototype/social/thumbnail.png">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="A Simulation In Emoji">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="http://ncase.me/emoji-prototype">
+	<meta property="og:image" content="http://ncase.me/emoji-prototype/social/thumbnail.png">
+	<meta property="og:description" content="Simulate the world. In emoji.">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="model/styles/model.css">
+	<link rel="stylesheet" type="text/css" href="model/styles/perfect-scrollbar.min.css">
+
+</head>
+<body>
+
+	<!-- The grid. Inline CSS so grid can change, shuddup. -->
+	<style id="grid_style"></style>
+	<div id="grid_container">
+		<div id="grid_bg"></div>
+		<div id="grid"></div>
+	</div>
+
+	<!-- Play/Pause/Reset/Step controls -->
+	<div id="play_container">
+		<div id="play_controls">
+			<div id="play_reset">new</div>
+			<div id="play_pause">pause</div>
+			<div id="play_step">step</div>
+		</div>
+	</div>
+
+	<!-- The big honkin' editor -->
+	<div id="editor_container"><!-- class="frame"-->
+		<div id="editor"></div>
+	</div>
+	
+	<!--
+	There used to be a graph here.
+	<div id="graph_container">
+		<svg id="graph"></svg>
+	</div>
+	-->
+
+</body>
+</html>
+
+<!-- External Libraries -->
+<script src="model/scripts/libraries/minpubsub.js"></script>
+<script src="model/scripts/libraries/firebase.min.js"></script>
+<script src="model/scripts/libraries/reqwest.min.js"></script>
+<script src="model/scripts/libraries/perfect-scrollbar.min.js"></script>
+<!--script src="model/scripts/libraries/scrollbar.js"></script-->
+<!--script src="model/scripts/libraries/promise.js"></script-->
+<!--script src="model/scripts/libraries/stats.min.js"></script-->
+
+<!-- Engine -->
+<script src="model/scripts/engine/Actions.js"></script>
+<script src="model/scripts/engine/Agent.js"></script>
+<script src="model/scripts/engine/Grid.js"></script>
+<!--script src="model/scripts/engine/Graph.js"></script-->
+<script src="model/scripts/engine/Editor.js"></script>
+<script src="model/scripts/engine/Model.js"></script>
+<script src="model/scripts/engine/UI.js"></script>
+<script src="model/scripts/engine/Scroll.js"></script>
+<script src="model/scripts/engine/Save.js"></script>
+<script src="model/scripts/engine/Load.js"></script>
