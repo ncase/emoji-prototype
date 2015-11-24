@@ -44,7 +44,7 @@ Editor.create = function(){
 			id: Model.generateNewID(),
 			icon: emoji.icon,
 			name: emoji.name,
-			description: emoji.description,
+			description: "[how does this thing act?]",
 			actions: []
 		};
 

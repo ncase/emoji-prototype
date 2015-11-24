@@ -115,38 +115,31 @@ as well as serialize & deserialize.
 	var emojis = [
 		{
 			icon: "😺",
-			name: "furry demon",
-			description: "Bites everything."
+			name: "furry demon"
 		},
 		{
 			icon: "📕",
-			name: "page sandwich",
-			description: "Causes vivid hallucinations."
+			name: "page sandwich"
 		},
 		{
 			icon: "💀",
-			name: "bone head",
-			description: "Only one(1) per customer."
+			name: "bone head"
 		},
 		{
 			icon: "🍇",
-			name: "juice orbs",
-			description: "Delivers tastiness."
+			name: "juice orbs"
 		},
 		{
 			icon: "🎱",
-			name: "infinity ball",
-			description: "Shows you the last thing you see before you die."
+			name: "infinity ball"
 		},
 		{
 			icon: "🍵",
-			name: "leaf soup",
-			description: "Steep for 3 to 4 minutes."
+			name: "leaf soup"
 		},
 		{
 			icon: "🐚",
-			name: "snail house",
-			description: "Keeps snails cozy at night."
+			name: "snail house"
 		}
 
 	];
