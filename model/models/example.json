@@ -58,7 +58,7 @@
             "id": 3,
             "icon": "⚡️",
             "name": "lightning",
-            "description": "Sets things on fire, like a jerk.",
+            "description": "Sets the spot on fire, what a jerk.",
             "actions": [
                 {
                     "stateID": "2",
@@ -104,7 +104,7 @@
         ],
         "size": {
             "width": 40,
-            "height": 34
+            "height": 30
         }
     }
 }
