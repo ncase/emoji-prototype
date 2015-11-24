@@ -43,8 +43,8 @@ Editor.create = function(){
 		var newStateConfig = {
 			id: Model.generateNewID(),
 			icon: emoji.icon,
-			name: emoji.name,
-			description: "[how does this thing act?]",
+			name: "[new thing]",
+			description: "[how this thing acts]",
 			actions: []
 		};
 

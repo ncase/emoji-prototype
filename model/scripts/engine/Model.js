@@ -113,35 +113,13 @@ as well as serialize & deserialize.
 	// Just cycle through emoji!
 	var emojiIndex = -1;
 	var emojis = [
-		{
-			icon: "😺",
-			name: "furry demon"
-		},
-		{
-			icon: "📕",
-			name: "page sandwich"
-		},
-		{
-			icon: "💀",
-			name: "bone head"
-		},
-		{
-			icon: "🍇",
-			name: "juice orbs"
-		},
-		{
-			icon: "🎱",
-			name: "infinity ball"
-		},
-		{
-			icon: "🍵",
-			name: "leaf soup"
-		},
-		{
-			icon: "🐚",
-			name: "snail house"
-		}
-
+		{ icon: "😺" },
+		{ icon: "📕" },
+		{ icon: "💀" },
+		{ icon: "🍇" },
+		{ icon: "🎱" },
+		{ icon: "🍵" },
+		{ icon: "🐚" }
 	];
 	Model.generateNewEmoji = function(){
 		emojiIndex = (emojiIndex+1)%emojis.length;
