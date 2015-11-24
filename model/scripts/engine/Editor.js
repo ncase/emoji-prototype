@@ -620,9 +620,6 @@ Editor.createProportions = function(){
 					_adjustAll();
 					Grid.reinitialize();
 				};
-				slider.onmouseup = function(){
-					selectedIndex = -1;
-				};
 			})(proportion,slider,i);
 
 		}
@@ -701,6 +698,7 @@ Editor.createProportions = function(){
 
 		// Adjust to a total of 100
 		_createSnapshot();
+		selectedIndex = -1;
 		_adjustAll();
 
 	});

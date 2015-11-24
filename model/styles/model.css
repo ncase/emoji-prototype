@@ -21,7 +21,7 @@ THE GRID
 
 #grid_container{
 	width: 60%;
-	height: calc(100% - 70px);
+	height: 100%;
 	float: left;
 	position: relative;
 }
@@ -263,7 +263,7 @@ THE EDITOR
 #editor hr{
 	margin: 40px 0;
     border: none;
-    height: 3px;
+    height: 4px;
     border-bottom: 1px solid #aaa;
     border-top: 1px solid #aaa;
 }

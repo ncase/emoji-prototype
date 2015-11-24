@@ -121,8 +121,11 @@ Grid.tileSize = 1;
 Grid.updateSize = function(){
 
 	// RESIZE OTHER DOMs
+	// Apparently CSS calc() isn't playing nice in Firefox, WHATEVER
 	var calcWidth = (document.body.clientWidth - editor_container.clientWidth)+"px";
+	var calcHeight = (document.body.clientHeight - 70)+"px";
 	grid_container.style.width = calcWidth;
+	grid_container.style.height = calcHeight;
 	play_container.style.width = calcWidth;
 
 	// DIMENSIONS
