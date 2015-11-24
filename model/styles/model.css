@@ -26,16 +26,22 @@ THE GRID
 	position: relative;
 }
 
-#grid{
+#grid, #grid_bg{
 	position: absolute;
 	margin: auto;
 	top:0; left:0; right:0; bottom:0;
 	cursor: default;
 }
-#grid > div{
+#grid>div, #grid_bg>div{
 }
-#grid > div > div{
+#grid>div>div, #grid_bg>div>div{
 	float:left;
+}
+#grid>div>div{
+	line-height: 1em;
+}
+#grid_bg, #grid_bg>div>div{
+	border: 1px solid #eee;
 }
 
 /***************

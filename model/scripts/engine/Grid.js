@@ -114,6 +114,7 @@ var editor_container = document.getElementById("editor_container");
 
 // Render the Emoji
 Grid.dom = document.getElementById("grid");
+Grid.bg = document.getElementById("grid_bg");
 Grid.domContainer = document.getElementById("grid_container");
 Grid.css = document.getElementById("grid_style");
 Grid.tileSize = 1;
@@ -137,7 +138,19 @@ Grid.updateSize = function(){
 	css += "#grid{ width:"+(w*t)+"px; height:"+(h*t)+"px; font-size:"+t+"px; }\n";
 	css += "#grid>div{ width:"+(w*t)+"px; height:"+t+"px; }\n";
 	css += "#grid>div>div{ width:"+t+"px; height:"+t+"px; }\n";
+	css += "#grid_bg{ width:"+(w*t)+"px; height:"+(h*t)+"px; font-size:"+t+"px; }\n";
+	css += "#grid_bg>div{ width:"+(w*t)+"px; height:"+t+"px; }\n";
+	css += "#grid_bg>div>div{ width:"+(t-2)+"px; height:"+(t-2)+"px; }\n";
 	Grid.css.innerHTML = css;
+
+	// HTML JUST FOR THE GRID
+	var html = "";
+	for(var y=0;y<Grid.array.length;y++){
+		html += "<div>";
+		for(var x=0;x<Grid.array[0].length;x++) html += "<div></div>";
+		html += "</div>";
+	}
+	Grid.bg.innerHTML = html;
 
 };
 subscribe("/grid/updateSize",Grid.updateSize,false);
