@@ -229,6 +229,10 @@ Ps.initialize(editor_container,{
 subscribe("/model/init",function(){
 	Ps.update(editor_container);
 });
+subscribe("/meta/reset",function(){
+	editor_container.scrollTop = 0;
+	Ps.update(editor_container);
+});
 
 ///////////////////////
 //// RESIZE SHTUFF ////

@@ -39,6 +39,7 @@ THE GRID
 }
 #grid>div>div{
 	line-height: 1em;
+	text-align: center;
 }
 #grid_bg, #grid_bg>div>div{
 	border: 1px solid #eee;
