@@ -14,7 +14,7 @@ Editor.create = function(){
 	///////////////////////
 
 	// Description
-	var desc = Editor.createTextArea(Model.data.meta, "description", {fontSize:20});
+	var desc = Editor.createTextArea(Model.data.meta, "description", {fontSize:18});
 	Editor.dom.appendChild(desc);
 
 	// Divider
