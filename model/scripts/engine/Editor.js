@@ -349,7 +349,7 @@ Editor.createActionAdder = function(actionConfigs, dom){
 	var select = Editor.createSelector(keyValues,actionConfig,propName);
 
 	// Select has new oninput
-	select.oninput = function(){
+	select.onchange = function(){
 
 		// default, nvm
 		if(select.value=="") return;
@@ -408,7 +408,7 @@ Editor.createSelector = function(keyValues, actionConfig, propName, options){
 	}
 
 	// Update the state on change
-	select.oninput = function(){
+	select.onchange = function(){
 		actionConfig[propName] = select.value;
 	};
 	
@@ -450,13 +450,13 @@ Editor.createStateSelector = function(actionConfig, propName){
 		// If none was selected, then make blank selected.
 		if(!selectedAnOption){
 			select.value = 0; // blank
-			select.oninput();
+			select.onchange();
 		}
 
 	};
 
 	// Update the state on change
-	select.oninput = function(){
+	select.onchange = function(){
 		actionConfig[propName] = select.value;
 	};
 
