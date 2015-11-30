@@ -109,6 +109,7 @@ Editor.create = function(){
 		saveChanges.id = "save_changes";
 		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save your model";
 		saveChanges.onclick = function(){
+			saveLabel.innerHTML = "saving...";
 			Save.uploadModel();
 		};
 		Editor.dom.appendChild(saveChanges);

@@ -17,7 +17,7 @@ if(local = getParameterByName("local")){ // note: assignment
 }else if(url = getParameterByName("url")){ // yup: assignment
     path = url;
 }else{
-    path = "models/example.json";
+    path = "models/the_example.json";
 }
 
 // Load it & make it the model
